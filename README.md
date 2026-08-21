@@ -2,6 +2,8 @@
 
 Biblioteca Angular 22 com os componentes e tokens visuais reutilizáveis do Pakitec Amora.
 
+Catálogo visual: https://leonardoaa.github.io/pakitec-angular-components/
+
 ## Uso
 
 ```bash
