@@ -1,0 +1,10 @@
+<nav class="module-tabs" [attr.aria-label]="label()">
+  @for (tab of tabs(); track tab.route) {
+    <a
+      [routerLink]="tab.route"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >{{ tab.label }}</a>
+  }
+</nav>

@@ -1,0 +1,22 @@
+:host { display: block; }
+.pagination {
+  align-items: center;
+  border-top: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  display: flex;
+  font-size: 11px;
+  justify-content: space-between;
+  padding: 14px 18px;
+  div { align-items: center; display: flex; gap: 12px; }
+  strong { color: var(--color-text-primary); font-size: 11px; }
+  button {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: 7px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    min-height: 32px;
+    padding: 0 11px;
+    &:disabled { cursor: not-allowed; opacity: .45; }
+  }
+}

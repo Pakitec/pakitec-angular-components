@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "pakitec-angular-components": {
+      "projectType": "library",
+      "root": "projects/pakitec-angular-components",
+      "sourceRoot": "projects/pakitec-angular-components/src",
+      "prefix": "paki",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/pakitec-angular-components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/pakitec-angular-components/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/pakitec-angular-components/tsconfig.spec.json"
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular-vite:start-storybook",
+          "options": {
+            "configDir": "projects/pakitec-angular-components/.storybook",
+            "browserTarget": "pakitec-angular-components:build",
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular-vite:build-storybook",
+          "options": {
+            "configDir": "projects/pakitec-angular-components/.storybook",
+            "browserTarget": "pakitec-angular-components:build",
+            "outputDir": "storybook-static"
+          }
+        }
+      }
+    }
+  }
+}

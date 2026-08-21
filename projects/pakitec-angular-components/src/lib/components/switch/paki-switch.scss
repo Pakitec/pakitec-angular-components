@@ -1,0 +1,28 @@
+button {
+  background: var(--color-border-default);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  height: 26px;
+  padding: 3px;
+  transition: background 0.15s;
+  width: 46px;
+  i {
+    background: var(--neutral-0);
+    border-radius: 50%;
+    display: block;
+    height: 20px;
+    transition: transform 0.15s;
+    width: 20px;
+  }
+  &[aria-checked='true'] {
+    background: var(--color-accent);
+    i {
+      transform: translateX(20px);
+    }
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

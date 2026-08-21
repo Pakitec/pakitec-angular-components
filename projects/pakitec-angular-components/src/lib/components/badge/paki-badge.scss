@@ -1,0 +1,28 @@
+:host {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+:host(.paki-badge--neutral) {
+  background: var(--neutral-100);
+  color: var(--color-text-secondary);
+}
+:host(.paki-badge--success) {
+  background: color-mix(in srgb, var(--success-500) 12%, var(--color-bg-surface));
+  color: var(--success-500);
+}
+:host(.paki-badge--warning) {
+  background: color-mix(in srgb, var(--warning-500) 12%, var(--color-bg-surface));
+  color: var(--warning-500);
+}
+:host(.paki-badge--danger) {
+  background: color-mix(in srgb, var(--error-500) 12%, var(--color-bg-surface));
+  color: var(--error-500);
+}
+:host(.paki-badge--info) {
+  background: color-mix(in srgb, var(--info-500) 12%, var(--color-bg-surface));
+  color: var(--info-500);
+}

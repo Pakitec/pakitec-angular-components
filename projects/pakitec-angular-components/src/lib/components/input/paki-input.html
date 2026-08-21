@@ -1,0 +1,46 @@
+<label
+  ><span>{{ label() }}</span
+  ><span class="control">
+    <input
+      [type]="type() === 'password' && passwordVisible() ? 'text' : type() === 'currency' ? 'text' : type()"
+      [class.has-password-toggle]="type() === 'password' && showPasswordToggle()"
+      [value]="value()"
+      [placeholder]="placeholder()"
+      [autocomplete]="autocomplete()"
+      [attr.inputmode]="type() === 'currency' ? 'decimal' : effectiveMask() ? 'numeric' : null"
+      [attr.maxlength]="effectiveMask() === 'cep' ? 9 : effectiveMask() === 'phone' ? 15 : effectiveMask() === 'cpf' ? 14 : effectiveMask() === 'cnpj' ? 18 : null"
+      [attr.list]="list() || null"
+      [disabled]="disabled()"
+      [attr.aria-invalid]="error() ? true : null"
+      [attr.aria-describedby]="error() || hint() ? 'support-' + label() : null"
+      (input)="update($event)"
+      (blur)="touch()"
+    />
+    @if (type() === 'password' && showPasswordToggle()) {
+      <button
+        class="password-toggle"
+        type="button"
+        [disabled]="disabled()"
+        [attr.aria-label]="passwordVisible() ? 'Ocultar senha' : 'Mostrar senha'"
+        [attr.aria-pressed]="passwordVisible()"
+        (click)="togglePasswordVisibility()"
+      >
+        @if (passwordVisible()) {
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M3 3l18 18M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 4.3A10.7 10.7 0 0 1 12 4c5.5 0 9 5.4 9 5.4a14.3 14.3 0 0 1-2.4 2.8M6.2 6.2C4.1 7.6 3 9.4 3 9.4s3.5 5.4 9 5.4a9.7 9.7 0 0 0 3-.5" />
+          </svg>
+        } @else {
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M3 12s3.5-5.4 9-5.4 9 5.4 9 5.4-3.5 5.4-9 5.4S3 12 3 12Z" />
+            <circle cx="12" cy="12" r="2.4" />
+          </svg>
+        }
+      </button>
+    }
+  </span>
+  @if (error()) {
+    <small class="error" [id]="'support-' + label()">{{ error() }}</small>
+  } @else if (hint()) {
+    <small [id]="'support-' + label()">{{ hint() }}</small>
+  }
+</label>

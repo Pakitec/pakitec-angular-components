@@ -1,0 +1,12 @@
+<nav class="pagination" aria-label="Paginação">
+  <span>{{ range() }}</span>
+  <div>
+    <button type="button" [disabled]="page().first" (click)="pageChange.emit(page().number - 1)">
+      ‹ Anterior
+    </button>
+    <strong>Página {{ page().number }} de {{ page().totalPages || 1 }}</strong>
+    <button type="button" [disabled]="page().last" (click)="pageChange.emit(page().number + 1)">
+      Próxima ›
+    </button>
+  </div>
+</nav>

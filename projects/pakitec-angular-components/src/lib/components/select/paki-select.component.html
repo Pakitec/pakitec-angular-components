@@ -1,0 +1,53 @@
+<label>
+  <span>{{ label() }}</span>
+  <div class="paki-select__control">
+    <input
+      type="text"
+      role="combobox"
+      [value]="selectedLabel() || searchTerm()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [attr.aria-expanded]="open()"
+      aria-haspopup="listbox"
+      [attr.aria-activedescendant]="open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null"
+      (input)="onInput($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (keydown)="onKeydown($event)"
+    />
+    <button
+      type="button"
+      class="paki-select__toggle"
+      [disabled]="disabled()"
+      [attr.aria-label]="open() ? 'Fechar opções' : 'Abrir opções'"
+      (mousedown)="$event.preventDefault(); toggle()"
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+
+  @if (open()) {
+    <ul class="paki-select__dropdown" role="listbox" (scroll)="onScroll($event)">
+      @if (searching()) {
+        <li class="paki-select__feedback" role="status">Carregando...</li>
+      }
+      @for (option of displayOptions(); track option.value; let i = $index) {
+        <li
+          [id]="'paki-option-' + i"
+          role="option"
+          [attr.aria-selected]="value() === option.value"
+          [class.active]="activeIndex() === i"
+          [class.selected]="value() === option.value"
+          (mousedown)="$event.preventDefault(); select(option)"
+        >
+          {{ option.label }}
+        </li>
+      }
+      @if (showNoResults()) {
+        <li class="paki-select__feedback" role="status">{{ noResultsMessage() }}</li>
+      }
+    </ul>
+  }
+</label>

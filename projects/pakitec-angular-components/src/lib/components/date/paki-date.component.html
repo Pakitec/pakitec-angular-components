@@ -1,0 +1,82 @@
+<label>
+  <span>{{ label() }}</span>
+  <input
+    #trigger
+    type="text"
+    cdkOverlayOrigin
+    [value]="displayValue()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [attr.aria-expanded]="open()"
+    aria-haspopup="dialog"
+    role="combobox"
+    readonly
+    (click)="toggle()"
+    (keydown)="onInputKeydown($event)"
+    (blur)="close()"
+  />
+</label>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="triggerRef()"
+  [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayPositions]="[
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },
+    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 }
+  ]"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+  (backdropClick)="close()"
+>
+  <div class="calendar" role="dialog" aria-label="Calendário" (keydown)="onInputKeydown($event)">
+    <div class="calendar-header">
+      <button type="button" class="nav" [disabled]="disabled()" (click)="navigateMonth(-1)" aria-label="Mês anterior">
+        ‹
+      </button>
+      <span class="month-year" aria-live="polite">{{ monthYearLabel() }}</span>
+      <button type="button" class="nav" [disabled]="disabled()" (click)="navigateMonth(1)" aria-label="Próximo mês">
+        ›
+      </button>
+    </div>
+    <table role="grid">
+      <thead>
+        <tr>
+          <th scope="col" aria-label="Domingo">D</th>
+          <th scope="col" aria-label="Segunda">S</th>
+          <th scope="col" aria-label="Terça">T</th>
+          <th scope="col" aria-label="Quarta">Q</th>
+          <th scope="col" aria-label="Quinta">Q</th>
+          <th scope="col" aria-label="Sexta">S</th>
+          <th scope="col" aria-label="Sábado">S</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (week of weeks(); track week) {
+          <tr>
+            @for (day of week; track day.iso) {
+              <td
+                role="gridcell"
+                [attr.aria-selected]="value() === day.iso ? true : null"
+                [class.outside]="!day.inMonth"
+                [class.selected]="value() === day.iso"
+                [class.focused]="focusedDate() && isSameDay(focusedDate()!, day.date)"
+                [class.disabled]="day.disabled"
+              >
+                <button
+                  type="button"
+                  [disabled]="day.disabled"
+                  [attr.tabindex]="focusedDate() && isSameDay(focusedDate()!, day.date) ? 0 : -1"
+                  (click)="select(day.date, $event)"
+                  (keydown)="onDayKeydown($event, day)"
+                >
+                  {{ day.day }}
+                </button>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</ng-template>

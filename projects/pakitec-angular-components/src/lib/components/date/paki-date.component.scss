@@ -1,0 +1,154 @@
+:host {
+  display: block;
+}
+
+label {
+  color: var(--color-text-faint);
+  display: grid;
+  font-size: 11px;
+  font-weight: 700;
+  gap: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+input {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  min-height: 42px;
+  padding: 10px 12px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  width: 100%;
+
+  &:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.calendar {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 12px;
+  width: 280px;
+}
+
+.calendar-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .month-year {
+    color: var(--color-text-primary);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  .nav {
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+
+    &:hover:not(:disabled) {
+      background: var(--color-accent-tint);
+      color: var(--color-accent);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 1px;
+    }
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  th {
+    color: var(--color-text-faint);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 6px 0;
+    text-align: center;
+  }
+
+  td {
+    padding: 2px;
+    text-align: center;
+
+    button {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 13px;
+      height: 32px;
+      justify-content: center;
+      width: 32px;
+
+      &:hover:not(:disabled) {
+        background: var(--color-accent-tint);
+        color: var(--color-accent);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 1px;
+      }
+
+      &:disabled {
+        color: var(--color-text-faint);
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+
+    &.selected button {
+      background: var(--color-accent);
+      color: var(--neutral-0);
+
+      &:hover:not(:disabled) {
+        background: var(--color-accent);
+        color: var(--neutral-0);
+      }
+    }
+
+    &.focused button {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 50%, transparent);
+    }
+
+    &.outside button {
+      color: var(--color-text-faint);
+    }
+  }
+}

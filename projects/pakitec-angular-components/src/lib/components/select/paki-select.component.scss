@@ -1,0 +1,130 @@
+:host {
+  display: block;
+}
+
+label {
+  color: var(--color-text-faint);
+  display: grid;
+  font-size: 11px;
+  font-weight: 700;
+  gap: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.paki-select__control {
+  position: relative;
+}
+
+input {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  min-height: 42px;
+  padding: 10px 36px 10px 12px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  width: 100%;
+
+  &:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.paki-select__toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-faint);
+  cursor: pointer;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+
+  &:hover:not(:disabled) {
+    color: var(--color-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  svg {
+    transition: transform 0.15s;
+  }
+}
+
+.paki-select__dropdown {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  list-style: none;
+  margin: 4px 0 0;
+  max-height: 260px;
+  overflow: auto;
+  padding: 5px;
+  position: absolute;
+  width: 100%;
+  z-index: 30;
+
+  li {
+    border-radius: 6px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 9px;
+
+    &:hover,
+    &.active {
+      background: var(--color-accent-tint);
+      color: var(--color-accent);
+    }
+
+    &.selected {
+      background: var(--color-accent);
+      color: var(--neutral-0);
+
+      &:hover,
+      &.active {
+        background: var(--color-accent);
+        color: var(--neutral-0);
+      }
+    }
+  }
+}
+
+.paki-select__feedback {
+  color: var(--color-text-faint);
+  cursor: default;
+  font-size: 12px;
+  padding: 12px;
+  text-align: center;
+
+  &:hover {
+    background: transparent !important;
+  }
+}
