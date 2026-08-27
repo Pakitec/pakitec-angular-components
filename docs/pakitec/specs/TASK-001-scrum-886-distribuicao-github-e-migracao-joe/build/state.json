@@ -1,0 +1,139 @@
+{
+  "version": "1.0.0",
+  "mode": "orchestration",
+  "issueKey": "SCRUM-886",
+  "taskDirectory": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components/docs/pakitec/specs/TASK-001-scrum-886-distribuicao-github-e-migracao-joe",
+  "projectPath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
+  "createdAt": "2026-08-27T17:36:56.990Z",
+  "updatedAt": "2026-08-27T17:40:57.770Z",
+  "currentPhase": "dev_implementation",
+  "bugCycles": 0,
+  "maxBugCycles": 3,
+  "phases": {
+    "lt_planning": {
+      "phaseId": "lt_planning",
+      "label": "SDD Orquestracao",
+      "roles": [
+        "sdd-orchestrator"
+      ],
+      "jiraSubtasks": {
+        "Spec": "SCRUM-887",
+        "Plan": "SCRUM-888"
+      },
+      "status": "done",
+      "startedAt": "2026-08-27T17:37:05.552Z",
+      "completedAt": "2026-08-27T17:40:43.258Z",
+      "evidence": "Planejamento aprovado pelo usuário: distribuição somente via GitHub, dependência fixada por tag semântica, pacote raiz executa ng build no prepare e expõe bundle, tipos e tema SCSS; migração do Joe preservará Kanban e terminal próprios.",
+      "blockers": []
+    },
+    "dev_implementation": {
+      "phaseId": "dev_implementation",
+      "label": "SDD Implementacao",
+      "roles": [
+        "sdd-implementer"
+      ],
+      "jiraSubtasks": {
+        "Implementation": "SCRUM-889"
+      },
+      "status": "in_progress",
+      "startedAt": "2026-08-27T17:40:56.360Z",
+      "completedAt": null,
+      "evidence": "",
+      "blockers": []
+    },
+    "qa_validation": {
+      "phaseId": "qa_validation",
+      "label": "SDD QA Validacao",
+      "roles": [
+        "sdd-qa-reviewer"
+      ],
+      "jiraSubtasks": {
+        "Tests": "SCRUM-890"
+      },
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "evidence": "",
+      "blockers": []
+    },
+    "lt_review": {
+      "phaseId": "lt_review",
+      "label": "SDD Revisao Constitucional",
+      "roles": [
+        "sdd-constitution"
+      ],
+      "jiraSubtasks": {
+        "Review/Release": "SCRUM-891"
+      },
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "evidence": "",
+      "blockers": []
+    },
+    "release": {
+      "phaseId": "release",
+      "label": "SDD Release",
+      "roles": [
+        "sdd-planner"
+      ],
+      "jiraSubtasks": {
+        "Review/Release": "SCRUM-891"
+      },
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "evidence": "",
+      "blockers": []
+    }
+  },
+  "subtasks": {
+    "planned": {
+      "spec": "SCRUM-887",
+      "plan": "SCRUM-888",
+      "implementation": "SCRUM-889",
+      "tests": "SCRUM-890",
+      "reviewRelease": "SCRUM-891"
+    },
+    "role": {
+      "sdd-orchestrator": null,
+      "sdd-implementer": null,
+      "sdd-qa-reviewer": null,
+      "sdd-constitution": null,
+      "sdd-planner": null
+    },
+    "source": "planned"
+  },
+  "history": [
+    {
+      "timestamp": "2026-08-27T17:36:56.990Z",
+      "action": "workflow_created",
+      "phase": "lt_planning",
+      "detail": "Workflow de build criado. Planejamento existente reutilizado; fase inicial: SDD Orquestracao com subtarefas Spec/Plan."
+    },
+    {
+      "timestamp": "2026-08-27T17:37:05.552Z",
+      "action": "phase_started",
+      "phase": "lt_planning",
+      "detail": "SDD Orquestracao iniciado."
+    },
+    {
+      "timestamp": "2026-08-27T17:40:43.258Z",
+      "action": "phase_finished",
+      "phase": "lt_planning",
+      "detail": "SDD Orquestracao concluida. Evidencia registrada."
+    },
+    {
+      "timestamp": "2026-08-27T17:40:47.997Z",
+      "action": "phase_advanced",
+      "phase": "dev_implementation",
+      "detail": "Workflow avancou para SDD Implementacao."
+    },
+    {
+      "timestamp": "2026-08-27T17:40:56.360Z",
+      "action": "phase_started",
+      "phase": "dev_implementation",
+      "detail": "SDD Implementacao iniciado."
+    }
+  ]
+}

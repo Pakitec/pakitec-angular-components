@@ -7,8 +7,11 @@ Catálogo visual: https://leonardoaa.github.io/pakitec-angular-components/
 ## Uso
 
 ```bash
-npm install pakitec-angular-components
+npm install github:Pakitec/pakitec-angular-components#v0.1.0
 ```
+
+O pacote é distribuído exclusivamente pelo GitHub. Fixe sempre uma tag de
+versão; não use `master` como dependência.
 
 Importe o tema global no `styles.scss` da aplicação:
 

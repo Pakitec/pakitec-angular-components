@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-08-27T17:36:34.653Z",
+  "subtasks": [
+    {
+      "id": "12132",
+      "key": "SCRUM-887",
+      "self": "https://pakitec.atlassian.net/rest/api/3/issue/12132",
+      "phase": "Spec",
+      "summary": "SDD Spec",
+      "url": "https://pakitec.atlassian.net/browse/SCRUM-887",
+      "created": true
+    },
+    {
+      "id": "12133",
+      "key": "SCRUM-888",
+      "self": "https://pakitec.atlassian.net/rest/api/3/issue/12133",
+      "phase": "Plan",
+      "summary": "SDD Plan",
+      "url": "https://pakitec.atlassian.net/browse/SCRUM-888",
+      "created": true
+    },
+    {
+      "id": "12134",
+      "key": "SCRUM-889",
+      "self": "https://pakitec.atlassian.net/rest/api/3/issue/12134",
+      "phase": "Implementation",
+      "summary": "Implementacao",
+      "url": "https://pakitec.atlassian.net/browse/SCRUM-889",
+      "created": true
+    },
+    {
+      "id": "12135",
+      "key": "SCRUM-890",
+      "self": "https://pakitec.atlassian.net/rest/api/3/issue/12135",
+      "phase": "Tests",
+      "summary": "Testes e validacao",
+      "url": "https://pakitec.atlassian.net/browse/SCRUM-890",
+      "created": true
+    },
+    {
+      "id": "12136",
+      "key": "SCRUM-891",
+      "self": "https://pakitec.atlassian.net/rest/api/3/issue/12136",
+      "phase": "Review/Release",
+      "summary": "Review e entrega",
+      "url": "https://pakitec.atlassian.net/browse/SCRUM-891",
+      "created": true
+    }
+  ]
+}
