@@ -231,11 +231,16 @@
     },
     "TASK-012": {
       "issueKey": "SCRUM-1018",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:32:39-03:00",
+      "finishedAt": "2026-09-07T22:33:33-03:00",
+      "observation": "Testes e build finalizaram com sucesso na branch Feature/sidenav. Nenhum arquivo de produção foi alterado.",
+      "filesChanged": [],
+      "validations": [
+        "CI=true npm run test: Vitest 12 test files / 45 tests passed (3.06s)",
+        "npm run build: Angular Package 'pakitec-angular-components' built successfully (844ms)"
+      ]
     },
     "TASK-013": {
       "issueKey": "SCRUM-1019",
