@@ -208,11 +208,26 @@
     },
     "TASK-011": {
       "issueKey": "SCRUM-1017",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-visual-qa",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:28:43-03:00",
+      "finishedAt": "2026-09-07T22:32:17-03:00",
+      "observation": "Evidências visuais capturadas e publicadas para AC-004, AC-005 e AC-008. Manifesto validado com todos os critérios accepted. visualPreflight indica Playwright 1.62.1 disponível; o agente sinalizou divergência de versão do servidor de navegador, mas a publicação foi aceita pelo MCP.",
+      "filesChanged": [
+        "evidence/SCRUM-1002/manifest.json",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-004-desktop.png",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-005-desktop.png",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-008-desktop.png"
+      ],
+      "validations": [
+        "sdd_visual_evidence_validate: AC-004, AC-005, AC-008 accepted",
+        "sdd_visual_evidence_publish: anexos 10105, 10106, 10107 publicados no Jira"
+      ],
+      "visualPreflight": {
+        "available": true,
+        "version": "1.62.1 (Chromium Headless Shell 151.0.7922.34 / playwright chromium-headless-shell v1234)",
+        "tools": ["playwright", "chromium"]
+      }
     },
     "TASK-012": {
       "issueKey": "SCRUM-1018",
