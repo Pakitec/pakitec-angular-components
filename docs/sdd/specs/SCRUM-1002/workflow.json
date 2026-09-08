@@ -5,11 +5,11 @@
   "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
   "phase": "BUILD",
   "lastStablePhase": "PLAN",
-  "status": "BUILD_IN_PROGRESS",
+  "status": "BUILD_BLOCKED",
   "planRevision": 1,
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-07T22:00:39-03:00",
-  "buildFinishedAt": null,
+  "buildFinishedAt": "2026-09-07T22:41:32-03:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
