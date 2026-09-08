@@ -116,6 +116,89 @@ describe('PakiSidenav', () => {
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
 
+  it('alterna a visibilidade dos filhos ao clicar no cabeçalho do grupo', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Módulos',
+        children: [
+          { label: 'Dashboard', route: '/dashboard' },
+          { label: 'Relatórios', route: '/reports' },
+        ],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('mantém grupos independentes entre si', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Módulos',
+        children: [{ label: 'Dashboard', route: '/dashboard' }],
+      },
+      {
+        label: 'Configurações',
+        children: [{ label: 'Geral', route: '/settings/general' }],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button.paki-sidenav__group-header') as NodeListOf<HTMLButtonElement>;
+
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].getAttribute('aria-expanded')).toBe('false');
+    expect(buttons[1].getAttribute('aria-expanded')).toBe('false');
+
+    buttons[0].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(buttons[0].getAttribute('aria-expanded')).toBe('true');
+    expect(buttons[1].getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('trata grupo sem filhos como item simples', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      { label: 'Dashboard', route: '/dashboard', children: [] },
+      { label: 'Ajuda', children: [] },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button.paki-sidenav__group-header');
+    const links = fixture.nativeElement.querySelectorAll('a.paki-sidenav__link');
+    const texts = fixture.nativeElement.querySelectorAll('span.paki-sidenav__text');
+
+    expect(buttons).toHaveLength(0);
+    expect(links).toHaveLength(1);
+    expect(texts).toHaveLength(1);
+    expect(links[0].textContent).toContain('Dashboard');
+    expect(texts[0].textContent).toContain('Ajuda');
+  });
+
   it('ignora netos além de um nível de profundidade', async () => {
     const fixture = TestBed.createComponent(PakiSidenav);
     fixture.componentRef.setInput('items', [
