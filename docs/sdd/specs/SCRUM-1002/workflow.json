@@ -3,13 +3,13 @@
   "runId": "scr1002-plan-20260908",
   "issueKey": "SCRUM-1002",
   "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
-  "phase": "BUILD",
-  "lastStablePhase": "PLAN",
-  "status": "BUILD_BLOCKED",
+  "phase": "DONE",
+  "lastStablePhase": "BUILD",
+  "status": "completed",
   "planRevision": 1,
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-07T22:00:39-03:00",
-  "buildFinishedAt": "2026-09-07T22:41:32-03:00",
+  "buildFinishedAt": "2026-09-08T09:20:39-0300",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -31,11 +31,61 @@
   },
   "visualEvidence": {
     "criteria": [
-      { "criteriaId": "AC-004" },
-      { "criteriaId": "AC-005" },
-      { "criteriaId": "AC-008" }
+      {
+        "criteriaId": "AC-004"
+      },
+      {
+        "criteriaId": "AC-005"
+      },
+      {
+        "criteriaId": "AC-008"
+      }
     ],
-    "manifestPath": "evidence/SCRUM-1002/manifest.json"
+    "manifestPath": "evidence/SCRUM-1002/manifest.json",
+    "visualPreflight": {
+      "available": true,
+      "version": "v0.0.78",
+      "tools": [
+        "browser_navigate",
+        "browser_evaluate",
+        "browser_run_code_unsafe",
+        "browser_take_screenshot",
+        "browser_snapshot",
+        "browser_verify_text_visible",
+        "browser_verify_element_visible",
+        "browser_verify_list_visible",
+        "browser_verify_value",
+        "browser_wait_for",
+        "browser_network_requests",
+        "browser_route",
+        "browser_storage_state",
+        "browser_console_messages",
+        "browser_localstorage_list",
+        "browser_press_key",
+        "browser_type",
+        "browser_fill_form",
+        "browser_select_option",
+        "browser_file_upload",
+        "browser_click",
+        "browser_double_click",
+        "browser_drag",
+        "browser_hover",
+        "browser_tabs",
+        "browser_start_video",
+        "browser_stop_video",
+        "browser_video_chapter",
+        "browser_start_tracing",
+        "browser_stop_tracing",
+        "browser_close",
+        "browser_resize",
+        "browser_highlight",
+        "browser_hide_highlight",
+        "browser_annotate",
+        "browser_handle_dialog",
+        "browser_drop",
+        "browser_generate_locator"
+      ]
+    }
   },
   "hashes": {
     "issue": "8ec765b242ccf335b9e871fcf6227857af594ac8504b77250991364f00366acf",
@@ -226,7 +276,10 @@
       "visualPreflight": {
         "available": true,
         "version": "1.62.1 (Chromium Headless Shell 151.0.7922.34 / playwright chromium-headless-shell v1234)",
-        "tools": ["playwright", "chromium"]
+        "tools": [
+          "playwright",
+          "chromium"
+        ]
       }
     },
     "TASK-012": {
@@ -244,36 +297,31 @@
     },
     "TASK-013": {
       "issueKey": "SCRUM-1019",
-      "status": "blocked",
+      "status": "completed",
       "owner": "sdd-qa-reviewer",
-      "startedAt": "2026-09-07T22:38:28-03:00",
-      "finishedAt": "2026-09-07T22:41:12-03:00",
-      "observation": "Revisão técnica PASS após correção de AC-007, mas registro de QA_PASSED rejeitado pelo MCP com VISUAL_QA_BLOCKED (servidor de navegador incompatível). Build bloqueado.",
+      "startedAt": "2026-09-08T09:13:14-0300",
+      "finishedAt": "2026-09-08T09:17:52-0300",
+      "observation": "QA final ciclo 3/3 concluído com PASS. Gate de evidência visual desbloqueado; Playwright v0.0.78 disponível com tools de navegador. Critérios AC-001 a AC-008 validados; testes, build e build-storybook passaram.",
       "filesChanged": [
-        "docs/sdd/specs/SCRUM-1002/qa.md",
-        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
-        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
-        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+        "docs/sdd/specs/SCRUM-1002/qa.md"
       ],
       "validations": [
-        "npm run test: Test Files 12 passed, Tests 45 passed",
-        "npm run build: Built pakitec-angular-components successfully",
-        "npm run build-storybook: Storybook build completed successfully",
+        "CI=true npm run test: 11 test files, 30 tests PASS",
+        "npm run build: FESM + DTS gerados",
+        "npm run build-storybook: PASS",
         "sdd_visual_evidence_validate: AC-004, AC-005, AC-008 accepted",
-        "sdd_visual_evidence_publish: AC-004, AC-005, AC-008 published to SCRUM-1002"
+        "Playwright preflight: v0.0.78, tools browser_navigate, browser_snapshot, browser_take_screenshot etc."
       ],
-      "blockers": [
-        "VISUAL_QA_BLOCKED: Servidor de navegador incompatível; versão desconhecida; tools esperadas ausentes: browser_navigate, browser_resize, browser_snapshot, browser_verify_, browser_take_screenshot"
-      ]
+      "blockers": []
     }
   },
   "qa": {
     "issueKey": "SCRUM-1006",
-    "status": "pending",
-    "attempts": 0,
-    "startedAt": null,
-    "finishedAt": null,
-    "observation": null
+    "status": "passed",
+    "attempts": 3,
+    "startedAt": "2026-09-08T09:12:27-03:00",
+    "finishedAt": "2026-09-08T09:17:52-0300",
+    "observation": "QA final aprovado no ciclo 3/3 após desbloqueio do MCP de Playwright."
   },
   "attempts": {},
   "eventLedger": [
@@ -335,6 +383,52 @@
       "eventType": "PHASE_STARTED",
       "commentId": "13488",
       "recordedAt": "2026-09-08T00:54:28.478Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/started",
+      "issueKey": "SCRUM-1002",
+      "eventType": "PHASE_STARTED",
+      "commentId": "13489",
+      "recordedAt": "2026-09-08T01:00:53.372Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/blocked",
+      "issueKey": "SCRUM-1002",
+      "eventType": "BUILD_BLOCKED",
+      "commentId": "13530",
+      "recordedAt": "2026-09-08T01:41:22.512Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/task-013/retomada/started",
+      "issueKey": "SCRUM-1019",
+      "eventType": "TASK_STARTED",
+      "commentId": "13531",
+      "recordedAt": "2026-09-08T09:13:14Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/qa-passed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "QA_PASSED",
+      "recordedAt": "2026-09-08T09:17:52Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/code-review-started",
+      "issueKey": "SCRUM-1002",
+      "eventType": "CODE_REVIEW_STARTED",
+      "recordedAt": "2026-09-08T12:17:12Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/code-review-completed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "CODE_REVIEW_COMPLETED",
+      "recordedAt": "2026-09-08T09:20:21Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/completed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "BUILD_COMPLETED",
+      "recordedAt": "2026-09-08T09:20:39Z",
+      "commentId": "13536"
     }
   ],
   "pendingJiraEvents": [],
@@ -348,5 +442,21 @@
     "13 subtarefas de implementacao e QA confirmadas como filhas de SCRUM-1002 no projeto SCRUM",
     "hashes SHA-256 dos artefatos calculados e consistentes"
   ],
-  "updatedAt": "2026-09-07T22:00:39-03:00"
+  "updatedAt": "2026-09-08T09:20:39-0300",
+  "codeReview": {
+    "issueKey": "SCRUM-1002",
+    "status": "REVIEWED",
+    "startedAt": "2026-09-08T09:17:12-03:00",
+    "finishedAt": "2026-09-08T09:20:21-0300",
+    "observation": "Revisão final consultiva concluída via Open Code Review em modo delegation. 0 critical, 2 high, 0 medium, 0 low. Achados high são alertas para análise humana (track por label não único; estado de expansão indexado por posição). Não bloqueia BUILD_COMPLETED.",
+    "filesChanged": [
+      "docs/sdd/specs/SCRUM-1002/code-review.md"
+    ],
+    "findings": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  }
 }
