@@ -146,11 +146,17 @@
     },
     "TASK-007": {
       "issueKey": "SCRUM-1013",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:16:16-03:00",
+      "finishedAt": "2026-09-07T22:18:08-03:00",
+      "observation": "Testes de alternância de largura adicionados, verificando --paki-sidenav-width nos estados colapsado (64px) e expandido (240px). Emissão de toggle, opened e closed mantida. Testes do sidenav passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test -- --project=pakitec-angular-components --include=**/paki-sidenav.spec.ts: 1 passed (14 tests)"
+      ]
     },
     "TASK-008": {
       "issueKey": "SCRUM-1014",
