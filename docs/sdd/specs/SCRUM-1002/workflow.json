@@ -160,11 +160,19 @@
     },
     "TASK-008": {
       "issueKey": "SCRUM-1014",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:18:23-03:00",
+      "finishedAt": "2026-09-07T22:23:12-03:00",
+      "observation": "Foco visível ajustado para herdar :focus-visible global do tema; removidos overrides locais. Adicionado teste ARIA para ícones decorativos com aria-hidden. Testes e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test -- --include projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts --watch=false: 15 tests passed",
+        "npm run build: library built successfully"
+      ]
     },
     "TASK-009": {
       "issueKey": "SCRUM-1015",
