@@ -4309,33 +4309,52 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "StoryRoute",
+            "id": "component-StoryRoute-4ee56ae5becbe778c1ada49e87fbbee3123b037bf65b829dd0d5488c527f89d03a6fa08648caf6fca4e4c205ecdc5c3bd8238fae6531807418ca008b4631a110",
+            "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "styleUrls": [],
+            "styles": [],
+            "template": "",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { applicationConfig } from '@storybook/angular-vite';\nimport { provideRouter } from '@angular/router';\nimport { Component } from '@angular/core';\nimport { PakiModuleTabs } from '../public-api';\n@Component({ standalone: true, template: '' })\nclass StoryRoute {}\nconst meta: Meta<PakiModuleTabs> = { title: 'Componentes/Module Tabs', component: PakiModuleTabs, decorators: [applicationConfig({ providers: [provideRouter([{ path: '**', component: StoryRoute }])] })], args: { label: 'Seções do módulo', tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }] } };\nexport default meta;\ntype Story = StoryObj<PakiModuleTabs>;\nexport const Playground: Story = {};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
-            {
-                "name": "Components",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    props: { enabled: true, name: '', notes: '' },\n    template: `\n      <paki-page-header title=\"Componentes Pakitec\" subtitle=\"Extraídos do design system do Amora\">\n        <button pakiButton>Nova ação</button>\n      </paki-page-header>\n      <paki-card style=\"padding: 24px; display: grid; gap: 18px; max-width: 680px\">\n        <div style=\"display:flex;gap:8px;flex-wrap:wrap\">\n          <paki-badge>Neutro</paki-badge>\n          <paki-badge tone=\"success\">Sucesso</paki-badge>\n          <paki-badge tone=\"warning\">Atenção</paki-badge>\n          <paki-badge tone=\"danger\">Erro</paki-badge>\n          <paki-badge tone=\"info\">Informação</paki-badge>\n        </div>\n        <paki-input label=\"Nome\" placeholder=\"Digite um nome\" [(ngModel)]=\"name\" />\n        <paki-textarea label=\"Observações\" placeholder=\"Detalhes\" [(ngModel)]=\"notes\" />\n        <div style=\"display:flex;align-items:center;gap:10px\">\n          <paki-switch label=\"Ativo\" [(checked)]=\"enabled\" /> <span>Ativo</span>\n        </div>\n        <div style=\"display:flex;gap:8px;flex-wrap:wrap\">\n          <button pakiButton>Primário</button>\n          <button pakiButton variant=\"secondary\">Secundário</button>\n          <button pakiButton variant=\"outline\">Contorno</button>\n          <button pakiButton variant=\"ghost\">Ghost</button>\n          <button pakiButton variant=\"danger\">Excluir</button>\n        </div>\n      </paki-card>\n    `,\n  }),\n}"
-            },
-            {
-                "name": "Controls",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    props: {\n      value: '',\n      options: [\n        { label: 'Clínica geral', value: 'general' },\n        { label: 'Cirurgia', value: 'surgery' },\n        { label: 'Dermatologia', value: 'dermatology' },\n      ],\n      cities: ['São Paulo', 'Campinas', 'Santos', 'Sorocaba'],\n    },\n    template: `<div style=\"display:grid;gap:18px;width:min(520px,80vw)\">\n      <paki-input label=\"Nome\" placeholder=\"Nome completo\" [(ngModel)]=\"value\" />\n      <paki-select label=\"Especialidade\" [items]=\"options\" [(ngModel)]=\"value\" />\n      <paki-combobox label=\"Cidade\" [options]=\"cities\" [(ngModel)]=\"value\" />\n      <paki-date label=\"Data\" [(ngModel)]=\"value\" />\n      <paki-textarea label=\"Observações\" [(ngModel)]=\"value\" />\n    </div>`,\n  }),\n}"
-            },
             {
                 "name": "DEBOUNCE_MS",
                 "ctype": "miscellaneous",
@@ -4346,6 +4365,17 @@
                 "deprecationMessage": "",
                 "type": "number",
                 "defaultValue": "300"
+            },
+            {
+                "name": "Empty",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ args: { page: { number: 1, size: 10, totalElements: 0, totalPages: 0, first: true, last: true } } }"
             },
             {
                 "name": "INITIAL_VISIBLE",
@@ -4373,34 +4403,265 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
+                "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta",
-                "defaultValue": "{\n  title: 'Pakitec/Visão geral',\n  decorators: [\n    moduleMetadata({\n      imports: [FormsModule, PakiBadge, PakiButton, PakiCard, PakiInput, PakiPageHeader, PakiSwitch, PakiTextarea],\n    }),\n  ],\n  parameters: { layout: 'padded' },\n}"
+                "type": "Meta<PakiBadge>",
+                "defaultValue": "{ title: 'Componentes/Badge', component: PakiBadge, args: { tone: 'neutral' }, argTypes: { tone: { control: 'select', options: ['neutral', 'success', 'warning', 'danger', 'info'] } } }"
             },
             {
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
+                "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta",
-                "defaultValue": "{\n  title: 'Pakitec/Formulários',\n  decorators: [moduleMetadata({ imports: [FormsModule, PakiCombobox, PakiDate, PakiInput, PakiSelect, PakiTextarea] })],\n  parameters: { layout: 'centered' },\n}"
+                "type": "Meta<PakiButton>",
+                "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md' }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
             },
             {
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Meta",
-                "defaultValue": "{\n  title: 'Pakitec/Navegação',\n  decorators: [moduleMetadata({ imports: [PakiModuleTabs, PakiPagination], providers: [provideRouter([])] })],\n  parameters: { layout: 'padded' },\n}"
+                "type": "Meta<PakiCard>",
+                "defaultValue": "{ title: 'Componentes/Card', component: PakiCard, args: { flat: false } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiCombobox>",
+                "defaultValue": "{ title: 'Componentes/Combobox (legado)', component: PakiCombobox, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Cidade', placeholder: 'Digite para buscar', options: ['São Paulo', 'Campinas', 'Santos', 'Sorocaba'] } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiDate>",
+                "defaultValue": "{ title: 'Componentes/Date', component: PakiDate, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Data da consulta', placeholder: 'Selecione uma data' } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiInput>",
+                "defaultValue": "{ title: 'Componentes/Input', component: PakiInput, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Nome', placeholder: 'Digite um nome', type: 'text', hint: '' } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiModuleTabs>",
+                "defaultValue": "{ title: 'Componentes/Module Tabs', component: PakiModuleTabs, decorators: [applicationConfig({ providers: [provideRouter([{ path: '**', component: StoryRoute }])] })], args: { label: 'Seções do módulo', tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }] } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiPageHeader>",
+                "defaultValue": "{ title: 'Componentes/Page Header', component: PakiPageHeader, decorators: [moduleMetadata({ imports: [PakiButton] })], args: { title: 'Agenda', subtitle: 'Gerencie os próximos atendimentos' } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiPagination>",
+                "defaultValue": "{ title: 'Componentes/Pagination', component: PakiPagination, args: { page: { number: 2, size: 10, totalElements: 47, totalPages: 5, first: false, last: false } } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiSelect>",
+                "defaultValue": "{ title: 'Componentes/Select', component: PakiSelect, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Especialidade', placeholder: 'Selecione', items: [{ label: 'Clínica geral', value: 'general' }, { label: 'Cirurgia', value: 'surgery' }, { label: 'Dermatologia', value: 'dermatology' }] } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiSwitch>",
+                "defaultValue": "{ title: 'Componentes/Switch', component: PakiSwitch, args: { label: 'Ativar recurso', checked: true, disabled: false } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiTextarea>",
+                "defaultValue": "{ title: 'Componentes/Textarea', component: PakiTextarea, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Observações', placeholder: 'Digite os detalhes', rows: 4 } }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-badge [tone]=\"tone\">Status do pedido</paki-badge>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\">Continuar</button>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-card [flat]=\"flat\" style=\"display:block;padding:24px;width:360px\"><strong>Consulta veterinária</strong><p style=\"color:var(--color-text-secondary)\">Conteúdo projetado dentro do card.</p></paki-card>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-combobox [label]=\"label\" [placeholder]=\"placeholder\" [options]=\"options\" [(ngModel)]=\"value\" /></div>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-date [label]=\"label\" [placeholder]=\"placeholder\" [(ngModel)]=\"value\" /></div>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<paki-input [label]=\"label\" [placeholder]=\"placeholder\" [type]=\"type\" [hint]=\"hint\" [error]=\"error\" [(ngModel)]=\"value\" />' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-page-header [title]=\"title\" [subtitle]=\"subtitle\"><button pakiButton>Novo atendimento</button></paki-page-header>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<paki-textarea [label]=\"label\" [placeholder]=\"placeholder\" [rows]=\"rows\" [(ngModel)]=\"value\" />' }) }"
             },
             {
                 "name": "preview",
@@ -4412,17 +4673,6 @@
                 "deprecationMessage": "",
                 "type": "Preview",
                 "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Tema visual',\n      defaultValue: 'light',\n      toolbar: { icon: 'paintbrush', items: ['light', 'dark'] },\n    },\n  },\n  decorators: [\n    (story, context) => {\n      document.documentElement.dataset['theme'] = context.globals['theme'];\n      return story();\n    },\n  ],\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
-            },
-            {
-                "name": "TabsAndPagination",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
-                "coverageIgnore": false,
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    props: {\n      tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }],\n      page: { number: 2, size: 10, totalElements: 47, totalPages: 5, first: false, last: false },\n    },\n    template: `<paki-module-tabs [tabs]=\"tabs\" /><paki-pagination [page]=\"page\" />`,\n  }),\n}"
             }
         ],
         "functions": [
@@ -4813,8 +5063,8 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
-                "rawtype": "StoryObj",
-                "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
+                "rawtype": "StoryObj<PakiBadge>",
+                "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -4826,8 +5076,8 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
-                "rawtype": "StoryObj",
-                "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
+                "rawtype": "StoryObj<PakiButton>",
+                "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -4839,8 +5089,125 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
-                "rawtype": "StoryObj",
-                "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                "rawtype": "StoryObj<PakiCard>",
+                "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiCombobox>",
+                "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiDate>",
+                "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiInput>",
+                "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiModuleTabs>",
+                "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiPageHeader>",
+                "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiPagination>",
+                "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiSelect>",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiSwitch>",
+                "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiTextarea>",
+                "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -4850,54 +5217,6 @@
         ],
         "enumerations": [],
         "groupedVariables": {
-            "projects/pakitec-angular-components/src/stories/components.stories.ts": [
-                {
-                    "name": "Components",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    props: { enabled: true, name: '', notes: '' },\n    template: `\n      <paki-page-header title=\"Componentes Pakitec\" subtitle=\"Extraídos do design system do Amora\">\n        <button pakiButton>Nova ação</button>\n      </paki-page-header>\n      <paki-card style=\"padding: 24px; display: grid; gap: 18px; max-width: 680px\">\n        <div style=\"display:flex;gap:8px;flex-wrap:wrap\">\n          <paki-badge>Neutro</paki-badge>\n          <paki-badge tone=\"success\">Sucesso</paki-badge>\n          <paki-badge tone=\"warning\">Atenção</paki-badge>\n          <paki-badge tone=\"danger\">Erro</paki-badge>\n          <paki-badge tone=\"info\">Informação</paki-badge>\n        </div>\n        <paki-input label=\"Nome\" placeholder=\"Digite um nome\" [(ngModel)]=\"name\" />\n        <paki-textarea label=\"Observações\" placeholder=\"Detalhes\" [(ngModel)]=\"notes\" />\n        <div style=\"display:flex;align-items:center;gap:10px\">\n          <paki-switch label=\"Ativo\" [(checked)]=\"enabled\" /> <span>Ativo</span>\n        </div>\n        <div style=\"display:flex;gap:8px;flex-wrap:wrap\">\n          <button pakiButton>Primário</button>\n          <button pakiButton variant=\"secondary\">Secundário</button>\n          <button pakiButton variant=\"outline\">Contorno</button>\n          <button pakiButton variant=\"ghost\">Ghost</button>\n          <button pakiButton variant=\"danger\">Excluir</button>\n        </div>\n      </paki-card>\n    `,\n  }),\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta",
-                    "defaultValue": "{\n  title: 'Pakitec/Visão geral',\n  decorators: [\n    moduleMetadata({\n      imports: [FormsModule, PakiBadge, PakiButton, PakiCard, PakiInput, PakiPageHeader, PakiSwitch, PakiTextarea],\n    }),\n  ],\n  parameters: { layout: 'padded' },\n}"
-                }
-            ],
-            "projects/pakitec-angular-components/src/stories/forms.stories.ts": [
-                {
-                    "name": "Controls",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    props: {\n      value: '',\n      options: [\n        { label: 'Clínica geral', value: 'general' },\n        { label: 'Cirurgia', value: 'surgery' },\n        { label: 'Dermatologia', value: 'dermatology' },\n      ],\n      cities: ['São Paulo', 'Campinas', 'Santos', 'Sorocaba'],\n    },\n    template: `<div style=\"display:grid;gap:18px;width:min(520px,80vw)\">\n      <paki-input label=\"Nome\" placeholder=\"Nome completo\" [(ngModel)]=\"value\" />\n      <paki-select label=\"Especialidade\" [items]=\"options\" [(ngModel)]=\"value\" />\n      <paki-combobox label=\"Cidade\" [options]=\"cities\" [(ngModel)]=\"value\" />\n      <paki-date label=\"Data\" [(ngModel)]=\"value\" />\n      <paki-textarea label=\"Observações\" [(ngModel)]=\"value\" />\n    </div>`,\n  }),\n}"
-                },
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta",
-                    "defaultValue": "{\n  title: 'Pakitec/Formulários',\n  decorators: [moduleMetadata({ imports: [FormsModule, PakiCombobox, PakiDate, PakiInput, PakiSelect, PakiTextarea] })],\n  parameters: { layout: 'centered' },\n}"
-                }
-            ],
             "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
                 {
                     "name": "DEBOUNCE_MS",
@@ -4933,28 +5252,303 @@
                     "defaultValue": "50"
                 }
             ],
-            "projects/pakitec-angular-components/src/stories/navigation.stories.ts": [
+            "projects/pakitec-angular-components/src/stories/pagination.stories.ts": [
                 {
-                    "name": "meta",
+                    "name": "Empty",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta",
-                    "defaultValue": "{\n  title: 'Pakitec/Navegação',\n  decorators: [moduleMetadata({ imports: [PakiModuleTabs, PakiPagination], providers: [provideRouter([])] })],\n  parameters: { layout: 'padded' },\n}"
-                },
-                {
-                    "name": "TabsAndPagination",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                    "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
                     "coverageIgnore": false,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    props: {\n      tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }],\n      page: { number: 2, size: 10, totalElements: 47, totalPages: 5, first: false, last: false },\n    },\n    template: `<paki-module-tabs [tabs]=\"tabs\" /><paki-pagination [page]=\"page\" />`,\n  }),\n}"
+                    "defaultValue": "{ args: { page: { number: 1, size: 10, totalElements: 0, totalPages: 0, first: true, last: true } } }"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiPagination>",
+                    "defaultValue": "{ title: 'Componentes/Pagination', component: PakiPagination, args: { page: { number: 2, size: 10, totalElements: 47, totalPages: 5, first: false, last: false } } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/badge.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiBadge>",
+                    "defaultValue": "{ title: 'Componentes/Badge', component: PakiBadge, args: { tone: 'neutral' }, argTypes: { tone: { control: 'select', options: ['neutral', 'success', 'warning', 'danger', 'info'] } } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-badge [tone]=\"tone\">Status do pedido</paki-badge>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/button.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiButton>",
+                    "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md' }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\">Continuar</button>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/card.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiCard>",
+                    "defaultValue": "{ title: 'Componentes/Card', component: PakiCard, args: { flat: false } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-card [flat]=\"flat\" style=\"display:block;padding:24px;width:360px\"><strong>Consulta veterinária</strong><p style=\"color:var(--color-text-secondary)\">Conteúdo projetado dentro do card.</p></paki-card>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/combobox.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiCombobox>",
+                    "defaultValue": "{ title: 'Componentes/Combobox (legado)', component: PakiCombobox, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Cidade', placeholder: 'Digite para buscar', options: ['São Paulo', 'Campinas', 'Santos', 'Sorocaba'] } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-combobox [label]=\"label\" [placeholder]=\"placeholder\" [options]=\"options\" [(ngModel)]=\"value\" /></div>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/date.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiDate>",
+                    "defaultValue": "{ title: 'Componentes/Date', component: PakiDate, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Data da consulta', placeholder: 'Selecione uma data' } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-date [label]=\"label\" [placeholder]=\"placeholder\" [(ngModel)]=\"value\" /></div>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/input.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiInput>",
+                    "defaultValue": "{ title: 'Componentes/Input', component: PakiInput, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Nome', placeholder: 'Digite um nome', type: 'text', hint: '' } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<paki-input [label]=\"label\" [placeholder]=\"placeholder\" [type]=\"type\" [hint]=\"hint\" [error]=\"error\" [(ngModel)]=\"value\" />' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiModuleTabs>",
+                    "defaultValue": "{ title: 'Componentes/Module Tabs', component: PakiModuleTabs, decorators: [applicationConfig({ providers: [provideRouter([{ path: '**', component: StoryRoute }])] })], args: { label: 'Seções do módulo', tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }] } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/page-header.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiPageHeader>",
+                    "defaultValue": "{ title: 'Componentes/Page Header', component: PakiPageHeader, decorators: [moduleMetadata({ imports: [PakiButton] })], args: { title: 'Agenda', subtitle: 'Gerencie os próximos atendimentos' } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-page-header [title]=\"title\" [subtitle]=\"subtitle\"><button pakiButton>Novo atendimento</button></paki-page-header>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/select.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiSelect>",
+                    "defaultValue": "{ title: 'Componentes/Select', component: PakiSelect, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Especialidade', placeholder: 'Selecione', items: [{ label: 'Clínica geral', value: 'general' }, { label: 'Cirurgia', value: 'surgery' }, { label: 'Dermatologia', value: 'dermatology' }] } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/switch.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiSwitch>",
+                    "defaultValue": "{ title: 'Componentes/Switch', component: PakiSwitch, args: { label: 'Ativar recurso', checked: true, disabled: false } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/textarea.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiTextarea>",
+                    "defaultValue": "{ title: 'Componentes/Textarea', component: PakiTextarea, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Observações', placeholder: 'Digite os detalhes', rows: 4 } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<paki-textarea [label]=\"label\" [placeholder]=\"placeholder\" [rows]=\"rows\" [(ngModel)]=\"value\" />' }) }"
                 }
             ],
             "projects/pakitec-angular-components/.storybook/preview.ts": [
@@ -5365,14 +5959,14 @@
                     "kind": 185
                 }
             ],
-            "projects/pakitec-angular-components/src/stories/components.stories.ts": [
+            "projects/pakitec-angular-components/src/stories/badge.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "coverageIgnore": false,
-                    "rawtype": "StoryObj",
-                    "file": "projects/pakitec-angular-components/src/stories/components.stories.ts",
+                    "rawtype": "StoryObj<PakiBadge>",
+                    "file": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -5380,14 +5974,14 @@
                     "kind": 184
                 }
             ],
-            "projects/pakitec-angular-components/src/stories/forms.stories.ts": [
+            "projects/pakitec-angular-components/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "coverageIgnore": false,
-                    "rawtype": "StoryObj",
-                    "file": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
+                    "rawtype": "StoryObj<PakiButton>",
+                    "file": "projects/pakitec-angular-components/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -5395,14 +5989,149 @@
                     "kind": 184
                 }
             ],
-            "projects/pakitec-angular-components/src/stories/navigation.stories.ts": [
+            "projects/pakitec-angular-components/src/stories/card.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "coverageIgnore": false,
-                    "rawtype": "StoryObj",
-                    "file": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                    "rawtype": "StoryObj<PakiCard>",
+                    "file": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/combobox.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiCombobox>",
+                    "file": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/date.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiDate>",
+                    "file": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/input.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiInput>",
+                    "file": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiModuleTabs>",
+                    "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/page-header.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiPageHeader>",
+                    "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/pagination.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiPagination>",
+                    "file": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/select.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiSelect>",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/switch.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiSwitch>",
+                    "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/textarea.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiTextarea>",
+                    "file": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -5736,17 +6465,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/components.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Components",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/pakitec-angular-components/src/stories/components.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5756,7 +6475,17 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/components.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/badge.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
@@ -5766,17 +6495,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Controls",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5786,7 +6505,17 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/forms.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/button.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
@@ -5796,7 +6525,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5806,17 +6535,306 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "TabsAndPagination",
+                "name": "Playground",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "projects/pakitec-angular-components/src/stories/navigation.stories.ts",
+                "filePath": "projects/pakitec-angular-components/src/stories/card.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/combobox.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/date.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/input.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryRoute",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Empty",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/pagination.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/textarea.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
