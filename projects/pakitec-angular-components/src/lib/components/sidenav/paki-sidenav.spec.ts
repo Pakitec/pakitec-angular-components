@@ -285,4 +285,30 @@ describe('PakiSidenav', () => {
 
     expect(fixture.nativeElement.classList.contains('paki-sidenav--expanded')).toBe(true);
   });
+
+  it('define largura de 64 px no host quando colapsado', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', []);
+    fixture.componentRef.setInput('expanded', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const width = getComputedStyle(host).getPropertyValue('--paki-sidenav-width').trim();
+
+    expect(width).toBe('64px');
+  });
+
+  it('define largura de 240 px no host quando expandido', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', []);
+    fixture.componentRef.setInput('expanded', true);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const host = fixture.nativeElement as HTMLElement;
+    const width = getComputedStyle(host).getPropertyValue('--paki-sidenav-width').trim();
+
+    expect(width).toBe('240px');
+  });
 });
