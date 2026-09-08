@@ -244,11 +244,11 @@
     },
     "TASK-013": {
       "issueKey": "SCRUM-1019",
-      "status": "inProgress",
+      "status": "blocked",
       "owner": "sdd-qa-reviewer",
       "startedAt": "2026-09-07T22:38:28-03:00",
-      "finishedAt": null,
-      "observation": "Ciclo de correção 1/3 aplicado para AC-007. Revisão QA sendo reexecutada.",
+      "finishedAt": "2026-09-07T22:41:12-03:00",
+      "observation": "Revisão técnica PASS após correção de AC-007, mas registro de QA_PASSED rejeitado pelo MCP com VISUAL_QA_BLOCKED (servidor de navegador incompatível). Build bloqueado.",
       "filesChanged": [
         "docs/sdd/specs/SCRUM-1002/qa.md",
         "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
@@ -256,8 +256,14 @@
         "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
       ],
       "validations": [
-        "CI=true npm run test: 12 test files passed, 45 tests passed",
-        "npm run build: built successfully"
+        "npm run test: Test Files 12 passed, Tests 45 passed",
+        "npm run build: Built pakitec-angular-components successfully",
+        "npm run build-storybook: Storybook build completed successfully",
+        "sdd_visual_evidence_validate: AC-004, AC-005, AC-008 accepted",
+        "sdd_visual_evidence_publish: AC-004, AC-005, AC-008 published to SCRUM-1002"
+      ],
+      "blockers": [
+        "VISUAL_QA_BLOCKED: Servidor de navegador incompatível; versão desconhecida; tools esperadas ausentes: browser_navigate, browser_resize, browser_snapshot, browser_verify_, browser_take_screenshot"
       ]
     }
   },
