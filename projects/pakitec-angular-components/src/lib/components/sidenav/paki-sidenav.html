@@ -1,0 +1,9 @@
+<nav class="paki-sidenav" aria-label="Navegação principal">
+  <ul class="paki-sidenav__list">
+    @for (item of items(); track item.label) {
+      <li class="paki-sidenav__item">
+        {{ item.label }}
+      </li>
+    }
+  </ul>
+</nav>
