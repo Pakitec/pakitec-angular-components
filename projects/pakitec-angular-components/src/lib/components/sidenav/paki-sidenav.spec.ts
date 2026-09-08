@@ -67,4 +67,92 @@ describe('PakiSidenav', () => {
     expect(links[0].getAttribute('aria-current')).toBe('page');
     expect(links[1].getAttribute('aria-current')).toBeNull();
   });
+
+  it('renderiza grupo com botão de expansão e alterna visibilidade dos filhos', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Módulos',
+        children: [
+          { label: 'Dashboard', route: '/dashboard' },
+          { label: 'Relatórios', route: '/reports' },
+        ],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
+    const childList = fixture.nativeElement.querySelector('ul.paki-sidenav__group-children') as HTMLElement;
+
+    expect(button).toBeTruthy();
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(button.getAttribute('aria-controls')).toBe('paki-sidenav-group-0-children');
+    expect(childList).toBeTruthy();
+    expect(childList.id).toBe('paki-sidenav-group-0-children');
+    expect(childList.querySelectorAll('a.paki-sidenav__link')).toHaveLength(2);
+
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('respeita o estado inicial expanded de um grupo', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Módulos',
+        expanded: true,
+        children: [{ label: 'Dashboard', route: '/dashboard' }],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('ignora netos além de um nível de profundidade', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Configurações',
+        children: [
+          {
+            label: 'Geral',
+            children: [{ label: 'Avançado', route: '/advanced' }],
+          },
+        ],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const groupChildren = fixture.nativeElement.querySelector('ul.paki-sidenav__group-children') as HTMLElement;
+    expect(groupChildren.querySelectorAll('li')).toHaveLength(1);
+    expect(groupChildren.querySelectorAll('a.paki-sidenav__link')).toHaveLength(0);
+    expect(groupChildren.textContent).toContain('Geral');
+  });
+
+  it('mantém estado do grupo independente da largura do sidenav', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      {
+        label: 'Módulos',
+        expanded: true,
+        children: [{ label: 'Dashboard', route: '/dashboard' }],
+      },
+    ]);
+    fixture.componentRef.setInput('expanded', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+  });
 });

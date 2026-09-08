@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+  type WritableSignal,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /** Item de navegação do sidenav. */
@@ -26,6 +33,7 @@ export interface PakiSidenavState {
  *
  * Renderiza uma lista de itens de navegação e emite eventos de alternância de largura.
  * O consumidor controla o estado expandido/colapsado por input/output.
+ * Cada grupo de itens mantém seu próprio estado de expansão via Signals.
  */
 @Component({
   selector: 'paki-sidenav',
@@ -47,4 +55,28 @@ export class PakiSidenav {
 
   /** Estado interno refletindo o input expanded. */
   protected readonly state = signal<PakiSidenavState>({ expanded: false });
+
+  /** Guarda o estado de expansão de cada grupo pelo índice do item. */
+  private readonly groupStates = new Map<number, WritableSignal<boolean>>();
+
+  /**
+   * Retorna o Signal de expansão do grupo.
+   * Cria o Signal com o valor inicial quando o grupo ainda não possui estado.
+   */
+  protected groupExpanded(index: number, initial = false): WritableSignal<boolean> {
+    const existing = this.groupStates.get(index);
+    if (existing) {
+      return existing;
+    }
+
+    const created = signal(initial);
+    this.groupStates.set(index, created);
+    return created;
+  }
+
+  /** Alterna o estado de expansão do grupo. */
+  protected toggleGroup(index: number, initial = false): void {
+    const groupSignal = this.groupExpanded(index, initial);
+    groupSignal.set(!groupSignal());
+  }
 }

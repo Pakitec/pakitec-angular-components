@@ -26,7 +26,8 @@
 }
 
 .paki-sidenav__link,
-.paki-sidenav__text {
+.paki-sidenav__text,
+.paki-sidenav__group-header {
   align-items: center;
   border-radius: inherit;
   display: flex;
@@ -54,6 +55,37 @@
   }
 }
 
+.paki-sidenav__text {
+  color: inherit;
+}
+
+.paki-sidenav__group-header {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+
+  &:hover {
+    background: var(--color-accent-tint);
+    color: var(--color-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  &[aria-expanded='true'] {
+    color: var(--color-text-primary);
+
+    .paki-sidenav__chevron {
+      transform: rotate(180deg);
+    }
+  }
+}
+
 .paki-sidenav__icon {
   display: inline-flex;
   flex: 0 0 auto;
@@ -61,4 +93,20 @@
   height: 16px;
   line-height: 1;
   width: 16px;
+}
+
+.paki-sidenav__chevron {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  height: 0;
+  margin-left: auto;
+  transition: transform 0.2s ease;
+  width: 0;
+}
+
+.paki-sidenav__group-children {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 16px;
 }
