@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /** Item de navegação do sidenav. */
 export interface PakiSidenavItem {
@@ -29,7 +30,7 @@ export interface PakiSidenavState {
 @Component({
   selector: 'paki-sidenav',
   standalone: true,
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './paki-sidenav.html',
   styleUrl: './paki-sidenav.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

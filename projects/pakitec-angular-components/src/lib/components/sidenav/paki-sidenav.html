@@ -2,7 +2,26 @@
   <ul class="paki-sidenav__list">
     @for (item of items(); track item.label) {
       <li class="paki-sidenav__item">
-        {{ item.label }}
+        @if (item.route) {
+          <a
+            class="paki-sidenav__link"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+          >
+            @if (item.icon) {
+              <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+            }
+            {{ item.label }}
+          </a>
+        } @else {
+          <span class="paki-sidenav__text">
+            @if (item.icon) {
+              <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+            }
+            {{ item.label }}
+          </span>
+        }
       </li>
     }
   </ul>
