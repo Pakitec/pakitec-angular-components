@@ -84,20 +84,24 @@ describe('PakiSidenav', () => {
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
-    const childList = fixture.nativeElement.querySelector('ul.paki-sidenav__group-children') as HTMLElement;
 
     expect(button).toBeTruthy();
     expect(button.getAttribute('aria-expanded')).toBe('false');
     expect(button.getAttribute('aria-controls')).toBe('paki-sidenav-group-0-children');
-    expect(childList).toBeTruthy();
-    expect(childList.id).toBe('paki-sidenav-group-0-children');
-    expect(childList.querySelectorAll('a.paki-sidenav__link')).toHaveLength(2);
+    expect(fixture.nativeElement.querySelector('ul.paki-sidenav__group-children')).toBeNull();
 
     button.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(button.getAttribute('aria-expanded')).toBe('true');
+
+    const childList = fixture.nativeElement.querySelector('ul.paki-sidenav__group-children') as HTMLElement;
+
+    expect(childList).toBeTruthy();
+    expect(childList.id).toBe('paki-sidenav-group-0-children');
+    expect(childList.querySelectorAll('a.paki-sidenav__link')).toHaveLength(2);
   });
 
   it('respeita o estado inicial expanded de um grupo', async () => {
@@ -132,20 +136,26 @@ describe('PakiSidenav', () => {
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
+    const queryChildList = () => fixture.nativeElement.querySelector('ul.paki-sidenav__group-children') as HTMLElement | null;
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(queryChildList()).toBeNull();
 
     button.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(button.getAttribute('aria-expanded')).toBe('true');
+    expect(queryChildList()).toBeTruthy();
 
     button.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(queryChildList()).toBeNull();
   });
 
   it('mantém grupos independentes entre si', async () => {
@@ -204,6 +214,7 @@ describe('PakiSidenav', () => {
     fixture.componentRef.setInput('items', [
       {
         label: 'Configurações',
+        expanded: true,
         children: [
           {
             label: 'Geral',
@@ -319,6 +330,7 @@ describe('PakiSidenav', () => {
       {
         label: 'Modulos',
         icon: 'icon-modules',
+        expanded: true,
         children: [{ label: 'Relatorios', route: '/reports', icon: 'icon-reports' }],
       },
     ]);

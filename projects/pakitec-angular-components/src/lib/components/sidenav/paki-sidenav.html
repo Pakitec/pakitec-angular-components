@@ -16,35 +16,37 @@
             {{ item.label }}
             <span class="paki-sidenav__chevron" aria-hidden="true"></span>
           </button>
-          <ul
-            class="paki-sidenav__group-children"
-            [id]="'paki-sidenav-group-' + index + '-children'"
-          >
-            @for (child of item.children; track child.label) {
-              <li class="paki-sidenav__item">
-                @if (child.route) {
-                  <a
-                    class="paki-sidenav__link"
-                    [routerLink]="child.route"
-                    routerLinkActive="active"
-                    ariaCurrentWhenActive="page"
-                  >
-                    @if (child.icon) {
-                      <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
-                    }
-                    {{ child.label }}
-                  </a>
-                } @else {
-                  <span class="paki-sidenav__text">
-                    @if (child.icon) {
-                      <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
-                    }
-                    {{ child.label }}
-                  </span>
-                }
-              </li>
-            }
-          </ul>
+          @if (groupExpanded(index, item.expanded ?? false)()) {
+            <ul
+              class="paki-sidenav__group-children"
+              [id]="'paki-sidenav-group-' + index + '-children'"
+            >
+              @for (child of item.children; track child.label) {
+                <li class="paki-sidenav__item">
+                  @if (child.route) {
+                    <a
+                      class="paki-sidenav__link"
+                      [routerLink]="child.route"
+                      routerLinkActive="active"
+                      ariaCurrentWhenActive="page"
+                    >
+                      @if (child.icon) {
+                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      }
+                      {{ child.label }}
+                    </a>
+                  } @else {
+                    <span class="paki-sidenav__text">
+                      @if (child.icon) {
+                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      }
+                      {{ child.label }}
+                    </span>
+                  }
+                </li>
+              }
+            </ul>
+          }
         } @else {
           @if (item.route) {
             <a
