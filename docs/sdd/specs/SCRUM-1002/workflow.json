@@ -129,11 +129,20 @@
     },
     "TASK-006": {
       "issueKey": "SCRUM-1012",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:13:34-03:00",
+      "finishedAt": "2026-09-07T22:15:55-03:00",
+      "observation": "Controle de largura implementado (240px/64px) por variável CSS e classe no host; outputs toggle, opened e closed adicionados. Testes e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 42 tests passed",
+        "npm run build: built pakitec-angular-components successfully"
+      ]
     },
     "TASK-007": {
       "issueKey": "SCRUM-1013",
