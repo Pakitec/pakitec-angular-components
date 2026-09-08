@@ -96,11 +96,22 @@
     },
     "TASK-004": {
       "issueKey": "SCRUM-1010",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:08:06-03:00",
+      "finishedAt": "2026-09-07T22:11:10-03:00",
+      "observation": "Grupos expansíveis implementados com Signals independentes por grupo. Story inicial do Storybook também criada. Testes e build-storybook passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts",
+        "projects/pakitec-angular-components/src/stories/sidenav.stories.ts"
+      ],
+      "validations": [
+        "npm run test: 37 passed, 12 test files passed",
+        "npm run build-storybook: Storybook build completed successfully; sidenav.stories gerado"
+      ]
     },
     "TASK-005": {
       "issueKey": "SCRUM-1011",
