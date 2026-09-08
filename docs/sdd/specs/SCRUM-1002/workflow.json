@@ -66,11 +66,19 @@
     },
     "TASK-002": {
       "issueKey": "SCRUM-1008",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:04:21-03:00",
+      "finishedAt": "2026-09-07T22:06:08-03:00",
+      "observation": "Importados RouterLink/RouterLinkActive; itens com route renderizam como links navegáveis; ícone opcional como span com classe CSS; estilo atualizado para hover, foco e estado ativo. Testes passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 31 tests passed"
+      ]
     },
     "TASK-003": {
       "issueKey": "SCRUM-1009",
