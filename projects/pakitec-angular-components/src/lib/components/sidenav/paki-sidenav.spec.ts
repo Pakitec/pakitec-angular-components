@@ -311,4 +311,26 @@ describe('PakiSidenav', () => {
 
     expect(width).toBe('240px');
   });
+
+  it('oculta icones decorativos de leitores de tela com aria-hidden', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', [
+      { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },
+      {
+        label: 'Modulos',
+        icon: 'icon-modules',
+        children: [{ label: 'Relatorios', route: '/reports', icon: 'icon-reports' }],
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const icons = fixture.nativeElement.querySelectorAll('.paki-sidenav__icon');
+
+    expect(icons.length).toBe(3);
+    icons.forEach((icon: HTMLElement) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
 });
