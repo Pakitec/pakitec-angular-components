@@ -1,0 +1,38 @@
+{
+  "runner": "ollama",
+  "evidence": [
+    {
+      "criteriaId": "AC-004",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1002-AC-004-desktop.png",
+      "mimeType": "image/png",
+      "size": 78921,
+      "sha256": "3c0ff2784c865782e811efd934ddcc5680bedb14dc8908ec28f6be3fc4560f72",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-005",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1002-AC-005-desktop.png",
+      "mimeType": "image/png",
+      "size": 78796,
+      "sha256": "f7af9fc477083afde6afa1e95dc06d2ea1a79c35a232763279c95af39bca8e6e",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-008",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1002-AC-008-desktop.png",
+      "mimeType": "image/png",
+      "size": 79974,
+      "sha256": "61c162ce64740e04036731ed5e01b4acc4ee8fb833776ebaf2e79c25e47fe494",
+      "containsSensitiveData": false
+    }
+  ]
+}

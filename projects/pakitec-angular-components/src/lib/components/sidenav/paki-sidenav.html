@@ -1,0 +1,75 @@
+<nav class="paki-sidenav" aria-label="Navegação principal">
+  <ul class="paki-sidenav__list">
+    @for (item of items(); track item.label; let index = $index) {
+      <li class="paki-sidenav__item">
+        @if (item.children && item.children.length > 0) {
+          <button
+            type="button"
+            class="paki-sidenav__group-header"
+            [attr.aria-expanded]="groupExpanded(index, item.expanded ?? false)()"
+            [attr.aria-controls]="'paki-sidenav-group-' + index + '-children'"
+            (click)="toggleGroup(index, item.expanded ?? false)"
+          >
+            @if (item.icon) {
+              <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+            }
+            {{ item.label }}
+            <span class="paki-sidenav__chevron" aria-hidden="true"></span>
+          </button>
+          @if (groupExpanded(index, item.expanded ?? false)()) {
+            <ul
+              class="paki-sidenav__group-children"
+              [id]="'paki-sidenav-group-' + index + '-children'"
+            >
+              @for (child of item.children; track child.label) {
+                <li class="paki-sidenav__item">
+                  @if (child.route) {
+                    <a
+                      class="paki-sidenav__link"
+                      [routerLink]="child.route"
+                      routerLinkActive="active"
+                      ariaCurrentWhenActive="page"
+                    >
+                      @if (child.icon) {
+                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      }
+                      {{ child.label }}
+                    </a>
+                  } @else {
+                    <span class="paki-sidenav__text">
+                      @if (child.icon) {
+                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      }
+                      {{ child.label }}
+                    </span>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          @if (item.route) {
+            <a
+              class="paki-sidenav__link"
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+            >
+              @if (item.icon) {
+                <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+              }
+              {{ item.label }}
+            </a>
+          } @else {
+            <span class="paki-sidenav__text">
+              @if (item.icon) {
+                <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+              }
+              {{ item.label }}
+            </span>
+          }
+        }
+      </li>
+    }
+  </ul>
+</nav>

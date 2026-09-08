@@ -180,6 +180,122 @@
                 "incoming": [],
                 "outgoing": []
             }
+        },
+        {
+            "name": "PakiSidenavItem",
+            "id": "interface-PakiSidenavItem-def4c9d998935b588dcb421065d1e622b89ddf3e38b3032a440b8d0001556540e2009537f882c0243f35579fb7544dcf19ad8d3c3777945d6b7e5d0eb690ddcd",
+            "file": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  effect,\n  input,\n  output,\n  signal,\n  type WritableSignal,\n} from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/** Item de navegação do sidenav. */\nexport interface PakiSidenavItem {\n  /** Texto obrigatório do item. */\n  label: string;\n  /** Rota opcional usada com RouterLink. */\n  route?: string;\n  /** Nome da classe CSS do ícone opcional. */\n  icon?: string;\n  /** Estado inicial do grupo. */\n  expanded?: boolean;\n  /** Filhos de um grupo, limitados a um nível. */\n  children?: readonly PakiSidenavItem[];\n}\n\n/** Estado atual do sidenav. */\nexport interface PakiSidenavState {\n  /** Indica se o sidenav está expandido. */\n  expanded: boolean;\n}\n\n/**\n * Componente de navegação lateral Pakitec.\n *\n * Renderiza uma lista de itens de navegação e emite eventos de alternância de largura.\n * O consumidor controla o estado expandido/colapsado por input/output.\n * Cada grupo de itens mantém seu próprio estado de expansão via Signals.\n */\n@Component({\n  selector: 'paki-sidenav',\n  standalone: true,\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './paki-sidenav.html',\n  styleUrl: './paki-sidenav.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-sidenav--expanded]': 'expanded()',\n  },\n})\nexport class PakiSidenav {\n  /** Lista de itens de navegação. */\n  readonly items = input.required<readonly PakiSidenavItem[]>();\n\n  /** Indica se o sidenav está expandido. */\n  readonly expanded = input(false);\n\n  /** Emite o novo valor booleano quando o estado expandido/colapsado alterna. */\n  readonly toggle = output<boolean>();\n\n  /** Emite quando o sidenav entra no estado expandido. */\n  readonly opened = output<void>();\n\n  /** Emite quando o sidenav entra no estado colapsado. */\n  readonly closed = output<void>();\n\n  /** Valor anterior de expanded para evitar emissão na inicialização. */\n  private readonly previousExpanded = signal<boolean | null>(null);\n\n  constructor() {\n    effect(() => {\n      const current = this.expanded();\n      const previous = this.previousExpanded();\n\n      if (previous !== null && current !== previous) {\n        this.toggle.emit(current);\n\n        if (current) {\n          this.opened.emit();\n        } else {\n          this.closed.emit();\n        }\n      }\n\n      this.previousExpanded.set(current);\n    });\n  }\n\n  /** Guarda o estado de expansão de cada grupo pelo índice do item. */\n  private readonly groupStates = new Map<number, WritableSignal<boolean>>();\n\n  /**\n   * Retorna o Signal de expansão do grupo.\n   * Cria o Signal com o valor inicial quando o grupo ainda não possui estado.\n   */\n  protected groupExpanded(index: number, initial = false): WritableSignal<boolean> {\n    const existing = this.groupStates.get(index);\n    if (existing) {\n      return existing;\n    }\n\n    const created = signal(initial);\n    this.groupStates.set(index, created);\n    return created;\n  }\n\n  /** Alterna o estado de expansão do grupo. */\n  protected toggleGroup(index: number, initial = false): void {\n    const groupSignal = this.groupExpanded(index, initial);\n    groupSignal.set(!groupSignal());\n  }\n}\n",
+            "displayName": "PakiSidenavItem",
+            "properties": [
+                {
+                    "name": "children",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "{}",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Filhos de um grupo, limitados a um nível.</p>\n",
+                    "line": 23,
+                    "rawdescription": "\nFilhos de um grupo, limitados a um nível."
+                },
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Estado inicial do grupo.</p>\n",
+                    "line": 21,
+                    "rawdescription": "\nEstado inicial do grupo."
+                },
+                {
+                    "name": "icon",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Nome da classe CSS do ícone opcional.</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nNome da classe CSS do ícone opcional."
+                },
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Texto obrigatório do item.</p>\n",
+                    "line": 15,
+                    "rawdescription": "\nTexto obrigatório do item."
+                },
+                {
+                    "name": "route",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Rota opcional usada com RouterLink.</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nRota opcional usada com RouterLink."
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Item de navegação do sidenav.</p>\n",
+            "rawdescription": "\nItem de navegação do sidenav.",
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
+            "name": "PakiSidenavState",
+            "id": "interface-PakiSidenavState-def4c9d998935b588dcb421065d1e622b89ddf3e38b3032a440b8d0001556540e2009537f882c0243f35579fb7544dcf19ad8d3c3777945d6b7e5d0eb690ddcd",
+            "file": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  effect,\n  input,\n  output,\n  signal,\n  type WritableSignal,\n} from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/** Item de navegação do sidenav. */\nexport interface PakiSidenavItem {\n  /** Texto obrigatório do item. */\n  label: string;\n  /** Rota opcional usada com RouterLink. */\n  route?: string;\n  /** Nome da classe CSS do ícone opcional. */\n  icon?: string;\n  /** Estado inicial do grupo. */\n  expanded?: boolean;\n  /** Filhos de um grupo, limitados a um nível. */\n  children?: readonly PakiSidenavItem[];\n}\n\n/** Estado atual do sidenav. */\nexport interface PakiSidenavState {\n  /** Indica se o sidenav está expandido. */\n  expanded: boolean;\n}\n\n/**\n * Componente de navegação lateral Pakitec.\n *\n * Renderiza uma lista de itens de navegação e emite eventos de alternância de largura.\n * O consumidor controla o estado expandido/colapsado por input/output.\n * Cada grupo de itens mantém seu próprio estado de expansão via Signals.\n */\n@Component({\n  selector: 'paki-sidenav',\n  standalone: true,\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './paki-sidenav.html',\n  styleUrl: './paki-sidenav.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-sidenav--expanded]': 'expanded()',\n  },\n})\nexport class PakiSidenav {\n  /** Lista de itens de navegação. */\n  readonly items = input.required<readonly PakiSidenavItem[]>();\n\n  /** Indica se o sidenav está expandido. */\n  readonly expanded = input(false);\n\n  /** Emite o novo valor booleano quando o estado expandido/colapsado alterna. */\n  readonly toggle = output<boolean>();\n\n  /** Emite quando o sidenav entra no estado expandido. */\n  readonly opened = output<void>();\n\n  /** Emite quando o sidenav entra no estado colapsado. */\n  readonly closed = output<void>();\n\n  /** Valor anterior de expanded para evitar emissão na inicialização. */\n  private readonly previousExpanded = signal<boolean | null>(null);\n\n  constructor() {\n    effect(() => {\n      const current = this.expanded();\n      const previous = this.previousExpanded();\n\n      if (previous !== null && current !== previous) {\n        this.toggle.emit(current);\n\n        if (current) {\n          this.opened.emit();\n        } else {\n          this.closed.emit();\n        }\n      }\n\n      this.previousExpanded.set(current);\n    });\n  }\n\n  /** Guarda o estado de expansão de cada grupo pelo índice do item. */\n  private readonly groupStates = new Map<number, WritableSignal<boolean>>();\n\n  /**\n   * Retorna o Signal de expansão do grupo.\n   * Cria o Signal com o valor inicial quando o grupo ainda não possui estado.\n   */\n  protected groupExpanded(index: number, initial = false): WritableSignal<boolean> {\n    const existing = this.groupStates.get(index);\n    if (existing) {\n      return existing;\n    }\n\n    const created = signal(initial);\n    this.groupStates.set(index, created);\n    return created;\n  }\n\n  /** Alterna o estado de expansão do grupo. */\n  protected toggleGroup(index: number, initial = false): void {\n    const groupSignal = this.groupExpanded(index, initial);\n    groupSignal.set(!groupSignal());\n  }\n}\n",
+            "displayName": "PakiSidenavState",
+            "properties": [
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Indica se o sidenav está expandido.</p>\n",
+                    "line": 29,
+                    "rawdescription": "\nIndica se o sidenav está expandido."
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Estado atual do sidenav.</p>\n",
+            "rawdescription": "\nEstado atual do sidenav.",
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
         }
     ],
     "injectables": [],
@@ -3745,6 +3861,339 @@
             "templateData": "<label>\n  <span>{{ label() }}</span>\n  <div class=\"paki-select__control\">\n    <input\n      type=\"text\"\n      role=\"combobox\"\n      [value]=\"selectedLabel() || searchTerm()\"\n      [placeholder]=\"placeholder()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-expanded]=\"open()\"\n      aria-haspopup=\"listbox\"\n      [attr.aria-activedescendant]=\"open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null\"\n      (input)=\"onInput($event)\"\n      (focus)=\"onFocus()\"\n      (blur)=\"onBlur()\"\n      (keydown)=\"onKeydown($event)\"\n    />\n    <button\n      type=\"button\"\n      class=\"paki-select__toggle\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"open() ? 'Fechar opções' : 'Abrir opções'\"\n      (mousedown)=\"$event.preventDefault(); toggle()\"\n    >\n      <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\">\n        <path d=\"M6 9l6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n      </svg>\n    </button>\n  </div>\n\n  @if (open()) {\n    <ul class=\"paki-select__dropdown\" role=\"listbox\" (scroll)=\"onScroll($event)\">\n      @if (searching()) {\n        <li class=\"paki-select__feedback\" role=\"status\">Carregando...</li>\n      }\n      @for (option of displayOptions(); track option.value; let i = $index) {\n        <li\n          [id]=\"'paki-option-' + i\"\n          role=\"option\"\n          [attr.aria-selected]=\"value() === option.value\"\n          [class.active]=\"activeIndex() === i\"\n          [class.selected]=\"value() === option.value\"\n          (mousedown)=\"$event.preventDefault(); select(option)\"\n        >\n          {{ option.label }}\n        </li>\n      }\n      @if (showNoResults()) {\n        <li class=\"paki-select__feedback\" role=\"status\">{{ noResultsMessage() }}</li>\n      }\n    </ul>\n  }\n</label>\n"
         },
         {
+            "name": "PakiSidenav",
+            "id": "component-PakiSidenav-def4c9d998935b588dcb421065d1e622b89ddf3e38b3032a440b8d0001556540e2009537f882c0243f35579fb7544dcf19ad8d3c3777945d6b7e5d0eb690ddcd",
+            "file": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "paki-sidenav",
+            "styleUrls": [
+                "./paki-sidenav.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./paki-sidenav.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Indica se o sidenav está expandido.</p>\n",
+                    "line": 55,
+                    "rawdescription": "\nIndica se o sidenav está expandido.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiSidenavItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Lista de itens de navegação.</p>\n",
+                    "line": 52,
+                    "rawdescription": "\nLista de itens de navegação.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "closed",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Emite quando o sidenav entra no estado colapsado.</p>\n",
+                    "line": 64,
+                    "rawdescription": "\nEmite quando o sidenav entra no estado colapsado.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "opened",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "void",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Emite quando o sidenav entra no estado expandido.</p>\n",
+                    "line": 61,
+                    "rawdescription": "\nEmite quando o sidenav entra no estado expandido.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "toggle",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Emite o novo valor booleano quando o estado expandido/colapsado alterna.</p>\n",
+                    "line": 58,
+                    "rawdescription": "\nEmite o novo valor booleano quando o estado expandido/colapsado alterna.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "groupStates",
+                    "coverageIgnore": false,
+                    "defaultValue": "new Map<number, WritableSignal<boolean>>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Guarda o estado de expansão de cada grupo pelo índice do item.</p>\n",
+                    "line": 89,
+                    "rawdescription": "\nGuarda o estado de expansão de cada grupo pelo índice do item.",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "previousExpanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "signal<boolean | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Valor anterior de expanded para evitar emissão na inicialização.</p>\n",
+                    "line": 67,
+                    "rawdescription": "\nValor anterior de expanded para evitar emissão na inicialização.",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "groupExpanded",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "initial",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "WritableSignal<boolean>",
+                    "typeParameters": [],
+                    "line": 95,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nRetorna o Signal de expansão do grupo.\nCria o Signal com o valor inicial quando o grupo ainda não possui estado.\n",
+                    "description": "<p>Retorna o Signal de expansão do grupo.\nCria o Signal com o valor inicial quando o grupo ainda não possui estado.</p>\n",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "initial",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleGroup",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "initial",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 107,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nAlterna o estado de expansão do grupo.",
+                    "description": "<p>Alterna o estado de expansão do grupo.</p>\n",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "initial",
+                            "type": "unknown",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "<p>Componente de navegação lateral Pakitec.</p>\n<p>Renderiza uma lista de itens de navegação e emite eventos de alternância de largura.\nO consumidor controla o estado expandido/colapsado por input/output.\nCada grupo de itens mantém seu próprio estado de expansão via Signals.</p>\n",
+            "rawdescription": "\n\nComponente de navegação lateral Pakitec.\n\nRenderiza uma lista de itens de navegação e emite eventos de alternância de largura.\nO consumidor controla o estado expandido/colapsado por input/output.\nCada grupo de itens mantém seu próprio estado de expansão via Signals.\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  effect,\n  input,\n  output,\n  signal,\n  type WritableSignal,\n} from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/** Item de navegação do sidenav. */\nexport interface PakiSidenavItem {\n  /** Texto obrigatório do item. */\n  label: string;\n  /** Rota opcional usada com RouterLink. */\n  route?: string;\n  /** Nome da classe CSS do ícone opcional. */\n  icon?: string;\n  /** Estado inicial do grupo. */\n  expanded?: boolean;\n  /** Filhos de um grupo, limitados a um nível. */\n  children?: readonly PakiSidenavItem[];\n}\n\n/** Estado atual do sidenav. */\nexport interface PakiSidenavState {\n  /** Indica se o sidenav está expandido. */\n  expanded: boolean;\n}\n\n/**\n * Componente de navegação lateral Pakitec.\n *\n * Renderiza uma lista de itens de navegação e emite eventos de alternância de largura.\n * O consumidor controla o estado expandido/colapsado por input/output.\n * Cada grupo de itens mantém seu próprio estado de expansão via Signals.\n */\n@Component({\n  selector: 'paki-sidenav',\n  standalone: true,\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './paki-sidenav.html',\n  styleUrl: './paki-sidenav.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-sidenav--expanded]': 'expanded()',\n  },\n})\nexport class PakiSidenav {\n  /** Lista de itens de navegação. */\n  readonly items = input.required<readonly PakiSidenavItem[]>();\n\n  /** Indica se o sidenav está expandido. */\n  readonly expanded = input(false);\n\n  /** Emite o novo valor booleano quando o estado expandido/colapsado alterna. */\n  readonly toggle = output<boolean>();\n\n  /** Emite quando o sidenav entra no estado expandido. */\n  readonly opened = output<void>();\n\n  /** Emite quando o sidenav entra no estado colapsado. */\n  readonly closed = output<void>();\n\n  /** Valor anterior de expanded para evitar emissão na inicialização. */\n  private readonly previousExpanded = signal<boolean | null>(null);\n\n  constructor() {\n    effect(() => {\n      const current = this.expanded();\n      const previous = this.previousExpanded();\n\n      if (previous !== null && current !== previous) {\n        this.toggle.emit(current);\n\n        if (current) {\n          this.opened.emit();\n        } else {\n          this.closed.emit();\n        }\n      }\n\n      this.previousExpanded.set(current);\n    });\n  }\n\n  /** Guarda o estado de expansão de cada grupo pelo índice do item. */\n  private readonly groupStates = new Map<number, WritableSignal<boolean>>();\n\n  /**\n   * Retorna o Signal de expansão do grupo.\n   * Cria o Signal com o valor inicial quando o grupo ainda não possui estado.\n   */\n  protected groupExpanded(index: number, initial = false): WritableSignal<boolean> {\n    const existing = this.groupStates.get(index);\n    if (existing) {\n      return existing;\n    }\n\n    const created = signal(initial);\n    this.groupStates.set(index, created);\n    return created;\n  }\n\n  /** Alterna o estado de expansão do grupo. */\n  protected toggleGroup(index: number, initial = false): void {\n    const groupSignal = this.groupExpanded(index, initial);\n    groupSignal.set(!groupSignal());\n  }\n}\n",
+            "styleUrl": "./paki-sidenav.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\n  display: block;\n  height: 100%;\n  --paki-sidenav-width: 64px;\n}\n\n:host(.paki-sidenav--expanded) {\n  --paki-sidenav-width: 240px;\n}\n\n.paki-sidenav {\n  background: var(--color-bg-surface);\n  border-right: 1px solid var(--color-border-subtle);\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n  width: var(--paki-sidenav-width);\n}\n\n.paki-sidenav__list {\n  list-style: none;\n  margin: 0;\n  padding: 8px;\n}\n\n.paki-sidenav__item {\n  border-radius: var(--radius-sm, 4px);\n  color: var(--color-text-secondary);\n  font-size: 13px;\n}\n\n.paki-sidenav__link,\n.paki-sidenav__text,\n.paki-sidenav__group-header {\n  align-items: center;\n  border-radius: inherit;\n  display: flex;\n  gap: 8px;\n  padding: 8px 12px;\n  text-decoration: none;\n}\n\n.paki-sidenav__link {\n  color: inherit;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &.active {\n    background: var(--color-accent-tint);\n    color: var(--color-accent);\n  }\n}\n\n.paki-sidenav__text {\n  color: inherit;\n}\n\n.paki-sidenav__group-header {\n  background: transparent;\n  border: 0;\n  color: inherit;\n  cursor: pointer;\n  text-align: left;\n  width: 100%;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &[aria-expanded='true'] {\n    color: var(--color-text-primary);\n\n    .paki-sidenav__chevron {\n      transform: rotate(180deg);\n    }\n  }\n}\n\n.paki-sidenav__icon {\n  display: inline-flex;\n  flex: 0 0 auto;\n  font-size: 16px;\n  height: 16px;\n  line-height: 1;\n  width: 16px;\n}\n\n.paki-sidenav__chevron {\n  border-left: 4px solid transparent;\n  border-right: 4px solid transparent;\n  border-top: 4px solid currentColor;\n  height: 0;\n  margin-left: auto;\n  transition: transform 0.2s ease;\n  width: 0;\n}\n\n.paki-sidenav__group-children {\n  list-style: none;\n  margin: 0;\n  padding: 0 0 0 16px;\n}\n",
+                    "styleUrl": "./paki-sidenav.scss"
+                }
+            ],
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 740,
+                    "end": 1028,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Componente de navegação lateral Pakitec.\n\nRenderiza uma lista de itens de navegação e emite eventos de alternância de largura.\nO consumidor controla o estado expandido/colapsado por input/output.\nCada grupo de itens mantém seu próprio estado de expansão via Signals."
+                }
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 67,
+                "rawdescription": "\n"
+            },
+            "extends": [],
+            "relationships": {
+                "incoming": [
+                    {
+                        "name": "SidenavActiveItemHost",
+                        "type": "component",
+                        "description": "Host usado na story ActiveItem. Navega para a rota do item ativo após a renderização inicial. Assim, RouterLinkActive aplica a classe vis..."
+                    }
+                ],
+                "outgoing": [
+                    {
+                        "name": "RouterLink",
+                        "type": "module"
+                    },
+                    {
+                        "name": "RouterLinkActive",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": "<nav class=\"paki-sidenav\" aria-label=\"Navegação principal\">\n  <ul class=\"paki-sidenav__list\">\n    @for (item of items(); track item.label; let index = $index) {\n      <li class=\"paki-sidenav__item\">\n        @if (item.children && item.children.length > 0) {\n          <button\n            type=\"button\"\n            class=\"paki-sidenav__group-header\"\n            [attr.aria-expanded]=\"groupExpanded(index, item.expanded ?? false)()\"\n            [attr.aria-controls]=\"'paki-sidenav-group-' + index + '-children'\"\n            (click)=\"toggleGroup(index, item.expanded ?? false)\"\n          >\n            @if (item.icon) {\n              <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n            }\n            {{ item.label }}\n            <span class=\"paki-sidenav__chevron\" aria-hidden=\"true\"></span>\n          </button>\n          <ul\n            class=\"paki-sidenav__group-children\"\n            [id]=\"'paki-sidenav-group-' + index + '-children'\"\n          >\n            @for (child of item.children; track child.label) {\n              <li class=\"paki-sidenav__item\">\n                @if (child.route) {\n                  <a\n                    class=\"paki-sidenav__link\"\n                    [routerLink]=\"child.route\"\n                    routerLinkActive=\"active\"\n                    ariaCurrentWhenActive=\"page\"\n                  >\n                    @if (child.icon) {\n                      <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                    }\n                    {{ child.label }}\n                  </a>\n                } @else {\n                  <span class=\"paki-sidenav__text\">\n                    @if (child.icon) {\n                      <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                    }\n                    {{ child.label }}\n                  </span>\n                }\n              </li>\n            }\n          </ul>\n        } @else {\n          @if (item.route) {\n            <a\n              class=\"paki-sidenav__link\"\n              [routerLink]=\"item.route\"\n              routerLinkActive=\"active\"\n              ariaCurrentWhenActive=\"page\"\n            >\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </a>\n          } @else {\n            <span class=\"paki-sidenav__text\">\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </span>\n          }\n        }\n      </li>\n    }\n  </ul>\n</nav>\n"
+        },
+        {
             "name": "PakiSwitch",
             "id": "component-PakiSwitch-4709166a61751ff59c414cae68dd5678545a1f7a70eacd263725b7d4e46825a33a618e408349ca550654484b9f399556f5f3d9d3faa39a9f67ea006d7bad20d1",
             "file": "projects/pakitec-angular-components/src/lib/components/switch/paki-switch.ts",
@@ -4311,6 +4760,130 @@
             }
         },
         {
+            "name": "SidenavActiveItemHost",
+            "id": "component-SidenavActiveItemHost-b544b2384f3a3e8e0b622b22427aa92ba8396430732a3e7783c5528c066ac491c2f2b570b8e0e94f7b17967e498dacad54cf299e4eaf6a72da0332d37c6a2d1d",
+            "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "styleUrls": [],
+            "styles": [],
+            "template": "<paki-sidenav [items]=\"items()\" [expanded]=\"expanded()\"></paki-sidenav>",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiSidenavItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "router",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(Router)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "PakiSidenav"
+                }
+            ],
+            "description": "<p>Host usado na story ActiveItem.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe visual de seleção.</p>\n",
+            "rawdescription": "\n\nHost usado na story ActiveItem.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe visual de seleção.\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { applicationConfig, moduleMetadata } from '@storybook/angular-vite';\nimport { Component, afterNextRender, inject, input } from '@angular/core';\nimport { Router, provideRouter } from '@angular/router';\n\nimport { PakiSidenav, type PakiSidenavItem } from '../lib/components/sidenav/paki-sidenav';\n\n/**\n * Rota vazia usada pelas stories que precisam de RouterLink.\n * O Angular exige um componente para cada rota registrada.\n */\n@Component({ standalone: true, template: '' })\nclass StoryRoute {}\n\n/**\n * Host usado na story ActiveItem.\n * Navega para a rota do item ativo após a renderização inicial.\n * Assim, RouterLinkActive aplica a classe visual de seleção.\n */\n@Component({\n  standalone: true,\n  imports: [PakiSidenav],\n  template: '<paki-sidenav [items]=\"items()\" [expanded]=\"expanded()\"></paki-sidenav>',\n})\nclass SidenavActiveItemHost {\n  private readonly router = inject(Router);\n\n  readonly items = input.required<readonly PakiSidenavItem[]>();\n  readonly expanded = input<boolean>(false);\n\n  constructor() {\n    afterNextRender(() => {\n      this.router.navigate(['/dashboard']);\n    });\n  }\n}\n\n/**\n * Lista base de itens usada pelas variações da story.\n * Contém itens simples, item com grupo e item sem ícone.\n */\nconst baseItems: readonly PakiSidenavItem[] = [\n  { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n  { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  {\n    label: 'Configurações',\n    icon: 'icon-settings',\n    expanded: true,\n    children: [\n      { label: 'Geral', route: '/settings/general' },\n      { label: 'Usuários', route: '/settings/users' },\n    ],\n  },\n  { label: 'Ajuda', route: '/help' },\n];\n\n/**\n * Metadados da story do paki-sidenav.\n *\n * O Storybook já alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\n * Portanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.\n */\nconst meta: Meta<PakiSidenav> = {\n  title: 'Componentes/Sidenav',\n  component: PakiSidenav,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    expanded: true,\n  },\n};\n\nexport default meta;\ntype Story = StoryObj<PakiSidenav>;\n\n/**\n * Variação padrão: sidenav expandido com grupo aberto.\n * Use a toolbar de tema para alternar entre claro e escuro.\n */\nexport const Playground: Story = {};\n\n/**\n * Sidenav colapsado.\n * Demonstra a largura reduzida e o comportamento dos ícones.\n */\nexport const Collapsed: Story = {\n  args: {\n    expanded: false,\n  },\n};\n\n/**\n * Grupo fechado.\n * Demonstra o estado recolhido de um grupo com filhos.\n */\nexport const GroupClosed: Story = {\n  args: {\n    items: [\n      {\n        label: 'Configurações',\n        icon: 'icon-settings',\n        expanded: false,\n        children: [\n          { label: 'Geral', route: '/settings/general' },\n          { label: 'Usuários', route: '/settings/users' },\n        ],\n      },\n    ],\n  },\n};\n\n/**\n * Item ativo.\n * Navega para /dashboard para que RouterLinkActive aplique a classe `active`.\n * Demonstra o estilo visual de seleção.\n */\nexport const ActiveItem: Story = {\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [SidenavActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-sidenav-active-item-host [items]=\"items\" [expanded]=\"expanded\"></app-sidenav-active-item-host>',\n  }),\n  args: {\n    items: [\n      { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n      { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n    ],\n    expanded: true,\n  },\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 564,
+                    "end": 733,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Host usado na story ActiveItem.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe visual de seleção."
+                }
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 29,
+                "rawdescription": "\n"
+            },
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "PakiSidenav",
+                        "type": "component",
+                        "description": "Componente de navegação lateral Pakitec. Renderiza uma lista de itens de navegação e emite eventos de alternância de largura. O consumido..."
+                    }
+                ]
+            }
+        },
+        {
             "name": "StoryRoute",
             "id": "component-StoryRoute-4ee56ae5becbe778c1ada49e87fbbee3123b037bf65b829dd0d5488c527f89d03a6fa08648caf6fca4e4c205ecdc5c3bd8238fae6531807418ca008b4631a110",
             "file": "projects/pakitec-angular-components/src/stories/module-tabs.stories.ts",
@@ -4350,11 +4923,106 @@
                 "incoming": [],
                 "outgoing": []
             }
+        },
+        {
+            "name": "StoryRoute",
+            "id": "component-StoryRoute-b544b2384f3a3e8e0b622b22427aa92ba8396430732a3e7783c5528c066ac491c2f2b570b8e0e94f7b17967e498dacad54cf299e4eaf6a72da0332d37c6a2d1d-1",
+            "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "styleUrls": [],
+            "styles": [],
+            "template": "",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "<p>Rota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada.</p>\n",
+            "rawdescription": "\n\nRota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada.\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { applicationConfig, moduleMetadata } from '@storybook/angular-vite';\nimport { Component, afterNextRender, inject, input } from '@angular/core';\nimport { Router, provideRouter } from '@angular/router';\n\nimport { PakiSidenav, type PakiSidenavItem } from '../lib/components/sidenav/paki-sidenav';\n\n/**\n * Rota vazia usada pelas stories que precisam de RouterLink.\n * O Angular exige um componente para cada rota registrada.\n */\n@Component({ standalone: true, template: '' })\nclass StoryRoute {}\n\n/**\n * Host usado na story ActiveItem.\n * Navega para a rota do item ativo após a renderização inicial.\n * Assim, RouterLinkActive aplica a classe visual de seleção.\n */\n@Component({\n  standalone: true,\n  imports: [PakiSidenav],\n  template: '<paki-sidenav [items]=\"items()\" [expanded]=\"expanded()\"></paki-sidenav>',\n})\nclass SidenavActiveItemHost {\n  private readonly router = inject(Router);\n\n  readonly items = input.required<readonly PakiSidenavItem[]>();\n  readonly expanded = input<boolean>(false);\n\n  constructor() {\n    afterNextRender(() => {\n      this.router.navigate(['/dashboard']);\n    });\n  }\n}\n\n/**\n * Lista base de itens usada pelas variações da story.\n * Contém itens simples, item com grupo e item sem ícone.\n */\nconst baseItems: readonly PakiSidenavItem[] = [\n  { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n  { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  {\n    label: 'Configurações',\n    icon: 'icon-settings',\n    expanded: true,\n    children: [\n      { label: 'Geral', route: '/settings/general' },\n      { label: 'Usuários', route: '/settings/users' },\n    ],\n  },\n  { label: 'Ajuda', route: '/help' },\n];\n\n/**\n * Metadados da story do paki-sidenav.\n *\n * O Storybook já alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\n * Portanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.\n */\nconst meta: Meta<PakiSidenav> = {\n  title: 'Componentes/Sidenav',\n  component: PakiSidenav,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    expanded: true,\n  },\n};\n\nexport default meta;\ntype Story = StoryObj<PakiSidenav>;\n\n/**\n * Variação padrão: sidenav expandido com grupo aberto.\n * Use a toolbar de tema para alternar entre claro e escuro.\n */\nexport const Playground: Story = {};\n\n/**\n * Sidenav colapsado.\n * Demonstra a largura reduzida e o comportamento dos ícones.\n */\nexport const Collapsed: Story = {\n  args: {\n    expanded: false,\n  },\n};\n\n/**\n * Grupo fechado.\n * Demonstra o estado recolhido de um grupo com filhos.\n */\nexport const GroupClosed: Story = {\n  args: {\n    items: [\n      {\n        label: 'Configurações',\n        icon: 'icon-settings',\n        expanded: false,\n        children: [\n          { label: 'Geral', route: '/settings/general' },\n          { label: 'Usuários', route: '/settings/users' },\n        ],\n      },\n    ],\n  },\n};\n\n/**\n * Item ativo.\n * Navega para /dashboard para que RouterLinkActive aplique a classe `active`.\n * Demonstra o estilo visual de seleção.\n */\nexport const ActiveItem: Story = {\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [SidenavActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-sidenav-active-item-host [items]=\"items\" [expanded]=\"expanded\"></app-sidenav-active-item-host>',\n  }),\n  args: {\n    items: [\n      { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n      { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n    ],\n    expanded: true,\n  },\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 366,
+                    "end": 495,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Rota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada."
+                }
+            ],
+            "extends": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "StoryRoute-1",
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
         }
     ],
     "modules": [],
     "miscellaneous": {
         "variables": [
+            {
+                "name": "ActiveItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [SidenavActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-sidenav-active-item-host [items]=\"items\" [expanded]=\"expanded\"></app-sidenav-active-item-host>',\n  }),\n  args: {\n    items: [\n      { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n      { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n    ],\n    expanded: true,\n  },\n}",
+                "rawdescription": "Item ativo.\nNavega para /dashboard para que RouterLinkActive aplique a classe `active`.\nDemonstra o estilo visual de seleção.",
+                "description": "<p>Item ativo.\nNavega para /dashboard para que RouterLinkActive aplique a classe <code>active</code>.\nDemonstra o estilo visual de seleção.</p>\n"
+            },
+            {
+                "name": "baseItems",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "readonly PakiSidenavItem[]",
+                "defaultValue": "[\n  { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n  { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  {\n    label: 'Configurações',\n    icon: 'icon-settings',\n    expanded: true,\n    children: [\n      { label: 'Geral', route: '/settings/general' },\n      { label: 'Usuários', route: '/settings/users' },\n    ],\n  },\n  { label: 'Ajuda', route: '/help' },\n]",
+                "rawdescription": "Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.",
+                "description": "<p>Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.</p>\n"
+            },
+            {
+                "name": "Collapsed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
+                "rawdescription": "Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.",
+                "description": "<p>Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.</p>\n"
+            },
             {
                 "name": "DEBOUNCE_MS",
                 "ctype": "miscellaneous",
@@ -4376,6 +5044,19 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{ args: { page: { number: 1, size: 10, totalElements: 0, totalPages: 0, first: true, last: true } } }"
+            },
+            {
+                "name": "GroupClosed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    items: [\n      {\n        label: 'Configurações',\n        icon: 'icon-settings',\n        expanded: false,\n        children: [\n          { label: 'Geral', route: '/settings/general' },\n          { label: 'Usuários', route: '/settings/users' },\n        ],\n      },\n    ],\n  },\n}",
+                "rawdescription": "Grupo fechado.\nDemonstra o estado recolhido de um grupo com filhos.",
+                "description": "<p>Grupo fechado.\nDemonstra o estado recolhido de um grupo com filhos.</p>\n"
             },
             {
                 "name": "INITIAL_VISIBLE",
@@ -4513,6 +5194,19 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiSidenav>",
+                "defaultValue": "{\n  title: 'Componentes/Sidenav',\n  component: PakiSidenav,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    expanded: true,\n  },\n}",
+                "rawdescription": "Metadados da story do paki-sidenav.\n\nO Storybook já alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.",
+                "description": "<p>Metadados da story do paki-sidenav.</p>\n<p>O Storybook já alterna entre tema claro e escuro pela toolbar global &quot;Tema visual&quot;.\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.</p>\n"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
@@ -4640,6 +5334,19 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}",
+                "rawdescription": "Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.",
+                "description": "<p>Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.</p>\n"
             },
             {
                 "name": "Playground",
@@ -5193,6 +5900,19 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiSidenav>",
+                "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
                 "rawtype": "StoryObj<PakiSwitch>",
                 "file": "projects/pakitec-angular-components/src/stories/switch.stories.ts",
                 "deprecated": false,
@@ -5217,6 +5937,86 @@
         ],
         "enumerations": [],
         "groupedVariables": {
+            "projects/pakitec-angular-components/src/stories/sidenav.stories.ts": [
+                {
+                    "name": "ActiveItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [SidenavActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-sidenav-active-item-host [items]=\"items\" [expanded]=\"expanded\"></app-sidenav-active-item-host>',\n  }),\n  args: {\n    items: [\n      { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n      { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n    ],\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Item ativo.\nNavega para /dashboard para que RouterLinkActive aplique a classe `active`.\nDemonstra o estilo visual de seleção.",
+                    "description": "<p>Item ativo.\nNavega para /dashboard para que RouterLinkActive aplique a classe <code>active</code>.\nDemonstra o estilo visual de seleção.</p>\n"
+                },
+                {
+                    "name": "baseItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiSidenavItem[]",
+                    "defaultValue": "[\n  { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n  { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  {\n    label: 'Configurações',\n    icon: 'icon-settings',\n    expanded: true,\n    children: [\n      { label: 'Geral', route: '/settings/general' },\n      { label: 'Usuários', route: '/settings/users' },\n    ],\n  },\n  { label: 'Ajuda', route: '/help' },\n]",
+                    "rawdescription": "Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.",
+                    "description": "<p>Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.</p>\n"
+                },
+                {
+                    "name": "Collapsed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
+                    "rawdescription": "Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.",
+                    "description": "<p>Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.</p>\n"
+                },
+                {
+                    "name": "GroupClosed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    items: [\n      {\n        label: 'Configurações',\n        icon: 'icon-settings',\n        expanded: false,\n        children: [\n          { label: 'Geral', route: '/settings/general' },\n          { label: 'Usuários', route: '/settings/users' },\n        ],\n      },\n    ],\n  },\n}",
+                    "rawdescription": "Grupo fechado.\nDemonstra o estado recolhido de um grupo com filhos.",
+                    "description": "<p>Grupo fechado.\nDemonstra o estado recolhido de um grupo com filhos.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiSidenav>",
+                    "defaultValue": "{\n  title: 'Componentes/Sidenav',\n  component: PakiSidenav,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Metadados da story do paki-sidenav.\n\nO Storybook já alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.",
+                    "description": "<p>Metadados da story do paki-sidenav.</p>\n<p>O Storybook já alterna entre tema claro e escuro pela toolbar global &quot;Tema visual&quot;.\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.</p>\n"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}",
+                    "rawdescription": "Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.",
+                    "description": "<p>Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.</p>\n"
+                }
+            ],
             "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
                 {
                     "name": "DEBOUNCE_MS",
@@ -6109,6 +6909,21 @@
                     "kind": 184
                 }
             ],
+            "projects/pakitec-angular-components/src/stories/sidenav.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiSidenav>",
+                    "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/switch.stories.ts": [
                 {
                     "name": "Story",
@@ -6144,10 +6959,17 @@
     "routes": {
         "name": "<root>",
         "kind": "module",
-        "children": []
+        "children": [
+            {
+                "name": "dashboard",
+                "kind": "route-path",
+                "component": "StoryRoute",
+                "filename": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts"
+            }
+        ]
     },
     "coverage": {
-        "count": 0,
+        "count": 12,
         "status": "low",
         "files": [
             {
@@ -6427,6 +7249,33 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PakiSidenav",
+                "coveragePercent": 90,
+                "coverageCount": "10/11",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PakiSidenavItem",
+                "coveragePercent": 100,
+                "coverageCount": "6/6",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PakiSidenavState",
+                "coveragePercent": 100,
+                "coverageCount": "2/2",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/switch/paki-switch.ts",
@@ -6775,6 +7624,94 @@
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SidenavActiveItemHost",
+                "coveragePercent": 20,
+                "coverageCount": "1/5",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryRoute",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ActiveItem",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "baseItems",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Collapsed",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "GroupClosed",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",

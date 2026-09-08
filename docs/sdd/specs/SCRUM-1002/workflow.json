@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 2,
+  "runId": "scr1002-plan-20260908",
+  "issueKey": "SCRUM-1002",
+  "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
+  "phase": "DONE",
+  "lastStablePhase": "BUILD",
+  "status": "completed",
+  "planRevision": 1,
+  "buildConcurrency": "sequential",
+  "buildStartedAt": "2026-09-07T22:00:39-03:00",
+  "buildFinishedAt": "2026-09-08T09:20:39-0300",
+  "jira": {
+    "profileId": "pakitec",
+    "projectKey": "SCRUM"
+  },
+  "refinement": {
+    "verdict": "PASS",
+    "issueHash": "1574e56fa566",
+    "checkedAt": "2026-09-08T00:43:36.794Z",
+    "warnings": [
+      "W-01: profundidade de submenu adotará 1 nível na spec, salvo requisito contrário",
+      "W-02: nomenclatura exata dos eventos open/close será definida na spec técnica",
+      "W-03: tokens exatos serão mapeados a partir de pakitec-theme.scss e componentes existentes",
+      "W-04: performance segue padrão OnPush do projeto; sem métricas adicionais"
+    ]
+  },
+  "assets": {
+    "manifestPath": "assets/manifest.json",
+    "items": []
+  },
+  "visualEvidence": {
+    "criteria": [
+      {
+        "criteriaId": "AC-004"
+      },
+      {
+        "criteriaId": "AC-005"
+      },
+      {
+        "criteriaId": "AC-008"
+      }
+    ],
+    "manifestPath": "evidence/SCRUM-1002/manifest.json",
+    "visualPreflight": {
+      "available": true,
+      "version": "v0.0.78",
+      "tools": [
+        "browser_navigate",
+        "browser_evaluate",
+        "browser_run_code_unsafe",
+        "browser_take_screenshot",
+        "browser_snapshot",
+        "browser_verify_text_visible",
+        "browser_verify_element_visible",
+        "browser_verify_list_visible",
+        "browser_verify_value",
+        "browser_wait_for",
+        "browser_network_requests",
+        "browser_route",
+        "browser_storage_state",
+        "browser_console_messages",
+        "browser_localstorage_list",
+        "browser_press_key",
+        "browser_type",
+        "browser_fill_form",
+        "browser_select_option",
+        "browser_file_upload",
+        "browser_click",
+        "browser_double_click",
+        "browser_drag",
+        "browser_hover",
+        "browser_tabs",
+        "browser_start_video",
+        "browser_stop_video",
+        "browser_video_chapter",
+        "browser_start_tracing",
+        "browser_stop_tracing",
+        "browser_close",
+        "browser_resize",
+        "browser_highlight",
+        "browser_hide_highlight",
+        "browser_annotate",
+        "browser_handle_dialog",
+        "browser_drop",
+        "browser_generate_locator"
+      ]
+    }
+  },
+  "hashes": {
+    "issue": "8ec765b242ccf335b9e871fcf6227857af594ac8504b77250991364f00366acf",
+    "spec": "c824e7fdac57b70c1c2f1b49d84b44b39eafc8b3b3cd53478b431fce7975f039",
+    "checklist": "5a19cb064a4b1bb48f385ca0d3146da7a0fb56210f0f5e0d62eef7adafe1ea58",
+    "research": "bbbb3b360b8430463a6ff8ed7cb736669434f1b92f99557ed4442e650c23ed0f",
+    "plan": "b3c467ae19834f7bc15f61be2b6a9bf38501955aae1199a494ac392c6b55c327",
+    "tasks": "3194d73181558e519bfc881af7bdb74606b15c3b15cf0ccb365c9b5191a07870",
+    "assetsManifest": "e408cf7c7bfd835dc69ba17f47d492bf0a9ddf045cdc5590b6165f02b238409f"
+  },
+  "subtasks": {
+    "TASK-001": {
+      "issueKey": "SCRUM-1007",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:01:42-03:00",
+      "finishedAt": "2026-09-07T22:03:52-03:00",
+      "observation": "Criados tipos PakiSidenavItem/PakiSidenavState, componente standalone vazio PakiSidenav com OnPush e Signals, template/estilo base e teste de estrutura. Teste passou sem erros.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test -- --include projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts: 1 passed, 0 failed"
+      ]
+    },
+    "TASK-002": {
+      "issueKey": "SCRUM-1008",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:04:21-03:00",
+      "finishedAt": "2026-09-07T22:06:08-03:00",
+      "observation": "Importados RouterLink/RouterLinkActive; itens com route renderizam como links navegáveis; ícone opcional como span com classe CSS; estilo atualizado para hover, foco e estado ativo. Testes passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 31 tests passed"
+      ]
+    },
+    "TASK-003": {
+      "issueKey": "SCRUM-1009",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:06:21-03:00",
+      "finishedAt": "2026-09-07T22:07:50-03:00",
+      "observation": "Testes expandidos com cenários de renderização vazia, quantidade de links e aria-current=page na rota ativa. Todos os testes da biblioteca passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 33 tests passed"
+      ]
+    },
+    "TASK-004": {
+      "issueKey": "SCRUM-1010",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:08:06-03:00",
+      "finishedAt": "2026-09-07T22:11:10-03:00",
+      "observation": "Grupos expansíveis implementados com Signals independentes por grupo. Story inicial do Storybook também criada. Testes e build-storybook passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.html",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts",
+        "projects/pakitec-angular-components/src/stories/sidenav.stories.ts"
+      ],
+      "validations": [
+        "npm run test: 37 passed, 12 test files passed",
+        "npm run build-storybook: Storybook build completed successfully; sidenav.stories gerado"
+      ]
+    },
+    "TASK-005": {
+      "issueKey": "SCRUM-1011",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:11:30-03:00",
+      "finishedAt": "2026-09-07T22:13:19-03:00",
+      "observation": "Testes de expansão/colapso de grupos adicionados, cobrindo alternância de visibilidade, grupos independentes, grupo sem filhos e profundidade máxima de um nível. Testes passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 40 tests passed"
+      ]
+    },
+    "TASK-006": {
+      "issueKey": "SCRUM-1012",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:13:34-03:00",
+      "finishedAt": "2026-09-07T22:15:55-03:00",
+      "observation": "Controle de largura implementado (240px/64px) por variável CSS e classe no host; outputs toggle, opened e closed adicionados. Testes e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 42 tests passed",
+        "npm run build: built pakitec-angular-components successfully"
+      ]
+    },
+    "TASK-007": {
+      "issueKey": "SCRUM-1013",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:16:16-03:00",
+      "finishedAt": "2026-09-07T22:18:08-03:00",
+      "observation": "Testes de alternância de largura adicionados, verificando --paki-sidenav-width nos estados colapsado (64px) e expandido (240px). Emissão de toggle, opened e closed mantida. Testes do sidenav passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test -- --project=pakitec-angular-components --include=**/paki-sidenav.spec.ts: 1 passed (14 tests)"
+      ]
+    },
+    "TASK-008": {
+      "issueKey": "SCRUM-1014",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:18:23-03:00",
+      "finishedAt": "2026-09-07T22:23:12-03:00",
+      "observation": "Foco visível ajustado para herdar :focus-visible global do tema; removidos overrides locais. Adicionado teste ARIA para ícones decorativos com aria-hidden. Testes e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.scss",
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test -- --include projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts --watch=false: 15 tests passed",
+        "npm run build: library built successfully"
+      ]
+    },
+    "TASK-009": {
+      "issueKey": "SCRUM-1015",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:23:28-03:00",
+      "finishedAt": "2026-09-07T22:26:34-03:00",
+      "observation": "Story do Storybook verificada e completada com variações Collapsed, GroupClosed e ActiveItem, além do Playground expandido. Tema claro/escuro via toolbar global. build-storybook, storybook, test e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+        "projects/pakitec-angular-components/documentation.json"
+      ],
+      "validations": [
+        "npm run build-storybook: completed successfully",
+        "npm run storybook: started successfully (HTTP 200)",
+        "npm run test: 45 passed (12 files)",
+        "npm run build: completed successfully"
+      ]
+    },
+    "TASK-010": {
+      "issueKey": "SCRUM-1016",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:26:58-03:00",
+      "finishedAt": "2026-09-07T22:28:24-03:00",
+      "observation": "Export adicionado em ordem alfabética no barrel. public-api.ts já reexporta. Build gerou FESM e tipos sem erros.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/index.ts"
+      ],
+      "validations": [
+        "npm run build: Built pakitec-angular-components successfully; FESM and DTS bundles generated"
+      ]
+    },
+    "TASK-011": {
+      "issueKey": "SCRUM-1017",
+      "status": "completed",
+      "owner": "sdd-visual-qa",
+      "startedAt": "2026-09-07T22:28:43-03:00",
+      "finishedAt": "2026-09-07T22:32:17-03:00",
+      "observation": "Evidências visuais capturadas e publicadas para AC-004, AC-005 e AC-008. Manifesto validado com todos os critérios accepted. visualPreflight indica Playwright 1.62.1 disponível; o agente sinalizou divergência de versão do servidor de navegador, mas a publicação foi aceita pelo MCP.",
+      "filesChanged": [
+        "evidence/SCRUM-1002/manifest.json",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-004-desktop.png",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-005-desktop.png",
+        "evidence/SCRUM-1002/SCRUM-1002-AC-008-desktop.png"
+      ],
+      "validations": [
+        "sdd_visual_evidence_validate: AC-004, AC-005, AC-008 accepted",
+        "sdd_visual_evidence_publish: anexos 10105, 10106, 10107 publicados no Jira"
+      ],
+      "visualPreflight": {
+        "available": true,
+        "version": "1.62.1 (Chromium Headless Shell 151.0.7922.34 / playwright chromium-headless-shell v1234)",
+        "tools": [
+          "playwright",
+          "chromium"
+        ]
+      }
+    },
+    "TASK-012": {
+      "issueKey": "SCRUM-1018",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-07T22:32:39-03:00",
+      "finishedAt": "2026-09-07T22:33:33-03:00",
+      "observation": "Testes e build finalizaram com sucesso na branch Feature/sidenav. Nenhum arquivo de produção foi alterado.",
+      "filesChanged": [],
+      "validations": [
+        "CI=true npm run test: Vitest 12 test files / 45 tests passed (3.06s)",
+        "npm run build: Angular Package 'pakitec-angular-components' built successfully (844ms)"
+      ]
+    },
+    "TASK-013": {
+      "issueKey": "SCRUM-1019",
+      "status": "completed",
+      "owner": "sdd-qa-reviewer",
+      "startedAt": "2026-09-08T09:13:14-0300",
+      "finishedAt": "2026-09-08T09:17:52-0300",
+      "observation": "QA final ciclo 3/3 concluído com PASS. Gate de evidência visual desbloqueado; Playwright v0.0.78 disponível com tools de navegador. Critérios AC-001 a AC-008 validados; testes, build e build-storybook passaram.",
+      "filesChanged": [
+        "docs/sdd/specs/SCRUM-1002/qa.md"
+      ],
+      "validations": [
+        "CI=true npm run test: 11 test files, 30 tests PASS",
+        "npm run build: FESM + DTS gerados",
+        "npm run build-storybook: PASS",
+        "sdd_visual_evidence_validate: AC-004, AC-005, AC-008 accepted",
+        "Playwright preflight: v0.0.78, tools browser_navigate, browser_snapshot, browser_take_screenshot etc."
+      ],
+      "blockers": []
+    }
+  },
+  "qa": {
+    "issueKey": "SCRUM-1006",
+    "status": "passed",
+    "attempts": 3,
+    "startedAt": "2026-09-08T09:12:27-03:00",
+    "finishedAt": "2026-09-08T09:17:52-0300",
+    "observation": "QA final aprovado no ciclo 3/3 após desbloqueio do MCP de Playwright."
+  },
+  "attempts": {},
+  "eventLedger": [
+    {
+      "eventKey": "SCRUM-1002/plan/c4b530e014d0/started",
+      "eventType": "PLAN_STARTED",
+      "recordedAt": "2026-09-08T00:35:15.614Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/1574e56fa566/refinement-pass",
+      "eventType": "PHASE_STARTED",
+      "recordedAt": "2026-09-08T00:43:36.794Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/spec/started",
+      "issueKey": "SCRUM-1003",
+      "eventType": "TASK_STARTED",
+      "commentId": "13480",
+      "recordedAt": "2026-09-08T00:45:53.213Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/spec/completed",
+      "issueKey": "SCRUM-1003",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13482",
+      "recordedAt": "2026-09-08T00:47:21.740Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/research/started",
+      "issueKey": "SCRUM-1004",
+      "eventType": "TASK_STARTED",
+      "commentId": "13481",
+      "recordedAt": "2026-09-08T00:47:16.024Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/research/completed",
+      "issueKey": "SCRUM-1004",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13483",
+      "recordedAt": "2026-09-08T00:48:54.197Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/plan/started",
+      "issueKey": "SCRUM-1005",
+      "eventType": "TASK_STARTED",
+      "commentId": "13484",
+      "recordedAt": "2026-09-08T00:48:57.698Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/plan/completed",
+      "issueKey": "SCRUM-1005",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13485",
+      "recordedAt": "2026-09-08T00:50:41.088Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/plan/ready-to-build",
+      "issueKey": "SCRUM-1002",
+      "eventType": "PHASE_STARTED",
+      "commentId": "13488",
+      "recordedAt": "2026-09-08T00:54:28.478Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/started",
+      "issueKey": "SCRUM-1002",
+      "eventType": "PHASE_STARTED",
+      "commentId": "13489",
+      "recordedAt": "2026-09-08T01:00:53.372Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/blocked",
+      "issueKey": "SCRUM-1002",
+      "eventType": "BUILD_BLOCKED",
+      "commentId": "13530",
+      "recordedAt": "2026-09-08T01:41:22.512Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/task-013/retomada/started",
+      "issueKey": "SCRUM-1019",
+      "eventType": "TASK_STARTED",
+      "commentId": "13531",
+      "recordedAt": "2026-09-08T09:13:14Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/qa-passed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "QA_PASSED",
+      "recordedAt": "2026-09-08T09:17:52Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/code-review-started",
+      "issueKey": "SCRUM-1002",
+      "eventType": "CODE_REVIEW_STARTED",
+      "recordedAt": "2026-09-08T12:17:12Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/code-review-completed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "CODE_REVIEW_COMPLETED",
+      "recordedAt": "2026-09-08T09:20:21Z"
+    },
+    {
+      "eventKey": "SCRUM-1002/scr1002-plan-20260908/r1/build/completed",
+      "issueKey": "SCRUM-1002",
+      "eventType": "BUILD_COMPLETED",
+      "recordedAt": "2026-09-08T09:20:39Z",
+      "commentId": "13536"
+    }
+  ],
+  "pendingJiraEvents": [],
+  "blockers": [],
+  "validations": [
+    "REFINEMENT_GATE: PASS (hash 1574e56fa566)",
+    "checklist.md aprovado sem NEEDS CLARIFICATION",
+    "spec.md cobre AC-001 a AC-008 com jornadas independentes",
+    "research.md mapeia padroes, riscos e lacunas do repositorio",
+    "plan.md e tasks.md publicados com caminhos e criterios rastreaveis",
+    "13 subtarefas de implementacao e QA confirmadas como filhas de SCRUM-1002 no projeto SCRUM",
+    "hashes SHA-256 dos artefatos calculados e consistentes"
+  ],
+  "updatedAt": "2026-09-08T09:20:39-0300",
+  "codeReview": {
+    "issueKey": "SCRUM-1002",
+    "status": "REVIEWED",
+    "startedAt": "2026-09-08T09:17:12-03:00",
+    "finishedAt": "2026-09-08T09:20:21-0300",
+    "observation": "Revisão final consultiva concluída via Open Code Review em modo delegation. 0 critical, 2 high, 0 medium, 0 low. Achados high são alertas para análise humana (track por label não único; estado de expansão indexado por posição). Não bloqueia BUILD_COMPLETED.",
+    "filesChanged": [
+      "docs/sdd/specs/SCRUM-1002/code-review.md"
+    ],
+    "findings": {
+      "critical": 0,
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  }
+}
