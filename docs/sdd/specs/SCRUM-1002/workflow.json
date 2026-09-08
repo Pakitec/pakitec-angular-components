@@ -82,11 +82,17 @@
     },
     "TASK-003": {
       "issueKey": "SCRUM-1009",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:06:21-03:00",
+      "finishedAt": "2026-09-07T22:07:50-03:00",
+      "observation": "Testes expandidos com cenários de renderização vazia, quantidade de links e aria-current=page na rota ativa. Todos os testes da biblioteca passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.spec.ts"
+      ],
+      "validations": [
+        "npm run test: 12 test files passed, 33 tests passed"
+      ]
     },
     "TASK-004": {
       "issueKey": "SCRUM-1010",
