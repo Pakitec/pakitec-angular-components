@@ -238,4 +238,51 @@ describe('PakiSidenav', () => {
     const button = fixture.nativeElement.querySelector('button.paki-sidenav__group-header') as HTMLButtonElement;
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
+
+  it('emite toggle, opened e closed quando o estado expandido muda', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', []);
+
+    const toggleValues: boolean[] = [];
+    let openedCount = 0;
+    let closedCount = 0;
+
+    fixture.componentInstance.toggle.subscribe((value) => toggleValues.push(value));
+    fixture.componentInstance.opened.subscribe(() => openedCount++);
+    fixture.componentInstance.closed.subscribe(() => closedCount++);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.componentRef.setInput('expanded', true);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toggleValues).toEqual([true]);
+    expect(openedCount).toBe(1);
+    expect(closedCount).toBe(0);
+
+    fixture.componentRef.setInput('expanded', false);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(toggleValues).toEqual([true, false]);
+    expect(openedCount).toBe(1);
+    expect(closedCount).toBe(1);
+  });
+
+  it('aplica classe de largura expandida e colapsada no host', async () => {
+    const fixture = TestBed.createComponent(PakiSidenav);
+    fixture.componentRef.setInput('items', []);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.classList.contains('paki-sidenav--expanded')).toBe(false);
+
+    fixture.componentRef.setInput('expanded', true);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.classList.contains('paki-sidenav--expanded')).toBe(true);
+  });
 });

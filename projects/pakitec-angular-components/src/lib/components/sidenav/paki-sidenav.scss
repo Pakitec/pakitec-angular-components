@@ -1,6 +1,11 @@
 :host {
   display: block;
   height: 100%;
+  --paki-sidenav-width: 64px;
+}
+
+:host(.paki-sidenav--expanded) {
+  --paki-sidenav-width: 240px;
 }
 
 .paki-sidenav {
@@ -10,7 +15,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  width: 240px;
+  width: var(--paki-sidenav-width);
 }
 
 .paki-sidenav__list {

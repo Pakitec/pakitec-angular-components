@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   input,
   output,
   signal,
@@ -42,6 +43,9 @@ export interface PakiSidenavState {
   templateUrl: './paki-sidenav.html',
   styleUrl: './paki-sidenav.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.paki-sidenav--expanded]': 'expanded()',
+  },
 })
 export class PakiSidenav {
   /** Lista de itens de navegação. */
@@ -50,11 +54,36 @@ export class PakiSidenav {
   /** Indica se o sidenav está expandido. */
   readonly expanded = input(false);
 
-  /** Emite o novo valor quando o estado expandido/colapsado muda. */
+  /** Emite o novo valor booleano quando o estado expandido/colapsado alterna. */
   readonly toggle = output<boolean>();
 
-  /** Estado interno refletindo o input expanded. */
-  protected readonly state = signal<PakiSidenavState>({ expanded: false });
+  /** Emite quando o sidenav entra no estado expandido. */
+  readonly opened = output<void>();
+
+  /** Emite quando o sidenav entra no estado colapsado. */
+  readonly closed = output<void>();
+
+  /** Valor anterior de expanded para evitar emissão na inicialização. */
+  private readonly previousExpanded = signal<boolean | null>(null);
+
+  constructor() {
+    effect(() => {
+      const current = this.expanded();
+      const previous = this.previousExpanded();
+
+      if (previous !== null && current !== previous) {
+        this.toggle.emit(current);
+
+        if (current) {
+          this.opened.emit();
+        } else {
+          this.closed.emit();
+        }
+      }
+
+      this.previousExpanded.set(current);
+    });
+  }
 
   /** Guarda o estado de expansão de cada grupo pelo índice do item. */
   private readonly groupStates = new Map<number, WritableSignal<boolean>>();
