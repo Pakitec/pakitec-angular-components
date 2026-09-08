@@ -194,11 +194,17 @@
     },
     "TASK-010": {
       "issueKey": "SCRUM-1016",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:26:58-03:00",
+      "finishedAt": "2026-09-07T22:28:24-03:00",
+      "observation": "Export adicionado em ordem alfabética no barrel. public-api.ts já reexporta. Build gerou FESM e tipos sem erros.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/lib/components/index.ts"
+      ],
+      "validations": [
+        "npm run build: Built pakitec-angular-components successfully; FESM and DTS bundles generated"
+      ]
     },
     "TASK-011": {
       "issueKey": "SCRUM-1017",
