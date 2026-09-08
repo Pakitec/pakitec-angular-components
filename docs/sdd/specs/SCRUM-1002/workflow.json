@@ -176,11 +176,21 @@
     },
     "TASK-009": {
       "issueKey": "SCRUM-1015",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-07T22:23:28-03:00",
+      "finishedAt": "2026-09-07T22:26:34-03:00",
+      "observation": "Story do Storybook verificada e completada com variações Collapsed, GroupClosed e ActiveItem, além do Playground expandido. Tema claro/escuro via toolbar global. build-storybook, storybook, test e build passaram.",
+      "filesChanged": [
+        "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+        "projects/pakitec-angular-components/documentation.json"
+      ],
+      "validations": [
+        "npm run build-storybook: completed successfully",
+        "npm run storybook: started successfully (HTTP 200)",
+        "npm run test: 45 passed (12 files)",
+        "npm run build: completed successfully"
+      ]
     },
     "TASK-010": {
       "issueKey": "SCRUM-1016",
