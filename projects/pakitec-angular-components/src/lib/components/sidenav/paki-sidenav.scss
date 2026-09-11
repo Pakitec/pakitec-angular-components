@@ -90,6 +90,22 @@
   width: 16px;
 }
 
+.paki-sidenav__fallback-icon {
+  align-items: center;
+  background: var(--color-accent-tint);
+  border-radius: 50%;
+  color: var(--color-accent);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 700;
+  height: 16px;
+  justify-content: center;
+  line-height: 1;
+  text-transform: uppercase;
+  width: 16px;
+}
+
 .paki-sidenav__chevron {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
@@ -106,6 +122,25 @@
   padding: 0 0 0 16px;
 
   &[hidden] {
+    display: none;
+  }
+}
+
+:host(:not(.paki-sidenav--expanded)) {
+  .paki-sidenav__list {
+    padding: 8px;
+  }
+
+  .paki-sidenav__link,
+  .paki-sidenav__text,
+  .paki-sidenav__group-header {
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .paki-sidenav__label,
+  .paki-sidenav__chevron,
+  .paki-sidenav__group-children {
     display: none;
   }
 }

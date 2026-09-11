@@ -8,12 +8,16 @@
             class="paki-sidenav__group-header"
             [attr.aria-expanded]="groupExpanded(index, item.expanded ?? false)()"
             [attr.aria-controls]="'paki-sidenav-group-' + index + '-children'"
+            [attr.aria-label]="item.label"
+            [attr.title]="expanded() ? null : item.label"
             (click)="toggleGroup(index, item.expanded ?? false)"
           >
             @if (item.icon) {
               <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+            } @else {
+              <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
             }
-            {{ item.label }}
+            <span class="paki-sidenav__label">{{ item.label }}</span>
             <span class="paki-sidenav__chevron" aria-hidden="true"></span>
           </button>
           @if (groupExpanded(index, item.expanded ?? false)()) {
@@ -32,15 +36,19 @@
                     >
                       @if (child.icon) {
                         <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      } @else {
+                        <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ child.label.charAt(0) }}</span>
                       }
-                      {{ child.label }}
+                      <span class="paki-sidenav__label">{{ child.label }}</span>
                     </a>
                   } @else {
                     <span class="paki-sidenav__text">
                       @if (child.icon) {
                         <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                      } @else {
+                        <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ child.label.charAt(0) }}</span>
                       }
-                      {{ child.label }}
+                      <span class="paki-sidenav__label">{{ child.label }}</span>
                     </span>
                   }
                 </li>
@@ -54,18 +62,24 @@
               [routerLink]="item.route"
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
+              [attr.aria-label]="item.label"
+              [attr.title]="expanded() ? null : item.label"
             >
               @if (item.icon) {
                 <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+              } @else {
+                <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
               }
-              {{ item.label }}
+              <span class="paki-sidenav__label">{{ item.label }}</span>
             </a>
           } @else {
             <span class="paki-sidenav__text">
               @if (item.icon) {
                 <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+              } @else {
+                <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
               }
-              {{ item.label }}
+              <span class="paki-sidenav__label">{{ item.label }}</span>
             </span>
           }
         }
