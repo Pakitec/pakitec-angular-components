@@ -8,6 +8,8 @@ export * from './module-tabs/paki-module-tabs';
 export * from './page-header/paki-page-header';
 export * from './pagination/paki-pagination';
 export * from './select/paki-select.component';
+export * from './skeleton/paki-skeleton';
 export * from './sidenav/paki-sidenav';
+export * from './placeholder/paki-placeholder';
 export * from './switch/paki-switch';
 export * from './textarea/paki-textarea';

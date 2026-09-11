@@ -1,0 +1,3 @@
+import { TestBed } from '@angular/core/testing';
+import { PakiPlaceholder } from './paki-placeholder';
+describe('PakiPlaceholder', () => { it('renders title and optional description', async () => { await TestBed.configureTestingModule({ imports: [PakiPlaceholder] }).compileComponents(); const fixture = TestBed.createComponent(PakiPlaceholder); fixture.componentRef.setInput('title', 'Nenhum pedido'); fixture.componentRef.setInput('description', 'Crie o primeiro pedido para começar.'); fixture.detectChanges(); expect(fixture.nativeElement.textContent).toContain('Nenhum pedido'); expect(fixture.nativeElement.textContent).toContain('Crie o primeiro pedido para começar.'); }); });

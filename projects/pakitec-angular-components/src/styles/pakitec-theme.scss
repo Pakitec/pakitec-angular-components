@@ -157,23 +157,49 @@ input[type='file']:disabled::file-selector-button {
 .paki-button--primary {
   background: var(--color-accent);
   color: var(--neutral-0);
+  --paki-button-content-color: var(--neutral-0);
 }
 .paki-button--secondary {
   background: var(--color-accent-tint);
   color: var(--color-accent);
+  --paki-button-content-color: var(--color-accent);
 }
 .paki-button--outline {
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border-default);
   color: var(--color-text-primary);
+  --paki-button-content-color: var(--color-text-primary);
 }
 .paki-button--ghost {
   background: transparent;
   color: var(--color-accent);
+  --paki-button-content-color: var(--color-accent);
 }
 .paki-button--danger {
   background: var(--error-500);
   color: var(--neutral-0);
+  --paki-button-content-color: var(--neutral-0);
+}
+.paki-button--loading {
+  color: transparent;
+  cursor: wait;
+  pointer-events: none;
+  position: relative;
+}
+.paki-button--loading::after {
+  animation: paki-button-spinner 0.7s linear infinite;
+  border: 2px solid var(--paki-button-content-color, var(--color-text-primary));
+  border-right-color: transparent;
+  border-radius: 50%;
+  content: '';
+  height: 1em;
+  position: absolute;
+  width: 1em;
+}
+@keyframes paki-button-spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .list-feedback {

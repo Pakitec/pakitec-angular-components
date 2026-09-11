@@ -1,0 +1,3 @@
+import { TestBed } from '@angular/core/testing';
+import { PakiSkeleton } from './paki-skeleton';
+describe('PakiSkeleton', () => { it('renders the configured shape and dimensions', async () => { await TestBed.configureTestingModule({ imports: [PakiSkeleton] }).compileComponents(); const fixture = TestBed.createComponent(PakiSkeleton); fixture.componentRef.setInput('shape', 'circle'); fixture.componentRef.setInput('width', '40px'); fixture.detectChanges(); const element = fixture.nativeElement as HTMLElement; expect(element.classList).toContain('paki-skeleton--circle'); expect(element.style.width).toBe('40px'); expect(element.getAttribute('aria-busy')).toBe('true'); }); });
