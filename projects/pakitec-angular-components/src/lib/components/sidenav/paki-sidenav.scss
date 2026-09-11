@@ -15,6 +15,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  transition: width 220ms cubic-bezier(0.2, 0, 0, 1);
   width: var(--paki-sidenav-width);
 }
 
@@ -92,6 +93,19 @@
   width: 16px;
 }
 
+.paki-sidenav__label,
+.paki-sidenav__chevron {
+  transition:
+    max-width 180ms ease,
+    opacity 140ms ease;
+}
+
+.paki-sidenav__label {
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .icon-dashboard::before {
   content: '▦';
 }
@@ -126,7 +140,15 @@
 .paki-sidenav__group-children {
   list-style: none;
   margin: 0;
+  max-height: 400px;
+  opacity: 1;
+  overflow: hidden;
   padding: 0 0 0 16px;
+  transition:
+    max-height 180ms ease,
+    opacity 140ms ease,
+    padding 180ms ease,
+    visibility 0s;
 
   &[hidden] {
     display: none;
@@ -146,8 +168,26 @@
   }
 
   .paki-sidenav__label,
+  .paki-sidenav__chevron {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .paki-sidenav__group-children {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paki-sidenav,
+  .paki-sidenav__label,
   .paki-sidenav__chevron,
   .paki-sidenav__group-children {
-    display: none;
+    transition: none;
   }
 }
