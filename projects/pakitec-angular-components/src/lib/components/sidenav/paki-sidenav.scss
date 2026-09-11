@@ -177,8 +177,13 @@
   .paki-sidenav__label,
   .paki-sidenav__chevron {
     max-width: 0;
+    min-width: 0;
     opacity: 0;
     overflow: hidden;
+  }
+
+  .paki-sidenav__chevron {
+    display: none;
   }
 
   .paki-sidenav__group-children {
