@@ -7,7 +7,7 @@ Catálogo visual: https://leonardoaa.github.io/pakitec-angular-components/
 ## Uso
 
 ```bash
-npm install github:Pakitec/pakitec-angular-components#v0.3.0
+npm install github:Pakitec/pakitec-angular-components#v0.3.1
 ```
 
 O pacote é distribuído exclusivamente pelo GitHub. Fixe sempre uma tag de
