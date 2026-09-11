@@ -9,7 +9,6 @@
             [attr.aria-expanded]="groupExpanded(index, item.expanded ?? false)()"
             [attr.aria-controls]="'paki-sidenav-group-' + index + '-children'"
             [attr.aria-label]="item.label"
-            [attr.title]="expanded() ? null : item.label"
             (click)="toggleGroup(index, item.expanded ?? false)"
           >
             @if (item.icon) {
@@ -57,7 +56,6 @@
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
               [attr.aria-label]="item.label"
-              [attr.title]="expanded() ? null : item.label"
             >
               @if (item.icon) {
                 <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>

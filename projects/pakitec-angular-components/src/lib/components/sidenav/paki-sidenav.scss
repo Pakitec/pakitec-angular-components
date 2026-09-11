@@ -166,8 +166,11 @@
   .paki-sidenav__link,
   .paki-sidenav__text,
   .paki-sidenav__group-header {
+    height: 32px;
     justify-content: center;
-    padding: 10px;
+    margin-inline: auto;
+    padding: 0;
+    width: 32px;
   }
 
   .paki-sidenav__label,
