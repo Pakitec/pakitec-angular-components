@@ -70,6 +70,7 @@ Regras da macro `mermaidjs`:
 - `diagramDefinition`: o codigo Mermaid inteiro, serializado como string JSON (use um serializador JSON; nunca cole quebras de linha ou aspas cruas dentro do JSON).
 - `fileName`, `ac:local-id` e `ac:macro-id`: derive de um hash (ex.: SHA-256) do proprio `theme`+diagrama, para que um diagrama inalterado gere sempre o mesmo storage (sem diffs espurios ao re-executar). Use `mermaid_<hash16>` no fileName e dois ids distintos (`<hash>|local` e `<hash>|macro`). Nao use timestamp nem UUID aleatorio.
 - `theme`: `default` ou `dark`. `version`: `2`.
+- Sintaxe do diagrama: em rotulos de aresta (entre `|...|`) evite `*`, parenteses e outros caracteres especiais, que quebram o parser do Mermaid (barras e dois-pontos sao aceitos); rotulos de no devem ficar entre aspas (`N["texto (ok)"]`). Prefira texto simples em arestas para evitar "Syntax error in text".
 - Requer o app de Mermaid instalado no site; sem ele, o diagrama nao renderiza.
 
 Pagina-HUB (produto). Titulo = nome do produto (ex.: "Pakitec Amora"). Secoes obrigatorias:

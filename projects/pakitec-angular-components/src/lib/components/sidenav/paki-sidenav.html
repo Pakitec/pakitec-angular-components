@@ -8,12 +8,13 @@
             class="paki-sidenav__group-header"
             [attr.aria-expanded]="groupExpanded(index, item.expanded ?? false)()"
             [attr.aria-controls]="'paki-sidenav-group-' + index + '-children'"
+            [attr.aria-label]="item.label"
             (click)="toggleGroup(index, item.expanded ?? false)"
           >
             @if (item.icon) {
-              <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+              <span [class]="'paki-sidenav__icon ' + item.icon" aria-hidden="true"></span>
             }
-            {{ item.label }}
+            <span class="paki-sidenav__label">{{ item.label }}</span>
             <span class="paki-sidenav__chevron" aria-hidden="true"></span>
           </button>
           @if (groupExpanded(index, item.expanded ?? false)()) {
@@ -31,16 +32,16 @@
                       ariaCurrentWhenActive="page"
                     >
                       @if (child.icon) {
-                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                        <span [class]="'paki-sidenav__icon ' + child.icon" aria-hidden="true"></span>
                       }
-                      {{ child.label }}
+                      <span class="paki-sidenav__label">{{ child.label }}</span>
                     </a>
                   } @else {
                     <span class="paki-sidenav__text">
                       @if (child.icon) {
-                        <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
+                        <span [class]="'paki-sidenav__icon ' + child.icon" aria-hidden="true"></span>
                       }
-                      {{ child.label }}
+                      <span class="paki-sidenav__label">{{ child.label }}</span>
                     </span>
                   }
                 </li>
@@ -54,18 +55,19 @@
               [routerLink]="item.route"
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
+              [attr.aria-label]="item.label"
             >
               @if (item.icon) {
-                <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+                <span [class]="'paki-sidenav__icon ' + item.icon" aria-hidden="true"></span>
               }
-              {{ item.label }}
+              <span class="paki-sidenav__label">{{ item.label }}</span>
             </a>
           } @else {
             <span class="paki-sidenav__text">
               @if (item.icon) {
-                <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
+                <span [class]="'paki-sidenav__icon ' + item.icon" aria-hidden="true"></span>
               }
-              {{ item.label }}
+              <span class="paki-sidenav__label">{{ item.label }}</span>
             </span>
           }
         }

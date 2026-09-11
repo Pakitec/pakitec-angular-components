@@ -5,7 +5,7 @@
 
 `TASK-ID [P?] [US-ID] Descricao com path exato`
 
-`[P]` significa execucao paralela segura: arquivos diferentes e nenhuma dependencia pendente.
+`[P]` marca execucao paralela potencialmente segura: arquivos diferentes e nenhuma dependencia pendente. O build so honra `[P]` quando iniciado com `--parallel`; por padrao a execucao e sequencial e `[P]` e apenas informativo.
 
 ## Fase 1 - Setup/Fundacao
 
@@ -30,10 +30,15 @@ Inclua somente o necessario para desbloquear jornadas.
 
 Repita por `US-*` em ordem de prioridade, preservando checkpoints anteriores.
 
+## Evidencia visual (quando aplicavel)
+
+Inclua tarefas de evidencia visual somente quando a issue tem requisito de frontend. Cada criterio `AC-*` visual precisa de uma evidencia oficial validada por caminho seguro e publicada sem Base64. O gate de QA bloqueia `QA_PASSED` sem a evidencia oficial obrigatoria ou com o servidor de navegador incompativel. Issues sem frontend ignoram esta secao.
+
 ## Fase final - Polish e validacao
 
 - [ ] Executar comandos do plano.
 - [ ] Confirmar estrutura, documentacao e ausencia de overengineering.
+- [ ] Quando houver requisito visual, confirmar evidencia oficial publicada e gate de QA satisfeito.
 
 ## Contrato de cada tarefa
 

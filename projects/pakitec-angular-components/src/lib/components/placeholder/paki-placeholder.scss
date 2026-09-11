@@ -1,0 +1,2 @@
+:host { align-items: center; border: 1px dashed var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 8px; justify-content: center; min-height: 180px; padding: 24px; text-align: center; }
+strong { color: var(--color-text-primary); font-size: 14px; } p { font-size: 12px; margin: 0; max-width: 420px; } .paki-placeholder__icon:empty, .paki-placeholder__actions:empty { display: none; } .paki-placeholder__actions { margin-top: 8px; }

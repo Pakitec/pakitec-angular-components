@@ -39,6 +39,7 @@ Nenhum diretorio de issue, `workflow.json`, planejamento ou build pode ser inici
   "lastStablePhase": "SPEC",
   "buildStartedAt": "ISO-8601",
   "buildFinishedAt": "ISO-8601",
+  "buildConcurrency": "sequential",
   "jira": { "profileId": "perfil", "projectKey": "PROJ" },
   "refinement": { "verdict": "PASS", "issueHash": "sha256", "checkedAt": "ISO-8601", "warnings": [] },
   "hashes": { "issue": "sha256", "assetsManifest": "sha256", "spec": "sha256", "checklist": "sha256", "research": "sha256", "plan": "sha256", "tasks": "sha256" },
@@ -68,7 +69,7 @@ Durante BUILD, `buildStartedAt`, `buildFinishedAt`, `subtasks.*.startedAt`, `sub
 - Subtask: evento de inicio antes do agente; bloqueio/falha imediato; conclusao somente depois de validacao.
 - `eventKey` usa issue, `runId`, revisao, tarefa, tentativa e evento. Reutilize a mesma chave em retry.
 - QA: em `FAIL` com correcoes minimas dentro do escopo, o orquestrador executa ate 3 ciclos de correcao por build; cada ciclo incrementa `qa.attempts` e registra `TASK_PROGRESS` na subtarefa de QA com o ciclo `N/3` e os achados. `QA_FAILED` e terminal: ciclos esgotados, mudanca de escopo ou bloqueio.
-- Tarefas `[P]` do mesmo lote podem executar em paralelo (maximo 3), cada uma em worktree proprio; a integracao dos worktrees e sequencial, na ordem das tarefas, apos todo o lote retornar.
+- O build e sequencial por padrao: uma tarefa por vez, integrando o worktree de cada tarefa na branch de trabalho antes de iniciar a proxima; `[P]` e apenas informativo. Somente com `buildConcurrency: parallel` (flag `--parallel` no `/sdd-build`) as tarefas `[P]` do mesmo lote executam em paralelo (maximo 3), cada uma em worktree proprio, com integracao sequencial na ordem das tarefas apos todo o lote retornar.
 - Somente rede, timeout, 429 e 5xx permitem uma repeticao. Configuracao, permissao, agente inexistente, artefato ou validacao bloqueiam imediatamente.
 - Comentarios incluem paths relativos, validacoes resumidas, blockers e proximo passo; nunca logs brutos, diff, Base64 ou segredos.
 - O ultimo `BUILD_COMPLETED` inclui um resumo textual com tempos, tarefas, QA e validacoes, publicado como comentario na issue. As notificacoes Slack sao automaticas do servidor conforme `SLACK_NOTIFY_EVENTS` (por padrao `TASK_COMPLETED`, `QA_FAILED`, `BUILD_BLOCKED` e `BUILD_COMPLETED`). `BUILD_BLOCKED` nao inclui resumo completo, apenas o evento com blockers.

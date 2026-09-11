@@ -1,7 +1,7 @@
 :host {
   display: block;
   height: 100%;
-  --paki-sidenav-width: 64px;
+  --paki-sidenav-width: 48px;
 }
 
 :host(.paki-sidenav--expanded) {
@@ -15,10 +15,13 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  transition: width 220ms cubic-bezier(0.2, 0, 0, 1);
   width: var(--paki-sidenav-width);
 }
 
 .paki-sidenav__list {
+  display: grid;
+  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 8px;
@@ -82,12 +85,49 @@
 }
 
 .paki-sidenav__icon {
+  align-items: center;
   display: inline-flex;
   flex: 0 0 auto;
   font-size: 16px;
   height: 16px;
+  justify-content: center;
   line-height: 1;
+  text-align: center;
   width: 16px;
+}
+
+.paki-sidenav__label,
+.paki-sidenav__chevron {
+  transition:
+    max-width 180ms ease,
+    opacity 140ms ease;
+}
+
+.paki-sidenav__label {
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.icon-dashboard::before {
+  content: '▦';
+}
+
+.icon-reports::before {
+  content: '≡';
+}
+
+.icon-settings::before,
+.icon-general::before {
+  content: '⚙';
+}
+
+.icon-users::before {
+  content: '◉';
+}
+
+.icon-help::before {
+  content: '?';
 }
 
 .paki-sidenav__chevron {
@@ -103,9 +143,63 @@
 .paki-sidenav__group-children {
   list-style: none;
   margin: 0;
+  max-height: 400px;
+  opacity: 1;
+  overflow: hidden;
   padding: 0 0 0 16px;
+  transition:
+    max-height 180ms ease,
+    opacity 140ms ease,
+    padding 180ms ease,
+    visibility 0s;
 
   &[hidden] {
     display: none;
+  }
+}
+
+:host(:not(.paki-sidenav--expanded)) {
+  .paki-sidenav__list {
+    padding: 4px;
+  }
+
+  .paki-sidenav__link,
+  .paki-sidenav__text,
+  .paki-sidenav__group-header {
+    gap: 0;
+    height: 32px;
+    justify-content: center;
+    margin-inline: auto;
+    padding: 0;
+    width: 32px;
+  }
+
+  .paki-sidenav__label,
+  .paki-sidenav__chevron {
+    max-width: 0;
+    min-width: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .paki-sidenav__chevron {
+    display: none;
+  }
+
+  .paki-sidenav__group-children {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paki-sidenav,
+  .paki-sidenav__label,
+  .paki-sidenav__chevron,
+  .paki-sidenav__group-children {
+    transition: none;
   }
 }

@@ -22,6 +22,7 @@ Regras da macro `mermaidjs`:
 - `diagramDefinition`: o codigo Mermaid inteiro, serializado como string JSON (use um serializador JSON; nunca cole quebras de linha ou aspas cruas dentro do JSON).
 - `fileName`, `ac:local-id` e `ac:macro-id`: derive de um hash (ex.: SHA-256) do proprio `theme`+diagrama, para que um diagrama inalterado gere sempre o mesmo storage (sem diffs espurios ao re-executar). Use `mermaid_<hash16>` no fileName e dois ids distintos (`<hash>|local` e `<hash>|macro`). Nao use timestamp nem UUID aleatorio.
 - `theme`: `default` ou `dark`. `version`: `2`.
+- Sintaxe do diagrama: em rotulos de aresta (entre `|...|`) evite `*`, parenteses e outros caracteres especiais, que quebram o parser do Mermaid (barras e dois-pontos sao aceitos); rotulos de no devem ficar entre aspas (`N["texto (ok)"]`). Prefira texto simples em arestas para evitar "Syntax error in text".
 - Requer o app de Mermaid instalado no site; sem ele, o diagrama nao renderiza.
 
 Pagina-HUB (produto). Titulo = nome do produto (ex.: "Pakitec Amora"). Secoes obrigatorias:
@@ -46,6 +47,17 @@ Pagina-FILHA (um por projeto). Titulo = nome do projeto. Fica sob o HUB via `par
 10. Dependencias: outros projetos do grupo que consome ou expoe.
 
 Regras de conteudo: preencha somente com fatos observados no repositorio e nos arquivos locais. Nunca invente segredos, URLs, endpoints ou regras de negocio; quando uma secao nao tiver fonte, registre "Nao identificado" em vez de inventar.
+
+Padrao de escrita clara (PT-BR), inspirado no ASD-STE100 e na ABNT NBR ISO 24495-1. Aplica-se a toda prosa que voce produzir: documentacao, spec, plano, pesquisa, comentarios de codigo e docstrings. A referencia completa esta em `docs/constitution.md`.
+
+- Escreva para humanos, em voz ativa e frases curtas: ate 25 palavras, uma ideia por frase.
+- Use verbos especificos: cria, remove, busca, envia, valida, calcula, converte, autentica, atualiza, sincroniza. Evite: realiza, efetua, procede, executa, manipula.
+- Evite palavras vazias: devidamente, corretamente, basicamente, simplesmente, supracitado, "atraves de" (use "por" ou "com"), "eventualmente" no sentido de "talvez".
+- Use sempre o mesmo termo para o mesmo conceito; siga o glossario do projeto e nao alterne sinonimos (usuario/cliente/operador).
+- Explique cada sigla na primeira ocorrencia — CPF (Cadastro de Pessoas Fisicas) — e depois use so a sigla.
+- Comentarios explicam o porque, a regra de negocio, decisoes e limitacoes; nunca repita o codigo nem documente o obvio.
+- Documente comportamento de API no padrao da linguagem (TSDoc, JSDoc, JavaDoc, DartDoc, docstrings Python): proposito, parametros, retorno, excecoes e efeitos colaterais.
+- Antes de concluir, cada texto deve responder: o que faz, quando usar, o que recebe, o que retorna, o que pode dar errado e quais regras de negocio ou efeitos colaterais existem.
 
 Fluxo:
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "catalogVersion": "2.11.0",
+  "catalogVersion": "2.14.1",
   "detectedTemplates": [
     "angular"
   ],
@@ -56,10 +56,10 @@
       }
     },
     "sdd-build": {
-      "version": "3.0.0",
+      "version": "3.1.1",
       "partHashes": {
-        "text:start:command.sdd-build": "7ba86f6816803bef650b0163f69a9623edeec149e392547dd3900f27a92bc65f",
-        "section:command.sdd-build": "00ceaffc1f2727c8663878644de21ddd0ba4ebc21d0e225c729fc1695d94fe7c",
+        "text:start:command.sdd-build": "26697e81408244899000bac7fd209408ab5f843171d046fd1cacc693c2fa3193",
+        "section:command.sdd-build": "fa695943b21a43e96d362b8ad2ffdac69620205e457461f347912491a8fcf096",
         "text:command.sdd-build:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -67,17 +67,17 @@
       "version": "1.0.0",
       "partHashes": {
         "text:start:command.sdd-doc": "99edbba8b58f397ab5415f46172e41be29e2d50f729baf3238f622a13487deea",
-        "section:command.sdd-doc": "a0b45651e707fe33689d6ed859c3eb2387c92195124ad4c56befd77b5b92ba08",
+        "section:command.sdd-doc": "ee89bd7549a9a47315d25a206b476c53395f6f51d78f2847e752894fd763bfe9",
         "text:command.sdd-doc:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     }
   },
   "agents": {
     "sdd-orchestrator": {
-      "version": "3.9.0",
+      "version": "3.10.1",
       "partHashes": {
         "text:start:agent.sdd-orchestrator": "aef513376d2931999da38d34d7bd7012464e74d23b3fd1cbb0515f88ab9c32f0",
-        "section:agent.sdd-orchestrator": "18a9bc2f4333829647a36ff084e453269a30ced2aedb313f4edbe2895ae11ac1",
+        "section:agent.sdd-orchestrator": "a0595d5e37c716f867954a23525f3e0a140c224fd23f7794da893f282a9c2356",
         "text:agent.sdd-orchestrator:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -90,26 +90,26 @@
       }
     },
     "sdd-spec-writer": {
-      "version": "2.2.0",
+      "version": "2.3.0",
       "partHashes": {
         "text:start:agent.sdd-spec-writer": "0eb85b8d2a1be45fb70257fb9f5bbe44e05569b83788a1f28cb08838b3707ba1",
-        "section:agent.sdd-spec-writer": "c3492fa2e4095d459a610b9a7b3b01f47ff1a861ffbe467b4a93c1e5a8d679fb",
+        "section:agent.sdd-spec-writer": "094c8189f26a99ead13bd471bb85d10a0d54f993ad0aa76fcdd21de2fc458dc0",
         "text:agent.sdd-spec-writer:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
     "sdd-researcher": {
-      "version": "1.3.0",
+      "version": "1.5.0",
       "partHashes": {
-        "text:start:agent.sdd-researcher": "54139450d2b74267817ff5705c4f9404e290b739831392834e370961c54b054a",
-        "section:agent.sdd-researcher": "13ac9c9366a953d1f2e0c3c694caf1b6cad6c49a33e30981733676674aea518d",
+        "text:start:agent.sdd-researcher": "791ee03ff510f55d71ac67d4502db8a34dcbbc5af02c03d3b839829a1e215522",
+        "section:agent.sdd-researcher": "5dde3d39a48813ebc10fc74e1d06959e61aea9cddf1bed7eb75c1945808e9d85",
         "text:agent.sdd-researcher:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
     "sdd-planner": {
-      "version": "2.0.0",
+      "version": "2.1.1",
       "partHashes": {
         "text:start:agent.sdd-planner": "c134aa5f5063d645cd3693fb24920df3caa71cd74481f388e47d200968079abd",
-        "section:agent.sdd-planner": "059d7b06b9bb62d26feaf07450dc72c8bcd0a881513774eda459a7c87863cb33",
+        "section:agent.sdd-planner": "ff0b6a72eff33b1909d04be159395b7b723588d6eb9cc795f92764bc32781a96",
         "text:agent.sdd-planner:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -122,10 +122,10 @@
       }
     },
     "sdd-implementer": {
-      "version": "2.4.0",
+      "version": "2.5.0",
       "partHashes": {
         "text:start:agent.sdd-implementer": "d3509dd6c66b9c342f74881fad036582cba47eb66e2ca86aa2cc4de9784332c4",
-        "section:agent.sdd-implementer": "09af09ad4f91945f3a928158398ff6eae59ac495f04da794e6f6c1738de8665a",
+        "section:agent.sdd-implementer": "57a34f43c685962bf12e05788dae0a3180a8bde545ee78c5196190c74a01ba33",
         "text:agent.sdd-implementer:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -137,6 +137,14 @@
         "text:agent.sdd-qa-reviewer:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
+    "sdd-visual-qa": {
+      "version": "1.0.1",
+      "partHashes": {
+        "text:start:agent.sdd-visual-qa": "f1175523b714f1ecdde515eab8c448867363ab5406a612766780a078768b7210",
+        "section:agent.sdd-visual-qa": "e90e8b763666dc29d1281c8f69b97afe8d7b7467f41859a95af57891e7e04ea3",
+        "text:agent.sdd-visual-qa:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      }
+    },
     "sdd-code-review": {
       "version": "1.1.0",
       "partHashes": {
@@ -146,20 +154,20 @@
       }
     },
     "sdd-doc-writer": {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "partHashes": {
         "text:start:agent.sdd-doc-writer": "4ae99b89959a7cbde447e0ed0e25ba1c95d34e14614140addd27f54cf0e05715",
-        "section:agent.sdd-doc-writer": "15220d1cbd94f4778a8833812659ca17ebf8b7b39ba475ffb17a1bdc174c8cd6",
+        "section:agent.sdd-doc-writer": "cc6f9ce903541be5bf9f6e6fe68cae4ea269e62bb8908aa07b89d0a3fbc72b6f",
         "text:agent.sdd-doc-writer:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     }
   },
   "artifacts": {
     "specs-readme": {
-      "version": "3.5.0",
+      "version": "3.6.0",
       "partHashes": {
         "text:start:specs.workflow-contract": "bace44287a4166f7739cb3c175e0f87bf5b788e08d46740a474975b3571febf3",
-        "section:specs.workflow-contract": "45bbd9fa8e5310426ded61fd77648f918309056256cbacb0ddf28552a02b1427",
+        "section:specs.workflow-contract": "b195970be0210e6e550bb217cea850b5e8ff7016c8d7bfd749664b0d22c73abd",
         "text:specs.workflow-contract:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -188,18 +196,18 @@
       }
     },
     "plan-template": {
-      "version": "2.0.0",
+      "version": "2.1.1",
       "partHashes": {
         "text:start:specs.plan-template": "4f5921fa3c8c8ce5d30944e6932b3189a5b353156f8a8f3f86c0290bc61e8c6d",
-        "section:specs.plan-template": "a9a3bb7f5e4d5d3b18306c7a7fc872a6beeb4c63c31430bdcbee08cb58219672",
+        "section:specs.plan-template": "48c23da5e4078bee4dfdfc5b093f321406149fb5f8ddb2b38fbe2b3a30d60fe5",
         "text:specs.plan-template:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
     "tasks-template": {
-      "version": "2.0.0",
+      "version": "2.2.0",
       "partHashes": {
         "text:start:specs.tasks-template": "a3631602f10eb857405525dcb5f8a61ba1e65f4432a95b5a815df5279cb2523f",
-        "section:specs.tasks-template": "bc2312d1fc9b87dcc49bc931e5dbc756bd1cc018a3740b0a71635d60c07e5584",
+        "section:specs.tasks-template": "9ebd3ba683cdbd2438b66bfad5915c3f9fb586952ff5fdfeea8614baf6eb143c",
         "text:specs.tasks-template:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -212,10 +220,10 @@
       }
     },
     "qa-template": {
-      "version": "1.0.0",
+      "version": "1.1.0",
       "partHashes": {
         "text:start:specs.qa-template": "cf7d3c8b97372c841da709afeceb4c3044237d9aa49011e2df83da200a1120df",
-        "section:specs.qa-template": "d8e2a752de7e577448ff34240489a17394ff4fa4ea797661093d621a1f9f1b14",
+        "section:specs.qa-template": "4cbad5a40ef9864a27649071b85021480ef3a4807e5809dc9354756f7cf8b2dc",
         "text:specs.qa-template:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -228,5 +236,5 @@
       }
     }
   },
-  "appliedAt": "2026-08-24T20:15:34.320Z"
+  "appliedAt": "2026-09-08T00:30:03.045Z"
 }
