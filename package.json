@@ -1,5 +1,5 @@
 {
-  "name": "pakitec-angular-components",
+  "name": "pakitec-angular-components-workspace",
   "version": "0.2.0",
   "scripts": {
     "ng": "ng",
@@ -11,28 +11,7 @@
     "build-storybook": "ng run pakitec-angular-components:build-storybook",
     "prepare": "npm run build"
   },
-  "private": false,
-  "files": [
-    "dist/pakitec-angular-components"
-  ],
-  "type": "module",
-  "module": "dist/pakitec-angular-components/fesm2022/pakitec-angular-components.mjs",
-  "types": "dist/pakitec-angular-components/types/pakitec-angular-components.d.ts",
-  "sass": "dist/pakitec-angular-components/src/styles/pakitec-theme.scss",
-  "exports": {
-    ".": {
-      "types": "./dist/pakitec-angular-components/types/pakitec-angular-components.d.ts",
-      "default": "./dist/pakitec-angular-components/fesm2022/pakitec-angular-components.mjs"
-    },
-    "./styles/pakitec-theme": {
-      "sass": "./dist/pakitec-angular-components/src/styles/pakitec-theme.scss",
-      "default": "./dist/pakitec-angular-components/src/styles/pakitec-theme.scss"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": [
-    "**/*.scss"
-  ],
+  "private": true,
   "packageManager": "npm@10.9.8",
   "dependencies": {
     "@angular/cdk": "^22.1.3",
