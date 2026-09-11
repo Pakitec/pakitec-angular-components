@@ -85,11 +85,14 @@
 }
 
 .paki-sidenav__icon {
+  align-items: center;
   display: inline-flex;
   flex: 0 0 auto;
   font-size: 16px;
   height: 16px;
+  justify-content: center;
   line-height: 1;
+  text-align: center;
   width: 16px;
 }
 
