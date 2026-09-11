@@ -305,17 +305,34 @@
     "directives": [
         {
             "name": "PakiButton",
-            "id": "directive-PakiButton-b67327faa1b65a6fa7510aff13783407cf7e6ba606e7f8a32c966a468495b8d80fc11f75b6f7b00c9558648e92aff5b943fbb53ba455eb8ef10441172c1ea873",
+            "id": "directive-PakiButton-a77e0533023edeac0405e981f4669054db173eeba7664810a4b1c4c588cedbfa95e227ad645f443c2f5c07179811af042a2497d2cb81fdc3b51e3b3aa2161877",
             "file": "projects/pakitec-angular-components/src/lib/components/button/paki-button.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Directive, input } from '@angular/core';\n\nexport type PakiButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';\nexport type PakiButtonSize = 'sm' | 'md' | 'lg';\n\n@Directive({\n  selector: 'button[pakiButton], a[pakiButton]',\n  host: {\n    class: 'paki-button',\n    '[class]': '\"paki-button paki-button--\" + variant() + \" paki-button--\" + size()',\n  },\n})\nexport class PakiButton {\n  readonly variant = input<PakiButtonVariant>('primary');\n  readonly size = input<PakiButtonSize>('md');\n}\n",
+            "sourceCode": "import { Directive, ElementRef, HostListener, effect, inject, input } from '@angular/core';\n\nexport type PakiButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';\nexport type PakiButtonSize = 'sm' | 'md' | 'lg';\n\n@Directive({\n  selector: 'button[pakiButton], a[pakiButton]',\n  host: {\n    class: 'paki-button',\n    '[class]': '\"paki-button paki-button--\" + variant() + \" paki-button--\" + size()',\n    '[class.paki-button--loading]': 'loading()',\n    '[attr.aria-busy]': 'loading() ? \"true\" : null',\n    '[attr.aria-disabled]': 'loading() ? \"true\" : null',\n    '[attr.tabindex]': 'loading() ? \"-1\" : null',\n  },\n})\nexport class PakiButton {\n  private readonly element = inject(ElementRef<HTMLElement>);\n  private wasLoading = false;\n  private disabledBeforeLoading = false;\n\n  readonly variant = input<PakiButtonVariant>('primary');\n  readonly size = input<PakiButtonSize>('md');\n  readonly loading = input(false);\n\n  constructor() {\n    effect(() => {\n      const loading = this.loading();\n      if (loading === this.wasLoading) return;\n\n      const element = this.element.nativeElement;\n      if (element.tagName === 'BUTTON') {\n        const button = element as HTMLButtonElement;\n        if (loading) {\n          this.disabledBeforeLoading = button.disabled;\n          button.disabled = true;\n        } else {\n          button.disabled = this.disabledBeforeLoading;\n        }\n      }\n      this.wasLoading = loading;\n    });\n  }\n\n  @HostListener('click', ['$event'])\n  protected preventClickWhileLoading(event: Event): void {\n    if (!this.loading()) return;\n\n    event.preventDefault();\n    event.stopImmediatePropagation();\n  }\n}\n",
             "selector": "button[pakiButton], a[pakiButton]",
             "providers": [],
             "hostDirectives": [],
             "standalone": true,
             "inputsClass": [
+                {
+                    "name": "loading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
                 {
                     "name": "size",
                     "coverageIgnore": false,
@@ -326,7 +343,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 23,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -343,7 +360,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 14,
+                    "line": 22,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -355,11 +372,137 @@
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
-            "hostListeners": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "hostListeners": [
+                {
+                    "coverageIgnore": false,
+                    "name": "click",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [
+                        "$event"
+                    ],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 46
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "disabledBeforeLoading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "element",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(ElementRef<HTMLElement>)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "wasLoading",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "preventClickWhileLoading",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'click', ['$event']"
+                        }
+                    ],
+                    "modifierKind": [
+                        171,
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "coverageIgnore": false,
             "extends": [],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 24,
+                "rawdescription": "\n"
+            },
             "relationships": {
                 "incoming": [],
                 "outgoing": []
@@ -3002,6 +3145,91 @@
             "templateData": "<nav class=\"pagination\" aria-label=\"Paginação\">\n  <span>{{ range() }}</span>\n  <div>\n    <button type=\"button\" [disabled]=\"page().first\" (click)=\"pageChange.emit(page().number - 1)\">\n      ‹ Anterior\n    </button>\n    <strong>Página {{ page().number }} de {{ page().totalPages || 1 }}</strong>\n    <button type=\"button\" [disabled]=\"page().last\" (click)=\"pageChange.emit(page().number + 1)\">\n      Próxima ›\n    </button>\n  </div>\n</nav>\n"
         },
         {
+            "name": "PakiPlaceholder",
+            "id": "component-PakiPlaceholder-5b68ddd102985c8c1eb0f48ee7996a4b3addf017b6cbd69933e5ab024b4528a7d877644f658a7f04ea79f3c3e8e391c0d6c0b427a38f1c9dc05af2be29e80676",
+            "file": "projects/pakitec-angular-components/src/lib/components/placeholder/paki-placeholder.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "paki-placeholder",
+            "styleUrls": [
+                "./paki-placeholder.scss"
+            ],
+            "styles": [],
+            "template": "<div class=\"paki-placeholder__icon\" aria-hidden=\"true\"><ng-content select=\"[pakiPlaceholderIcon]\" /></div><strong>{{ title() }}</strong>@if (description()) { <p>{{ description() }}</p> }<div class=\"paki-placeholder__actions\"><ng-content /></div>",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "description",
+                    "coverageIgnore": false,
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define a orientação complementar exibida abaixo do título.</p>\n",
+                    "line": 12,
+                    "rawdescription": "\nDefine a orientação complementar exibida abaixo do título.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "title",
+                    "coverageIgnore": false,
+                    "defaultValue": "'Nada para mostrar'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define a mensagem principal exibida no estado vazio.</p>\n",
+                    "line": 10,
+                    "rawdescription": "\nDefine a mensagem principal exibida no estado vazio.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input } from '@angular/core';\n@Component({\n  selector: 'paki-placeholder',\n  template: `<div class=\"paki-placeholder__icon\" aria-hidden=\"true\"><ng-content select=\"[pakiPlaceholderIcon]\" /></div><strong>{{ title() }}</strong>@if (description()) { <p>{{ description() }}</p> }<div class=\"paki-placeholder__actions\"><ng-content /></div>`,\n  styleUrl: './paki-placeholder.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiPlaceholder {\n  /** Define a mensagem principal exibida no estado vazio. */\n  readonly title = input('Nada para mostrar');\n  /** Define a orientação complementar exibida abaixo do título. */\n  readonly description = input('');\n}\n",
+            "styleUrl": "./paki-placeholder.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host { align-items: center; border: 1px dashed var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 8px; justify-content: center; min-height: 180px; padding: 24px; text-align: center; }\nstrong { color: var(--color-text-primary); font-size: 14px; } p { font-size: 12px; margin: 0; max-width: 420px; } .paki-placeholder__icon:empty, .paki-placeholder__actions:empty { display: none; } .paki-placeholder__actions { margin-top: 8px; }\n",
+                    "styleUrl": "./paki-placeholder.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
             "name": "PakiSelect",
             "id": "component-PakiSelect-06de8b8dd1a0c62e5f3460c74dd59eebdaf9fdc4476fe838c336d97b68a8f496afb93b8ae5aee70ea810449c6f7452073cf90945ddf29bc741e21ba26cf46021",
             "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
@@ -4145,7 +4373,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: block;\n  height: 100%;\n  --paki-sidenav-width: 64px;\n}\n\n:host(.paki-sidenav--expanded) {\n  --paki-sidenav-width: 240px;\n}\n\n.paki-sidenav {\n  background: var(--color-bg-surface);\n  border-right: 1px solid var(--color-border-subtle);\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n  width: var(--paki-sidenav-width);\n}\n\n.paki-sidenav__list {\n  list-style: none;\n  margin: 0;\n  padding: 8px;\n}\n\n.paki-sidenav__item {\n  border-radius: var(--radius-sm, 4px);\n  color: var(--color-text-secondary);\n  font-size: 13px;\n}\n\n.paki-sidenav__link,\n.paki-sidenav__text,\n.paki-sidenav__group-header {\n  align-items: center;\n  border-radius: inherit;\n  display: flex;\n  gap: 8px;\n  padding: 8px 12px;\n  text-decoration: none;\n}\n\n.paki-sidenav__link {\n  color: inherit;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &.active {\n    background: var(--color-accent-tint);\n    color: var(--color-accent);\n  }\n}\n\n.paki-sidenav__text {\n  color: inherit;\n}\n\n.paki-sidenav__group-header {\n  background: transparent;\n  border: 0;\n  color: inherit;\n  cursor: pointer;\n  text-align: left;\n  width: 100%;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &[aria-expanded='true'] {\n    color: var(--color-text-primary);\n\n    .paki-sidenav__chevron {\n      transform: rotate(180deg);\n    }\n  }\n}\n\n.paki-sidenav__icon {\n  display: inline-flex;\n  flex: 0 0 auto;\n  font-size: 16px;\n  height: 16px;\n  line-height: 1;\n  width: 16px;\n}\n\n.paki-sidenav__chevron {\n  border-left: 4px solid transparent;\n  border-right: 4px solid transparent;\n  border-top: 4px solid currentColor;\n  height: 0;\n  margin-left: auto;\n  transition: transform 0.2s ease;\n  width: 0;\n}\n\n.paki-sidenav__group-children {\n  list-style: none;\n  margin: 0;\n  padding: 0 0 0 16px;\n}\n",
+                    "data": ":host {\n  display: block;\n  height: 100%;\n  --paki-sidenav-width: 64px;\n}\n\n:host(.paki-sidenav--expanded) {\n  --paki-sidenav-width: 240px;\n}\n\n.paki-sidenav {\n  background: var(--color-bg-surface);\n  border-right: 1px solid var(--color-border-subtle);\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n  width: var(--paki-sidenav-width);\n}\n\n.paki-sidenav__list {\n  list-style: none;\n  margin: 0;\n  padding: 8px;\n}\n\n.paki-sidenav__item {\n  border-radius: var(--radius-sm, 4px);\n  color: var(--color-text-secondary);\n  font-size: 13px;\n}\n\n.paki-sidenav__link,\n.paki-sidenav__text,\n.paki-sidenav__group-header {\n  align-items: center;\n  border-radius: inherit;\n  display: flex;\n  gap: 8px;\n  padding: 8px 12px;\n  text-decoration: none;\n}\n\n.paki-sidenav__link {\n  color: inherit;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &.active {\n    background: var(--color-accent-tint);\n    color: var(--color-accent);\n  }\n}\n\n.paki-sidenav__text {\n  color: inherit;\n}\n\n.paki-sidenav__group-header {\n  background: transparent;\n  border: 0;\n  color: inherit;\n  cursor: pointer;\n  text-align: left;\n  width: 100%;\n\n  &:hover {\n    background: var(--color-accent-tint);\n    color: var(--color-text-primary);\n  }\n\n  &[aria-expanded='true'] {\n    color: var(--color-text-primary);\n\n    .paki-sidenav__chevron {\n      transform: rotate(180deg);\n    }\n  }\n}\n\n.paki-sidenav__icon {\n  display: inline-flex;\n  flex: 0 0 auto;\n  font-size: 16px;\n  height: 16px;\n  line-height: 1;\n  width: 16px;\n}\n\n.paki-sidenav__chevron {\n  border-left: 4px solid transparent;\n  border-right: 4px solid transparent;\n  border-top: 4px solid currentColor;\n  height: 0;\n  margin-left: auto;\n  transition: transform 0.2s ease;\n  width: 0;\n}\n\n.paki-sidenav__group-children {\n  list-style: none;\n  margin: 0;\n  padding: 0 0 0 16px;\n\n  &[hidden] {\n    display: none;\n  }\n}\n",
                     "styleUrl": "./paki-sidenav.scss"
                 }
             ],
@@ -4191,7 +4419,127 @@
                     }
                 ]
             },
-            "templateData": "<nav class=\"paki-sidenav\" aria-label=\"Navegação principal\">\n  <ul class=\"paki-sidenav__list\">\n    @for (item of items(); track item.label; let index = $index) {\n      <li class=\"paki-sidenav__item\">\n        @if (item.children && item.children.length > 0) {\n          <button\n            type=\"button\"\n            class=\"paki-sidenav__group-header\"\n            [attr.aria-expanded]=\"groupExpanded(index, item.expanded ?? false)()\"\n            [attr.aria-controls]=\"'paki-sidenav-group-' + index + '-children'\"\n            (click)=\"toggleGroup(index, item.expanded ?? false)\"\n          >\n            @if (item.icon) {\n              <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n            }\n            {{ item.label }}\n            <span class=\"paki-sidenav__chevron\" aria-hidden=\"true\"></span>\n          </button>\n          <ul\n            class=\"paki-sidenav__group-children\"\n            [id]=\"'paki-sidenav-group-' + index + '-children'\"\n          >\n            @for (child of item.children; track child.label) {\n              <li class=\"paki-sidenav__item\">\n                @if (child.route) {\n                  <a\n                    class=\"paki-sidenav__link\"\n                    [routerLink]=\"child.route\"\n                    routerLinkActive=\"active\"\n                    ariaCurrentWhenActive=\"page\"\n                  >\n                    @if (child.icon) {\n                      <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                    }\n                    {{ child.label }}\n                  </a>\n                } @else {\n                  <span class=\"paki-sidenav__text\">\n                    @if (child.icon) {\n                      <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                    }\n                    {{ child.label }}\n                  </span>\n                }\n              </li>\n            }\n          </ul>\n        } @else {\n          @if (item.route) {\n            <a\n              class=\"paki-sidenav__link\"\n              [routerLink]=\"item.route\"\n              routerLinkActive=\"active\"\n              ariaCurrentWhenActive=\"page\"\n            >\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </a>\n          } @else {\n            <span class=\"paki-sidenav__text\">\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </span>\n          }\n        }\n      </li>\n    }\n  </ul>\n</nav>\n"
+            "templateData": "<nav class=\"paki-sidenav\" aria-label=\"Navegação principal\">\n  <ul class=\"paki-sidenav__list\">\n    @for (item of items(); track item.label; let index = $index) {\n      <li class=\"paki-sidenav__item\">\n        @if (item.children && item.children.length > 0) {\n          <button\n            type=\"button\"\n            class=\"paki-sidenav__group-header\"\n            [attr.aria-expanded]=\"groupExpanded(index, item.expanded ?? false)()\"\n            [attr.aria-controls]=\"'paki-sidenav-group-' + index + '-children'\"\n            (click)=\"toggleGroup(index, item.expanded ?? false)\"\n          >\n            @if (item.icon) {\n              <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n            }\n            {{ item.label }}\n            <span class=\"paki-sidenav__chevron\" aria-hidden=\"true\"></span>\n          </button>\n          @if (groupExpanded(index, item.expanded ?? false)()) {\n            <ul\n              class=\"paki-sidenav__group-children\"\n              [id]=\"'paki-sidenav-group-' + index + '-children'\"\n            >\n              @for (child of item.children; track child.label) {\n                <li class=\"paki-sidenav__item\">\n                  @if (child.route) {\n                    <a\n                      class=\"paki-sidenav__link\"\n                      [routerLink]=\"child.route\"\n                      routerLinkActive=\"active\"\n                      ariaCurrentWhenActive=\"page\"\n                    >\n                      @if (child.icon) {\n                        <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                      }\n                      {{ child.label }}\n                    </a>\n                  } @else {\n                    <span class=\"paki-sidenav__text\">\n                      @if (child.icon) {\n                        <span class=\"paki-sidenav__icon\" [class]=\"child.icon\" aria-hidden=\"true\"></span>\n                      }\n                      {{ child.label }}\n                    </span>\n                  }\n                </li>\n              }\n            </ul>\n          }\n        } @else {\n          @if (item.route) {\n            <a\n              class=\"paki-sidenav__link\"\n              [routerLink]=\"item.route\"\n              routerLinkActive=\"active\"\n              ariaCurrentWhenActive=\"page\"\n            >\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </a>\n          } @else {\n            <span class=\"paki-sidenav__text\">\n              @if (item.icon) {\n                <span class=\"paki-sidenav__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n              }\n              {{ item.label }}\n            </span>\n          }\n        }\n      </li>\n    }\n  </ul>\n</nav>\n"
+        },
+        {
+            "name": "PakiSkeleton",
+            "id": "component-PakiSkeleton-03add087344e606760bc9b1292bff363986247209a695c0e59a6beb414d6ff32bd8e7e65691df9d4bab8fc95b2a2b69fd06b3424ddfc22bd5fa7ce35ee30163f",
+            "file": "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "paki-skeleton",
+            "styleUrls": [
+                "./paki-skeleton.scss"
+            ],
+            "styles": [],
+            "template": "",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "height",
+                    "coverageIgnore": false,
+                    "defaultValue": "'1em'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define a altura CSS do componente.</p>\n",
+                    "line": 22,
+                    "rawdescription": "\nDefine a altura CSS do componente.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "defaultValue": "'Carregando conteúdo'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define o texto lido por tecnologias assistivas.</p>\n",
+                    "line": 24,
+                    "rawdescription": "\nDefine o texto lido por tecnologias assistivas.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "shape",
+                    "coverageIgnore": false,
+                    "defaultValue": "'text'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PakiSkeletonShape",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define o formato do espaço reservado.</p>\n",
+                    "line": 18,
+                    "rawdescription": "\nDefine o formato do espaço reservado.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "width",
+                    "coverageIgnore": false,
+                    "defaultValue": "'100%'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Define a largura CSS do componente.</p>\n",
+                    "line": 20,
+                    "rawdescription": "\nDefine a largura CSS do componente.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, input } from '@angular/core';\n\nexport type PakiSkeletonShape = 'text' | 'circle' | 'rectangle';\n\n@Component({\n  selector: 'paki-skeleton',\n  template: '',\n  styleUrl: './paki-skeleton.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class]': '\"paki-skeleton paki-skeleton--\" + shape()',\n    '[style.width]': 'width()', '[style.height]': 'height()',\n    '[attr.aria-label]': 'label()', 'aria-busy': 'true', role: 'status',\n  },\n})\nexport class PakiSkeleton {\n  /** Define o formato do espaço reservado. */\n  readonly shape = input<PakiSkeletonShape>('text');\n  /** Define a largura CSS do componente. */\n  readonly width = input('100%');\n  /** Define a altura CSS do componente. */\n  readonly height = input('1em');\n  /** Define o texto lido por tecnologias assistivas. */\n  readonly label = input('Carregando conteúdo');\n}\n",
+            "styleUrl": "./paki-skeleton.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host { display: block; }\n.paki-skeleton { animation: paki-skeleton-pulse 1.5s ease-in-out infinite; background: linear-gradient(90deg, var(--color-border-subtle) 25%, var(--color-border-default) 50%, var(--color-border-subtle) 75%); background-size: 200% 100%; border-radius: var(--radius-sm); }\n.paki-skeleton--text { border-radius: 4px; }\n.paki-skeleton--circle { aspect-ratio: 1; border-radius: 50%; }\n@keyframes paki-skeleton-pulse { to { background-position: -200% 0; } }\n@media (prefers-reduced-motion: reduce) { .paki-skeleton { animation: none; } }\n",
+                    "styleUrl": "./paki-skeleton.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
         },
         {
             "name": "PakiSwitch",
@@ -5100,7 +5448,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PakiButton>",
-                "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md' }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
+                "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md', loading: false }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
             },
             {
                 "name": "meta",
@@ -5183,6 +5531,17 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiPlaceholder>",
+                "defaultValue": "{ title: 'Componentes/Placeholder', component: PakiPlaceholder, args: { title: 'Nenhum resultado', description: 'Ajuste os filtros ou tente novamente.' } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
@@ -5202,6 +5561,17 @@
                 "defaultValue": "{\n  title: 'Componentes/Sidenav',\n  component: PakiSidenav,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    expanded: true,\n  },\n}",
                 "rawdescription": "Metadados da story do paki-sidenav.\n\nO Storybook já alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.",
                 "description": "<p>Metadados da story do paki-sidenav.</p>\n<p>O Storybook já alterna entre tema claro e escuro pela toolbar global &quot;Tema visual&quot;.\nPortanto, cada story abaixo pode ser exibida nos dois temas sem configuração extra.</p>\n"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiSkeleton>",
+                "defaultValue": "{\n  title: 'Componentes/Skeleton', component: PakiSkeleton,\n  args: { shape: 'text', width: '100%', height: '16px' },\n  argTypes: { shape: { control: 'select', options: ['text', 'circle', 'rectangle'] } },\n}"
             },
             {
                 "name": "meta",
@@ -5245,7 +5615,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\">Continuar</button>' }) }"
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\" [loading]=\"loading\">Continuar</button>' }) }"
             },
             {
                 "name": "Playground",
@@ -5328,6 +5698,17 @@
                 "name": "Playground",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-placeholder [title]=\"title\" [description]=\"description\" />' }) }"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
@@ -5347,6 +5728,17 @@
                 "defaultValue": "{}",
                 "rawdescription": "Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.",
                 "description": "<p>Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.</p>\n"
+            },
+            {
+                "name": "Playground",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-skeleton [shape]=\"shape\" [width]=\"width\" [height]=\"height\" />' }) }"
             },
             {
                 "name": "Playground",
@@ -5766,6 +6158,19 @@
                 "kind": 185
             },
             {
+                "name": "PakiSkeletonShape",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "\"text\" | \"circle\" | \"rectangle\"",
+                "file": "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 193
+            },
+            {
                 "name": "Story",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
@@ -5887,6 +6292,19 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiPlaceholder>",
+                "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
                 "rawtype": "StoryObj<PakiSelect>",
                 "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
                 "deprecated": false,
@@ -5902,6 +6320,19 @@
                 "coverageIgnore": false,
                 "rawtype": "StoryObj<PakiSidenav>",
                 "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiSkeleton>",
+                "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "rawdescription": "",
@@ -6121,7 +6552,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PakiButton>",
-                    "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md' }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
+                    "defaultValue": "{ title: 'Componentes/Button', component: PakiButton, args: { variant: 'primary', size: 'md', loading: false }, argTypes: { variant: { control: 'select', options: ['primary', 'secondary', 'outline', 'ghost', 'danger'] }, size: { control: 'select', options: ['sm', 'md', 'lg'] } } }"
                 },
                 {
                     "name": "Playground",
@@ -6132,7 +6563,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\">Continuar</button>' }) }"
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<button pakiButton [variant]=\"variant\" [size]=\"size\" [loading]=\"loading\">Continuar</button>' }) }"
                 }
             ],
             "projects/pakitec-angular-components/src/stories/card.stories.ts": [
@@ -6279,6 +6710,30 @@
                     "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-page-header [title]=\"title\" [subtitle]=\"subtitle\"><button pakiButton>Novo atendimento</button></paki-page-header>' }) }"
                 }
             ],
+            "projects/pakitec-angular-components/src/stories/placeholder.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiPlaceholder>",
+                    "defaultValue": "{ title: 'Componentes/Placeholder', component: PakiPlaceholder, args: { title: 'Nenhum resultado', description: 'Ajuste os filtros ou tente novamente.' } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-placeholder [title]=\"title\" [description]=\"description\" />' }) }"
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/select.stories.ts": [
                 {
                     "name": "meta",
@@ -6301,6 +6756,30 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/skeleton.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiSkeleton>",
+                    "defaultValue": "{\n  title: 'Componentes/Skeleton', component: PakiSkeleton,\n  args: { shape: 'text', width: '100%', height: '16px' },\n  argTypes: { shape: { control: 'select', options: ['text', 'circle', 'rectangle'] } },\n}"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-skeleton [shape]=\"shape\" [width]=\"width\" [height]=\"height\" />' }) }"
                 }
             ],
             "projects/pakitec-angular-components/src/stories/switch.stories.ts": [
@@ -6759,6 +7238,21 @@
                     "kind": 185
                 }
             ],
+            "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts": [
+                {
+                    "name": "PakiSkeletonShape",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "\"text\" | \"circle\" | \"rectangle\"",
+                    "file": "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/badge.stories.ts": [
                 {
                     "name": "Story",
@@ -6894,6 +7388,21 @@
                     "kind": 184
                 }
             ],
+            "projects/pakitec-angular-components/src/stories/placeholder.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiPlaceholder>",
+                    "file": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/select.stories.ts": [
                 {
                     "name": "Story",
@@ -6917,6 +7426,21 @@
                     "coverageIgnore": false,
                     "rawtype": "StoryObj<PakiSidenav>",
                     "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/skeleton.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiSkeleton>",
+                    "file": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "",
@@ -7007,7 +7531,7 @@
                 "linktype": "directive",
                 "name": "PakiButton",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -7173,6 +7697,15 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/placeholder/paki-placeholder.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PakiPlaceholder",
+                "coveragePercent": 66,
+                "coverageCount": "2/3",
+                "status": "good"
+            },
+            {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -7276,6 +7809,25 @@
                 "coveragePercent": 100,
                 "coverageCount": "2/2",
                 "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PakiSkeleton",
+                "coveragePercent": 80,
+                "coverageCount": "4/5",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/skeleton/paki-skeleton.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PakiSkeletonShape",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/switch/paki-switch.ts",
@@ -7603,6 +8155,36 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/placeholder.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -7712,6 +8294,36 @@
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/skeleton.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
