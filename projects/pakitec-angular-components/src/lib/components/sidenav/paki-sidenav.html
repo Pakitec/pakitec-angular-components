@@ -14,8 +14,6 @@
           >
             @if (item.icon) {
               <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
-            } @else {
-              <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
             }
             <span class="paki-sidenav__label">{{ item.label }}</span>
             <span class="paki-sidenav__chevron" aria-hidden="true"></span>
@@ -36,8 +34,6 @@
                     >
                       @if (child.icon) {
                         <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
-                      } @else {
-                        <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ child.label.charAt(0) }}</span>
                       }
                       <span class="paki-sidenav__label">{{ child.label }}</span>
                     </a>
@@ -45,8 +41,6 @@
                     <span class="paki-sidenav__text">
                       @if (child.icon) {
                         <span class="paki-sidenav__icon" [class]="child.icon" aria-hidden="true"></span>
-                      } @else {
-                        <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ child.label.charAt(0) }}</span>
                       }
                       <span class="paki-sidenav__label">{{ child.label }}</span>
                     </span>
@@ -67,8 +61,6 @@
             >
               @if (item.icon) {
                 <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
-              } @else {
-                <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
               }
               <span class="paki-sidenav__label">{{ item.label }}</span>
             </a>
@@ -76,8 +68,6 @@
             <span class="paki-sidenav__text">
               @if (item.icon) {
                 <span class="paki-sidenav__icon" [class]="item.icon" aria-hidden="true"></span>
-              } @else {
-                <span class="paki-sidenav__fallback-icon" aria-hidden="true">{{ item.label.charAt(0) }}</span>
               }
               <span class="paki-sidenav__label">{{ item.label }}</span>
             </span>

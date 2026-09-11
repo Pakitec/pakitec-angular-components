@@ -47,11 +47,11 @@ const baseItems: readonly PakiSidenavItem[] = [
     icon: 'icon-settings',
     expanded: true,
     children: [
-      { label: 'Geral', route: '/settings/general' },
-      { label: 'Usuários', route: '/settings/users' },
+      { label: 'Geral', route: '/settings/general', icon: 'icon-general' },
+      { label: 'Usuários', route: '/settings/users', icon: 'icon-users' },
     ],
   },
-  { label: 'Ajuda', route: '/help' },
+  { label: 'Ajuda', route: '/help', icon: 'icon-help' },
 ];
 
 /**

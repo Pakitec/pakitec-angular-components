@@ -1,7 +1,7 @@
 :host {
   display: block;
   height: 100%;
-  --paki-sidenav-width: 64px;
+  --paki-sidenav-width: 48px;
 }
 
 :host(.paki-sidenav--expanded) {
@@ -19,6 +19,8 @@
 }
 
 .paki-sidenav__list {
+  display: grid;
+  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 8px;
@@ -90,20 +92,25 @@
   width: 16px;
 }
 
-.paki-sidenav__fallback-icon {
-  align-items: center;
-  background: var(--color-accent-tint);
-  border-radius: 50%;
-  color: var(--color-accent);
-  display: inline-flex;
-  flex: 0 0 auto;
-  font-size: 10px;
-  font-weight: 700;
-  height: 16px;
-  justify-content: center;
-  line-height: 1;
-  text-transform: uppercase;
-  width: 16px;
+.icon-dashboard::before {
+  content: '▦';
+}
+
+.icon-reports::before {
+  content: '≡';
+}
+
+.icon-settings::before,
+.icon-general::before {
+  content: '⚙';
+}
+
+.icon-users::before {
+  content: '◉';
+}
+
+.icon-help::before {
+  content: '?';
 }
 
 .paki-sidenav__chevron {
@@ -128,7 +135,7 @@
 
 :host(:not(.paki-sidenav--expanded)) {
   .paki-sidenav__list {
-    padding: 8px;
+    padding: 4px;
   }
 
   .paki-sidenav__link,
