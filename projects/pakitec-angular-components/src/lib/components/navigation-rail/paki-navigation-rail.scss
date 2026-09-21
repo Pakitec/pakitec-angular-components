@@ -1,0 +1,37 @@
+// Largura controlada por variável CSS local, alternada por classe de estado.
+// As próximas tarefas adicionam tokens de tema, estilo de item ativo, divisor
+// do rodapé e a regra de prefers-reduced-motion.
+:host {
+  display: block;
+  height: 100%;
+  // Estado recolhido padrão: 64px (NFR-005).
+  --paki-navigation-rail-width: 64px;
+}
+
+:host(.paki-navigation-rail--expanded) {
+  // Estado expandido: 216px (NFR-005).
+  --paki-navigation-rail-width: 216px;
+}
+
+.paki-navigation-rail {
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: var(--paki-navigation-rail-width);
+}
+
+.paki-navigation-rail__list {
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+}
+
+.paki-navigation-rail__list--footer {
+  // Ancora o grupo de rodapé na base do rail, separado dos itens principais.
+  margin-top: auto;
+}

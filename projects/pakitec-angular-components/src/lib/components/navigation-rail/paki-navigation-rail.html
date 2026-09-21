@@ -1,0 +1,20 @@
+<!--
+  Estrutura base do rail. As próximas tarefas preenchem o controle de expansão,
+  a semântica de item (rota/sem rota/disabled), o cabeçalho de marca e os grupos
+  main/footer. Aqui garante-se apenas um host que renderiza sem erro.
+-->
+<nav class="paki-navigation-rail" aria-label="Navegação principal">
+  <ul class="paki-navigation-rail__list paki-navigation-rail__list--main">
+    @for (item of mainItems(); track item.id) {
+      <li class="paki-navigation-rail__item">{{ item.label }}</li>
+    }
+  </ul>
+
+  @if (footerItems().length > 0) {
+    <ul class="paki-navigation-rail__list paki-navigation-rail__list--footer">
+      @for (item of footerItems(); track item.id) {
+        <li class="paki-navigation-rail__item">{{ item.label }}</li>
+      }
+    </ul>
+  }
+</nav>
