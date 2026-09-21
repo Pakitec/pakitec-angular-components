@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -45,9 +46,10 @@ export interface PakiNavigationRailBrand {
 @Component({
   selector: 'paki-navigation-rail',
   standalone: true,
-  // RouterLink e RouterLinkActive já entram nos imports porque as próximas
-  // tarefas renderizam itens com rota e destaque de rota ativa no template.
-  imports: [RouterLink, RouterLinkActive],
+  // RouterLink e RouterLinkActive dão navegação e destaque de rota ativa aos
+  // itens com rota. NgTemplateOutlet reaproveita a mesma semântica de item nos
+  // grupos main e footer sem duplicar o markup.
+  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],
   templateUrl: './paki-navigation-rail.html',
   styleUrl: './paki-navigation-rail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,4 +79,18 @@ export class PakiNavigationRail {
   readonly footerItems = computed(() =>
     this.items().filter((item) => item.position === 'footer'),
   );
+
+  /**
+   * Emite `itemSelected` com o `id` do item acionado.
+   *
+   * Serve aos itens com rota (`<a>`) e sem rota (`<button>`). O item `disabled`
+   * usa um elemento não interativo sem este handler no template; por isso não
+   * navega nem emite. A supressão em `disabled` vem da estrutura do template,
+   * não deste método.
+   *
+   * @param item Item de navegação acionado pelo usuário.
+   */
+  onItemActivate(item: PakiNavigationRailItem): void {
+    this.itemSelected.emit(item.id);
+  }
 }

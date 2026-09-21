@@ -35,3 +35,43 @@
   // Ancora o grupo de rodapé na base do rail, separado dos itens principais.
   margin-top: auto;
 }
+
+.paki-navigation-rail__item {
+  display: block;
+}
+
+// Base comum aos três tipos de item (<a>, <button>, <span> disabled) para que
+// a aparência não dependa do elemento HTML escolhido pela semântica.
+.paki-navigation-rail__link {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 12px;
+  padding: 8px 12px;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+// Item de rota ativa: usa o par accent/accent-tint (contraste adequado, R-B).
+.paki-navigation-rail__link.active {
+  background: var(--color-accent-tint);
+  color: var(--color-accent);
+}
+
+// Item desabilitado: aparência esmaecida e sem interação de ponteiro.
+.paki-navigation-rail__link--disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.paki-navigation-rail__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

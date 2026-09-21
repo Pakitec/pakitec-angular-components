@@ -1,20 +1,79 @@
 <!--
-  Estrutura base do rail. As próximas tarefas preenchem o controle de expansão,
-  a semântica de item (rota/sem rota/disabled), o cabeçalho de marca e os grupos
-  main/footer. Aqui garante-se apenas um host que renderiza sem erro.
+  Estrutura do rail. Esta tarefa (TASK-003) implementa a semântica de item:
+  item com rota vira <a routerLink>; item sem rota vira <button>; item disabled
+  vira elemento não interativo com aria-disabled. As próximas tarefas adicionam
+  o controle de expansão, o cabeçalho de marca e o estado recolhido só-ícone.
 -->
 <nav class="paki-navigation-rail" aria-label="Navegação principal">
   <ul class="paki-navigation-rail__list paki-navigation-rail__list--main">
     @for (item of mainItems(); track item.id) {
-      <li class="paki-navigation-rail__item">{{ item.label }}</li>
+      <li class="paki-navigation-rail__item">
+        <!-- Reaproveita a mesma semântica de item nos grupos main e footer. -->
+        <ng-container
+          [ngTemplateOutlet]="itemControl"
+          [ngTemplateOutletContext]="{ $implicit: item }"
+        ></ng-container>
+      </li>
     }
   </ul>
 
   @if (footerItems().length > 0) {
     <ul class="paki-navigation-rail__list paki-navigation-rail__list--footer">
       @for (item of footerItems(); track item.id) {
-        <li class="paki-navigation-rail__item">{{ item.label }}</li>
+        <li class="paki-navigation-rail__item">
+          <ng-container
+            [ngTemplateOutlet]="itemControl"
+            [ngTemplateOutletContext]="{ $implicit: item }"
+          ></ng-container>
+        </li>
       }
     </ul>
   }
 </nav>
+
+<!--
+  Semântica de item por template compartilhado:
+  - disabled: <span> não interativo com aria-disabled; sem routerLink e sem
+    handler, então não navega e não emite itemSelected (AC-004).
+  - com rota: <a routerLink> com destaque de rota ativa e aria-current; emite
+    itemSelected no clique (AC-002).
+  - sem rota: <button> acionável por teclado; emite itemSelected no clique e não
+    navega (AC-003).
+-->
+<ng-template #itemControl let-item>
+  @if (item.disabled) {
+    <span
+      class="paki-navigation-rail__link paki-navigation-rail__link--disabled"
+      [attr.aria-disabled]="true"
+    >
+      @if (item.icon) {
+        <span class="paki-navigation-rail__icon" [class]="item.icon" aria-hidden="true"></span>
+      }
+      <span class="paki-navigation-rail__label">{{ item.label }}</span>
+    </span>
+  } @else if (item.route) {
+    <a
+      class="paki-navigation-rail__link"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      (click)="onItemActivate(item)"
+    >
+      @if (item.icon) {
+        <span class="paki-navigation-rail__icon" [class]="item.icon" aria-hidden="true"></span>
+      }
+      <span class="paki-navigation-rail__label">{{ item.label }}</span>
+    </a>
+  } @else {
+    <button
+      type="button"
+      class="paki-navigation-rail__link"
+      (click)="onItemActivate(item)"
+    >
+      @if (item.icon) {
+        <span class="paki-navigation-rail__icon" [class]="item.icon" aria-hidden="true"></span>
+      }
+      <span class="paki-navigation-rail__label">{{ item.label }}</span>
+    </button>
+  }
+</ng-template>
