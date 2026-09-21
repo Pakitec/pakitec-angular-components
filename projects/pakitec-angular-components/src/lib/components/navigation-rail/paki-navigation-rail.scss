@@ -20,7 +20,17 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  // Anima a mudança de largura entre recolhido (64px) e expandido (216px).
+  transition: width 200ms ease;
   width: var(--paki-navigation-rail-width);
+}
+
+// Respeita a preferência do usuário por menos movimento: suprime a transição
+// de largura quando prefers-reduced-motion está ativo (NFR-003, AC-001).
+@media (prefers-reduced-motion: reduce) {
+  .paki-navigation-rail {
+    transition: none;
+  }
 }
 
 .paki-navigation-rail__list {
@@ -74,4 +84,26 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+// Estado recolhido (padrão): esconde o rótulo textual; o nome acessível vem de
+// aria-label e o tooltip de title (FR-008, AC-007). O ícone permanece visível.
+// display:none também remove o texto da árvore de acessibilidade, restando só
+// o ícone; por isso o nome acessível fica em aria-label no link.
+:host(:not(.paki-navigation-rail--expanded)) .paki-navigation-rail__label {
+  display: none;
+}
+
+// Controle de expansão: botão nativo focável, ancorado abaixo dos grupos.
+.paki-navigation-rail__toggle {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 8px;
+  padding: 8px;
 }

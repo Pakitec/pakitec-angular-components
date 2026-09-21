@@ -1,8 +1,9 @@
 <!--
-  Estrutura do rail. Esta tarefa (TASK-003) implementa a semântica de item:
-  item com rota vira <a routerLink>; item sem rota vira <button>; item disabled
-  vira elemento não interativo com aria-disabled. As próximas tarefas adicionam
-  o controle de expansão, o cabeçalho de marca e o estado recolhido só-ícone.
+  Estrutura do rail. Semântica de item (TASK-003): item com rota vira
+  <a routerLink>; item sem rota vira <button>; item disabled vira elemento não
+  interativo com aria-disabled. TASK-005 adiciona o controle de expansão
+  (aria-expanded) e o nome acessível (aria-label/title) por item para o estado
+  recolhido só-ícone.
 -->
 <nav class="paki-navigation-rail" aria-label="Navegação principal">
   <ul class="paki-navigation-rail__list paki-navigation-rail__list--main">
@@ -29,6 +30,22 @@
       }
     </ul>
   }
+
+  <!--
+    Controle de expansão nativo. Expõe aria-expanded refletindo o estado atual
+    (FR-002) e alterna expanded (model), emitindo expandedChange (FR-001,
+    AC-001). Fica após as listas para não interferir na busca do primeiro
+    <button> de item nos testes de item sem rota (AC-003).
+  -->
+  <button
+    type="button"
+    class="paki-navigation-rail__toggle"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-label]="expanded() ? 'Recolher navegação' : 'Expandir navegação'"
+    (click)="toggleExpanded()"
+  >
+    <span class="paki-navigation-rail__toggle-icon" aria-hidden="true"></span>
+  </button>
 </nav>
 
 <!--
@@ -39,12 +56,16 @@
     itemSelected no clique (AC-002).
   - sem rota: <button> acionável por teclado; emite itemSelected no clique e não
     navega (AC-003).
+  O label também alimenta aria-label (nome acessível) e title (tooltip) para o
+  estado recolhido só-ícone (FR-008, AC-007).
 -->
 <ng-template #itemControl let-item>
   @if (item.disabled) {
     <span
       class="paki-navigation-rail__link paki-navigation-rail__link--disabled"
       [attr.aria-disabled]="true"
+      [attr.aria-label]="item.label"
+      [title]="item.label"
     >
       @if (item.icon) {
         <span class="paki-navigation-rail__icon" [class]="item.icon" aria-hidden="true"></span>
@@ -57,6 +78,8 @@
       [routerLink]="item.route"
       routerLinkActive="active"
       ariaCurrentWhenActive="page"
+      [attr.aria-label]="item.label"
+      [title]="item.label"
       (click)="onItemActivate(item)"
     >
       @if (item.icon) {
@@ -68,6 +91,8 @@
     <button
       type="button"
       class="paki-navigation-rail__link"
+      [attr.aria-label]="item.label"
+      [title]="item.label"
       (click)="onItemActivate(item)"
     >
       @if (item.icon) {

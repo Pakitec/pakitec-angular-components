@@ -93,4 +93,16 @@ export class PakiNavigationRail {
   onItemActivate(item: PakiNavigationRailItem): void {
     this.itemSelected.emit(item.id);
   }
+
+  /**
+   * Alterna o estado recolhido/expandido do rail.
+   *
+   * Inverte o valor de `expanded` (model), o que emite `expandedChange` com o
+   * novo valor e atualiza a largura via classe de estado no host. Serve ao
+   * controle de expansão nativo (`<button [attr.aria-expanded]>`) (FR-001,
+   * FR-002, AC-001).
+   */
+  toggleExpanded(): void {
+    this.expanded.update((value) => !value);
+  }
 }
