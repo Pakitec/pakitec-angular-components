@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
-import { PakiNavigationRail, PakiNavigationRailItem } from './paki-navigation-rail';
+import {
+  PakiNavigationRail,
+  PakiNavigationRailBrand,
+  PakiNavigationRailItem,
+} from './paki-navigation-rail';
 
 /**
  * Host de teste do PakiNavigationRail.
@@ -347,6 +351,196 @@ describe('PakiNavigationRail — expansão e estado recolhido', () => {
       );
 
       expect(hasReducedMotionRule).toBe(true);
+    });
+  });
+});
+
+/**
+ * Host de teste para marca e rodapé do PakiNavigationRail.
+ *
+ * Fornece `items` e `brand` por binding para exercitar a separação do grupo
+ * footer (AC-005) e o cabeçalho de marca navegável ou não (AC-006). Usa
+ * provideRouter próprio para permitir navegação real pela rota da marca.
+ */
+@Component({
+  imports: [PakiNavigationRail],
+  template: `
+    <paki-navigation-rail [items]="items" [brand]="brand"></paki-navigation-rail>
+  `,
+})
+class BrandFooterHost {
+  items: readonly PakiNavigationRailItem[] = [];
+  brand: PakiNavigationRailBrand | undefined = undefined;
+}
+
+/** Cria o BrandFooterHost com router nas rotas usadas por itens e marca. */
+async function createBrandFooterHost(): Promise<
+  ReturnType<typeof TestBed.createComponent<BrandFooterHost>>
+> {
+  await TestBed.configureTestingModule({
+    imports: [BrandFooterHost],
+    providers: [
+      provideRouter([
+        { path: 'dashboard', component: PakiNavigationRail },
+        { path: 'settings', component: PakiNavigationRail },
+        { path: 'home', component: PakiNavigationRail },
+      ]),
+    ],
+  }).compileComponents();
+
+  return TestBed.createComponent(BrandFooterHost);
+}
+
+describe('PakiNavigationRail — rodapé e marca', () => {
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  describe('AC-005 — item de rodapé ancorado e separado', () => {
+    it('renderiza o item footer em um container distinto do container dos itens main', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [
+        { id: 'dash', label: 'Dashboard', route: '/dashboard', position: 'main' },
+        { id: 'cfg', label: 'Configurações', route: '/settings', position: 'footer' },
+      ];
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const mainContainer = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__list--main',
+      ) as HTMLElement;
+      const footerContainer = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__list--footer',
+      ) as HTMLElement;
+
+      // Cada grupo tem seu próprio container; footer é distinto do main.
+      expect(mainContainer).toBeTruthy();
+      expect(footerContainer).toBeTruthy();
+      expect(footerContainer).not.toBe(mainContainer);
+
+      // O item footer vive no container footer, não no container main.
+      const footerLink = footerContainer.querySelector('a[href="/settings"]');
+      expect(footerLink).toBeTruthy();
+      expect(mainContainer.querySelector('a[href="/settings"]')).toBeNull();
+
+      // O item main vive no container main, não no container footer.
+      const mainLink = mainContainer.querySelector('a[href="/dashboard"]');
+      expect(mainLink).toBeTruthy();
+      expect(footerContainer.querySelector('a[href="/dashboard"]')).toBeNull();
+    });
+
+    it('trata item sem position como main, fora do container de rodapé', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [
+        { id: 'home', label: 'Início', route: '/home' },
+        { id: 'cfg', label: 'Configurações', route: '/settings', position: 'footer' },
+      ];
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const mainContainer = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__list--main',
+      ) as HTMLElement;
+      const footerContainer = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__list--footer',
+      ) as HTMLElement;
+
+      // Item sem position renderiza no grupo main.
+      expect(mainContainer.querySelector('a[href="/home"]')).toBeTruthy();
+      expect(footerContainer.querySelector('a[href="/home"]')).toBeNull();
+    });
+
+    it('ancora o grupo de rodapé ao pé do rail com margin-top:auto', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [
+        { id: 'cfg', label: 'Configurações', route: '/settings', position: 'footer' },
+      ];
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const footerContainer = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__list--footer',
+      ) as HTMLElement;
+
+      expect(footerContainer).toBeTruthy();
+      // A âncora ao rodapé usa margin-top:auto (o divisor visual fica no QA).
+      expect(getComputedStyle(footerContainer).marginTop).toBe('auto');
+    });
+  });
+
+  describe('AC-006 — cabeçalho de marca', () => {
+    it('exibe o label da marca no cabeçalho', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [];
+      fixture.componentInstance.brand = { label: 'Pakitec' };
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const header = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__brand',
+      ) as HTMLElement;
+
+      expect(header).toBeTruthy();
+      expect(header.textContent).toContain('Pakitec');
+    });
+
+    it('renderiza o cabeçalho como <a routerLink> quando há brand.route', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [];
+      fixture.componentInstance.brand = { label: 'Pakitec', route: '/home' };
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const header = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__brand',
+      ) as HTMLElement;
+      const link = header.querySelector('a[href="/home"]') as HTMLAnchorElement | null;
+
+      expect(link).toBeTruthy();
+      expect(link!.textContent).toContain('Pakitec');
+    });
+
+    it('navega ao acionar o cabeçalho de marca com brand.route', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [];
+      fixture.componentInstance.brand = { label: 'Pakitec', route: '/home' };
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const router = TestBed.inject(Router);
+      const header = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__brand',
+      ) as HTMLElement;
+      const link = header.querySelector('a[href="/home"]') as HTMLAnchorElement;
+
+      link.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(router.url).toBe('/home');
+    });
+
+    it('renderiza o cabeçalho não navegável (sem <a>) quando falta brand.route', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [];
+      fixture.componentInstance.brand = { label: 'Pakitec' };
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const header = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__brand',
+      ) as HTMLElement;
+
+      expect(header).toBeTruthy();
+      // Sem route, o cabeçalho é elemento não interativo: nenhum <a> presente.
+      expect(header.querySelector('a')).toBeNull();
     });
   });
 });
