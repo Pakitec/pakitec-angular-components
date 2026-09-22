@@ -1,0 +1,147 @@
+// Largura controlada por variável CSS local, alternada por classe de estado.
+// As próximas tarefas adicionam tokens de tema, estilo de item ativo, divisor
+// do rodapé e a regra de prefers-reduced-motion.
+:host {
+  display: block;
+  height: 100%;
+  // Estado recolhido padrão: 64px (NFR-005).
+  --paki-navigation-rail-width: 64px;
+}
+
+:host(.paki-navigation-rail--expanded) {
+  // Estado expandido: 216px (NFR-005).
+  --paki-navigation-rail-width: 216px;
+}
+
+.paki-navigation-rail {
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  // Anima a mudança de largura entre recolhido (64px) e expandido (216px).
+  transition: width 200ms ease;
+  width: var(--paki-navigation-rail-width);
+}
+
+// Respeita a preferência do usuário por menos movimento: suprime a transição
+// de largura quando prefers-reduced-motion está ativo (NFR-003, AC-001).
+@media (prefers-reduced-motion: reduce) {
+  .paki-navigation-rail {
+    transition: none;
+  }
+}
+
+.paki-navigation-rail__list {
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+}
+
+.paki-navigation-rail__list--footer {
+  // Ancora o grupo de rodapé na base do rail, separado dos itens principais.
+  margin-top: auto;
+  // Divisor visual entre o grupo principal e o rodapé (AC-005). Usa o token de
+  // borda sutil do tema para manter contraste coerente nos temas claro e escuro.
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+// Cabeçalho de marca (AC-006). Separa a marca dos itens com um divisor sutil e
+// alinha o conteúdo ao mesmo padding dos grupos de itens.
+.paki-navigation-rail__brand {
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 12px;
+}
+
+// Elemento da marca em ambos os casos (navegável ou não): mesma aparência
+// tipográfica, sem sublinhado no link, com reticências quando o texto excede.
+.paki-navigation-rail__brand-link,
+.paki-navigation-rail__brand-label {
+  color: var(--color-text-primary);
+  display: block;
+  font-weight: 600;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paki-navigation-rail__item {
+  display: block;
+}
+
+// Base comum aos três tipos de item (<a>, <button>, <span> disabled) para que
+// a aparência não dependa do elemento HTML escolhido pela semântica.
+.paki-navigation-rail__link {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 12px;
+  padding: 8px 12px;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+
+// Item de rota ativa: fundo accent-tint marca o estado ativo; o texto usa
+// text-primary para garantir contraste WCAG 2.1 AA nos dois temas (R-B/R-C).
+// O texto accent sobre accent-tint reprovava AA no tema escuro (3.59:1); o
+// text-primary sobe o contraste bem acima de 4.5:1 mantendo o realce pelo fundo.
+.paki-navigation-rail__link.active {
+  background: var(--color-accent-tint);
+  color: var(--color-text-primary);
+}
+
+// Foco visível por teclado nos controles focáveis (AC-010, FR-011, NFR-001).
+// O outline usa a cor de acento do tema, o que garante contraste do indicador
+// (WCAG 2.1 AA, 3:1) nos temas claro e escuro por ler o mesmo token. O offset
+// separa o contorno da borda arredondada. Restringe a :focus-visible para não
+// exibir o outline em cliques de ponteiro.
+.paki-navigation-rail__link:focus-visible,
+.paki-navigation-rail__toggle:focus-visible,
+.paki-navigation-rail__brand-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+// Item desabilitado: aparência esmaecida e sem interação de ponteiro.
+.paki-navigation-rail__link--disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.paki-navigation-rail__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Estado recolhido (padrão): esconde o rótulo textual; o nome acessível vem de
+// aria-label e o tooltip de title (FR-008, AC-007). O ícone permanece visível.
+// display:none também remove o texto da árvore de acessibilidade, restando só
+// o ícone; por isso o nome acessível fica em aria-label no link.
+:host(:not(.paki-navigation-rail--expanded)) .paki-navigation-rail__label {
+  display: none;
+}
+
+// Controle de expansão: botão nativo focável, ancorado abaixo dos grupos.
+.paki-navigation-rail__toggle {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 8px;
+  padding: 8px;
+}

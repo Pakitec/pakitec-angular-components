@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "catalogVersion": "2.14.1",
+  "catalogVersion": "2.15.0",
   "detectedTemplates": [
     "angular"
   ],
@@ -24,14 +24,16 @@
         "section:angular.controller": "a3bf9bd6441705013e846c5625f402da78dff22957f6a2f24f7ff4659fdddedb",
         "text:angular.controller:angular.state": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
         "section:angular.state": "6d23bdd1abee9f8ab989dc6a4e6b96d48656dd8720c9ae51b260aab3d3ed128f",
-        "text:angular.state:angular.rules": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
+        "text:angular.state:angular.async-feedback": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
+        "section:angular.async-feedback": "223bdbcf2008ba28e7b6a01fb6a6e39d761227d65c9ecc95dbf7dc07674c425f",
+        "text:angular.async-feedback:angular.rules": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
         "section:angular.rules": "a5b22c04ea5e41897d451df590b50e5fc496843e9573adec25f7f3ed30d0ff7d",
         "text:angular.rules:angular.naming": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
         "section:angular.naming": "2a6280cfe888155706a7657f5dd01fe1a7f9a2da306306e972fa809410b5ff89",
         "text:angular.naming:angular.new-flow": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
         "section:angular.new-flow": "6c21f77e9a2bee7a3f35012b08210c18877c4d6f25a24cb52503513882780ae8",
         "text:angular.new-flow:angular.quality": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
-        "section:angular.quality": "4e76a170d7fe620d6742653978557eddbbe9a2d7d7508ac6c9a27a256e62e132",
+        "section:angular.quality": "97cacb55d59f02b572bfae6696fb99314030c1e543e9538a944bf5808b1ab736",
         "text:angular.quality:angular.agent": "75a11da44c802486bc6f65640aa48a730f0f684c5c07a42ba3cd1735eb3fb070",
         "section:angular.agent": "d58dfdc4f2be4e3e17a6ce37335ad601ae070a1082fa60b2db60fdbe085c4644",
         "text:angular.agent:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
@@ -56,10 +58,10 @@
       }
     },
     "sdd-build": {
-      "version": "3.1.1",
+      "version": "3.2.0",
       "partHashes": {
         "text:start:command.sdd-build": "26697e81408244899000bac7fd209408ab5f843171d046fd1cacc693c2fa3193",
-        "section:command.sdd-build": "fa695943b21a43e96d362b8ad2ffdac69620205e457461f347912491a8fcf096",
+        "section:command.sdd-build": "2e882ec80bd1e89c6836a9281b1ce794f013a83039216e96d897b32cab6ecaaf",
         "text:command.sdd-build:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -130,10 +132,10 @@
       }
     },
     "sdd-qa-reviewer": {
-      "version": "2.3.0",
+      "version": "2.4.0",
       "partHashes": {
         "text:start:agent.sdd-qa-reviewer": "a5c7553ce814b7afb153e6fadf6d0436f1eeb8de69e597ee240b1f489393459f",
-        "section:agent.sdd-qa-reviewer": "e920f6db516283b3724840c5e5e5435e67f8ef0abf4d59733cf7f974832bdb89",
+        "section:agent.sdd-qa-reviewer": "22df92c3ae83b7691ad04f1b86b2e2ba94e039a2ff3f56460e374aedb07b0972",
         "text:agent.sdd-qa-reviewer:end": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
       }
     },
@@ -236,5 +238,5 @@
       }
     }
   },
-  "appliedAt": "2026-09-08T00:30:03.045Z"
+  "appliedAt": "2026-09-21T21:31:07.530Z"
 }

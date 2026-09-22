@@ -1,0 +1,392 @@
+{
+  "schemaVersion": 2,
+  "runId": "scr1074-plan-20260921",
+  "issueKey": "SCRUM-1074",
+  "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
+  "phase": "BUILD",
+  "lastStablePhase": "PLAN",
+  "status": "blocked",
+  "planRevision": 1,
+  "attempts": 1,
+  "updatedAt": "2026-09-22T17:16:57.000Z",
+  "jira": {
+    "profileId": "pakitec",
+    "projectKey": "SCRUM"
+  },
+  "executionContext": {
+    "phase": "plan",
+    "runner": "claude",
+    "model": "opus",
+    "modelLabel": "Opus",
+    "executionId": "049586ce-24bd-4357-b383-c8514c9be47c"
+  },
+  "refinement": {
+    "verdict": "PASS",
+    "issueHash": "f1fb3c6ec4c6",
+    "checkedAt": "2026-09-21T21:43:50.000Z",
+    "warnings": [
+      "R1: aria-label e a fonte do nome acessivel no estado recolhido; title (tooltip) e auxiliar.",
+      "R2: contraste WCAG 2.1 AA depende dos tokens de pakitec-theme.scss; ajuste fica no consumo dos tokens no QA visual, sem alterar contrato.",
+      "R3: cabecalho de marca sem brand.route e nao navegavel, por simetria com itens."
+    ]
+  },
+  "assets": {
+    "manifestPath": "assets/manifest.json",
+    "items": []
+  },
+  "eventLedger": [
+    {
+      "eventKey": "SCRUM-1074/plan/f1fb3c6ec4c6/started",
+      "eventType": "PLAN_STARTED",
+      "recordedAt": "2026-09-21T21:36:42.413Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan/f1fb3c6ec4c6/blocked",
+      "eventType": "PLAN_BLOCKED",
+      "recordedAt": "2026-09-21T21:39:00.839Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/spec/attempt1/started",
+      "issueKey": "SCRUM-1075",
+      "eventType": "TASK_STARTED",
+      "commentId": "13791",
+      "recordedAt": "2026-09-21T21:48:13.932Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/spec/attempt1/completed",
+      "issueKey": "SCRUM-1075",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13792",
+      "recordedAt": "2026-09-21T21:51:46.035Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/research/attempt1/started",
+      "issueKey": "SCRUM-1076",
+      "eventType": "TASK_STARTED",
+      "commentId": "13793",
+      "recordedAt": "2026-09-21T21:52:18.997Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/research/attempt1/completed",
+      "issueKey": "SCRUM-1076",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13794",
+      "recordedAt": "2026-09-21T21:55:30.941Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/plan/attempt1/started",
+      "issueKey": "SCRUM-1077",
+      "eventType": "TASK_STARTED",
+      "commentId": "13795",
+      "recordedAt": "2026-09-21T21:55:59.437Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/plan/attempt1/completed",
+      "issueKey": "SCRUM-1077",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13796",
+      "recordedAt": "2026-09-21T22:00:02.148Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/plan1/jira-sync/attempt1/completed",
+      "issueKey": "SCRUM-1074",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13797",
+      "recordedAt": "2026-09-21T22:02:27.908Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/started",
+      "issueKey": "SCRUM-1074",
+      "eventType": "PHASE_STARTED",
+      "commentId": "13798",
+      "recordedAt": "2026-09-21T22:14:21.876Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-007/completed",
+      "issueKey": "SCRUM-1084",
+      "eventType": "TASK_COMPLETED",
+      "commentId": "13822",
+      "recordedAt": "2026-09-22T12:17:50.118Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-008/started",
+      "issueKey": "SCRUM-1085",
+      "eventType": "TASK_STARTED",
+      "commentId": "13823",
+      "recordedAt": "2026-09-22T12:18:16.483Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-008/blocked",
+      "issueKey": "SCRUM-1085",
+      "eventType": "TASK_BLOCKED",
+      "commentId": "13825",
+      "recordedAt": "2026-09-22T12:19:00.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/blocked",
+      "issueKey": "SCRUM-1074",
+      "eventType": "BUILD_BLOCKED",
+      "commentId": "13826",
+      "recordedAt": "2026-09-22T12:40:31.737Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-014/started",
+      "issueKey": "SCRUM-1091",
+      "eventType": "TASK_STARTED",
+      "commentId": "13847",
+      "recordedAt": "2026-09-22T17:01:24.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-014/qa-failed",
+      "issueKey": "SCRUM-1091",
+      "eventType": "QA_FAILED",
+      "commentId": "13849",
+      "recordedAt": "2026-09-22T17:07:00.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r1/build/task-014/blocked",
+      "issueKey": "SCRUM-1091",
+      "eventType": "TASK_BLOCKED",
+      "recordedAt": "2026-09-22T17:16:57.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1074/scr1074-plan-20260921/r2/build/blocked",
+      "issueKey": "SCRUM-1074",
+      "eventType": "BUILD_BLOCKED",
+      "commentId": "13851",
+      "recordedAt": "2026-09-22T17:18:42.152Z"
+    }
+  ],
+  "pendingJiraEvents": [],
+  "phaseSubtasks": {
+    "spec": {
+      "issueKey": "SCRUM-1075",
+      "title": "[SDD][SPEC] Specification",
+      "owner": "sdd-spec-writer",
+      "status": "done",
+      "startedAt": "2026-09-21T21:48:03.000Z",
+      "finishedAt": "2026-09-21T21:51:25.000Z"
+    },
+    "research": {
+      "issueKey": "SCRUM-1076",
+      "title": "[SDD][RESEARCH] Technical Research",
+      "owner": "sdd-researcher",
+      "status": "done",
+      "startedAt": "2026-09-21T21:51:46.035Z",
+      "finishedAt": "2026-09-21T21:55:18.000Z"
+    },
+    "plan": {
+      "issueKey": "SCRUM-1077",
+      "title": "[SDD][PLAN] Technical Plan",
+      "owner": "sdd-planner",
+      "status": "done",
+      "startedAt": "2026-09-21T21:55:30.941Z",
+      "finishedAt": "2026-09-21T21:59:49.000Z"
+    }
+  },
+  "subtasks": {
+    "TASK-001": {
+      "issueKey": "SCRUM-1078",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:15:42-0300",
+      "finishedAt": "2026-09-21T19:18:34-0300",
+      "observation": "Esqueleto standalone OnPush criado (paki-navigation-rail.ts/.html/.scss) com contrato publico. npm run build PASS. Worktree integrado na branch de trabalho."
+    },
+    "TASK-002": {
+      "issueKey": "SCRUM-1079",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:19:12-0300",
+      "finishedAt": "2026-09-21T19:22:49-0300",
+      "observation": "Testes TDD de navegacao por item criados em paki-navigation-rail.spec.ts (AC-002/003/004). npm run test: 8 testes novos, 7 falham como esperado antes da implementacao, componente intacto. Worktree integrado e committado."
+    },
+    "TASK-003": {
+      "issueKey": "SCRUM-1080",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:23:20-0300",
+      "finishedAt": "2026-09-21T19:27:33-0300",
+      "observation": "Semantica de item implementada (a routerLink/button/nao interativo disabled) e itemSelected via onItemActivate. AC-002/003/004 verdes. npm run test 56 verdes, npm run build PASS. Worktree integrado e committado."
+    },
+    "TASK-004": {
+      "issueKey": "SCRUM-1081",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:27:57-0300",
+      "finishedAt": "2026-09-21T19:31:48-0300",
+      "observation": "Testes TDD de expansao/estado recolhido adicionados (AC-001/AC-007 + reduced-motion). npm run test: 4 novos falham como esperado antes da TASK-005, 8 anteriores verdes. Worktree integrado e committado."
+    },
+    "TASK-005": {
+      "issueKey": "SCRUM-1082",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:32:13-0300",
+      "finishedAt": "2026-09-21T19:35:35-0300",
+      "observation": "Controle de expansao (aria-expanded/toggleExpanded), largura 64/216px, item recolhido so-icone (aria-label/title), transicao com reduced-motion. AC-001/AC-007 verdes. npm run test 63 verdes, build PASS. Worktree integrado e committado."
+    },
+    "TASK-006": {
+      "issueKey": "SCRUM-1083",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:36:00-0300",
+      "finishedAt": "2026-09-21T19:39:20-0300",
+      "observation": "Testes de marca e rodape adicionados. AC-005 (3) verdes; AC-006 (4) falham como esperado antes da TASK-007. npm run test 66/70 verdes. Worktree integrado e committado."
+    },
+    "TASK-007": {
+      "issueKey": "SCRUM-1084",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-21T19:39:42-0300",
+      "finishedAt": "2026-09-22T09:17:29-0300",
+      "observation": "Retomada: trabalho parcial reconciliado. Cabecalho de marca (brand com/sem route, premissa R3) e grupo de rodape ancorado com divisor por --color-border-subtle. AC-005/AC-006 verdes. npm run test 70/70, build PASS. Commit 3eebaf4 integrado na branch de trabalho."
+    },
+    "TASK-008": {
+      "issueKey": "SCRUM-1085",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T09:43:40-0300",
+      "finishedAt": "2026-09-22T09:55:25-0300",
+      "observation": "Testes de robustez AC-008 (items vazio com brand) e AC-009 (item sem icon com label como nome acessivel) adicionados ao paki-navigation-rail.spec.ts (+61 linhas). npm run test: 72/72 verdes. Os testes AC-008/AC-009 ja passam pois a TASK-007 entregou template robusto (@if brand / @if item.icon); nao ha regressao. Harness forcou worktree isolado apesar da instrucao; diff de arquivo unico integrado in-place na branch de trabalho e worktree removido. Commit b2210b5."
+    },
+    "TASK-009": {
+      "issueKey": "SCRUM-1086",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T09:56:05-0300",
+      "finishedAt": "2026-09-22T10:06:58-0300",
+      "observation": "Renderizacao robusta AC-008/AC-009 verificada. Nenhum ajuste necessario: o template da TASK-007 ja e robusto (@if brand independente de items; @if item.icon; label sempre como aria-label/texto). Nenhum arquivo alterado. npm run test 72/72 verdes, npm run build PASS. Worktree isolado (sem mudancas) removido."
+    },
+    "TASK-010": {
+      "issueKey": "SCRUM-1087",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T10:07:22-0300",
+      "finishedAt": "2026-09-22T10:18:36-0300",
+      "observation": "Testes TDD de AC-010 (regra :focus-visible com outline no CSS do componente) e AC-011 (reexport via barrel de componentes) adicionados ao spec. npm run test: 72 verdes + 2 vermelhos ESPERADOS (foco e export), a serem resolvidos por TASK-011 e TASK-012. Sem duplicar AC-002/004/007 nem o aria-expanded ja existente. Commit a22a8a9."
+    },
+    "TASK-011": {
+      "issueKey": "SCRUM-1088",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T10:19:00-0300",
+      "finishedAt": "2026-09-22T10:30:13-0300",
+      "observation": "Regra :focus-visible com outline 2px var(--color-accent) e offset adicionada aos controles focaveis (link/toggle/brand-link) no SCSS (AC-010). Tokens de tema confirmados sem --color-text-faint. npm run test 73 verdes; teste de foco AC-010 verde; resta 1 vermelho AC-011 (export) para TASK-012. npm run build PASS. Commit d8571d6."
+    },
+    "TASK-012": {
+      "issueKey": "SCRUM-1089",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T10:30:36-0300",
+      "finishedAt": "2026-09-22T10:41:37-0300",
+      "observation": "Linha export * from './navigation-rail/paki-navigation-rail' adicionada ao barrel components/index.ts (AC-011). public-api.ts nao editado (ja propaga). npm run test 74/74 verdes (AC-011 verde); npm run build PASS. PakiSidenav preservado. Commit 567511a."
+    },
+    "TASK-013": {
+      "issueKey": "SCRUM-1090",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T10:41:59-0300",
+      "finishedAt": "2026-09-22T10:53:32-0300",
+      "observation": "navigation-rail.stories.ts criado com provideRouter via applicationConfig. Variantes: Recolhido, Expandido, ItemAtivo (rota ativa + brand navegavel), ComRodape, ListaVazia. Imagens de marca so nas stories (R4). npm run build-storybook PASS; npm run test 74/74. documentation.json (gerado) revertido para manter diff limpo. Commit 18f128b."
+    },
+    "TASK-014": {
+      "issueKey": "SCRUM-1091",
+      "status": "done",
+      "owner": "sdd-visual-qa",
+      "startedAt": "2026-09-22T14:01:24-0300",
+      "finishedAt": "2026-09-22T15:05:00-0300",
+      "observation": "Evidencia oficial publicada para AC-001, AC-002, AC-010 (light/dark). Bug de contraste do item ativo corrigido (--color-text-primary). Validate=accepted; publish attachments 10178-10181."
+    },
+    "TASK-015": {
+      "issueKey": "SCRUM-1092",
+      "status": "done",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-22T15:05:00-0300",
+      "finishedAt": "2026-09-22T15:05:00-0300",
+      "observation": "npm run test 74/74 PASS; build PASS; build-storybook PASS. Diff limitado a navigation-rail + 1 linha do barrel. PakiSidenav inalterado. Sem overengineering."
+    }
+  },
+  "qa": {
+    "issueKey": "SCRUM-1093",
+    "status": "blocked_preflight",
+    "attempts": 1,
+    "startedAt": null,
+    "finishedAt": null,
+    "observation": "QA funcional PASS (AC-001..AC-011: 74/74 testes, build/build-storybook OK, evidencia oficial publicada e validada para AC-001/AC-002/AC-010). QA_PASSED bloqueado pelo gate SDD: o servidor de navegador desta sessao reporta versao 1.62.0-alpha (namespace Playwright upstream), que o gate nao reconhece como >= v0.0.78. Nao e possivel forjar a versao."
+  },
+  "visualEvidence": {
+    "manifestPath": "evidence/SCRUM-1074/manifest.json",
+    "criteria": [
+      {
+        "criteriaId": "AC-001"
+      },
+      {
+        "criteriaId": "AC-002"
+      },
+      {
+        "criteriaId": "AC-010"
+      }
+    ],
+    "note": "Alinhado ao registro autoritativo do servidor (validate): apenas AC-001, AC-002, AC-010 sao criterios visuais reconhecidos. AC-005/006/007 cobertos por testes unitarios.",
+    "published": [
+      {
+        "criteriaId": "AC-001",
+        "attachmentId": "10178"
+      },
+      {
+        "criteriaId": "AC-002",
+        "attachmentId": "10179"
+      },
+      {
+        "criteriaId": "AC-010",
+        "attachmentId": "10180"
+      },
+      {
+        "criteriaId": "AC-010",
+        "attachmentId": "10181"
+      }
+    ],
+    "publishCommentId": "13852"
+  },
+  "hashes": {
+    "assetsManifest": "4eb238e7d9007c51d97cda9cb1aea2e15fa7ece6ce0db37c00c6f5e84e470af7",
+    "issue": "2440ce5e700e790023eff9b1014b5f78127699e1f40d2df94ef45933f9ba486e",
+    "spec": "3548e10afbd5192f60dd3b58ae3274749ee1a53a01f7d0f3d9609c383fb62994",
+    "checklist": "c28790cb077a161f3fd90e254c53421e109dac49ed876f19f0ac40564ba9113e",
+    "research": "b193841bbccbf2bc6838468fe57ba3e27bf3438231df4dfd4c11026daae290ca",
+    "plan": "2f4ffbdc21438d5f6c289ba6cce680a7ec1355957192e7c8a2b80f812cdcea46",
+    "tasks": "78516cabae0bb9bc2342eaa2031d31ddbac57ac498d99cb15d5b839b7fcb6165"
+  },
+  "buildConcurrency": "sequential",
+  "buildStartedAt": "2026-09-21T19:14:08-0300",
+  "buildFinishedAt": null,
+  "workingBranch": "feat/scrum-1074-navigation-rail",
+  "resumeNotes": [
+    {
+      "at": "2026-09-22T14:16:57-0300",
+      "note": "Segundo BUILD_BLOCKED na retomada da TASK-014. TASK-001..013 permanecem done e commitados (HEAD 18f128b). Dois bloqueios independentes precisam de acao humana/infra antes de retomar: (1) GATE DE EVIDENCIA VISUAL - sdd_visual_evidence_validate rejeita todas as 7 evidencias com UNKNOWN_CRITERION porque o registro de criterios de evidencia visual do servidor esta vazio para SCRUM-1074 (nunca populado devido ao BUILD_BLOCKED anterior na TASK-008); nao ha tool exposta ao agente/orquestrador para registrar os criterios no servidor; sem registro, publicar e impossivel e o QA_PASSED nao e alcancavel. (2) DEFEITO REAL DE CONTRASTE - no tema escuro o rotulo do item de rota ativa mede 3.59:1 (< 4.5:1 WCAG AA), reprovando AC-002 e AC-010-dark; a correcao minima in-scope e trocar o SCSS de '.paki-navigation-rail__link.active { color: var(--color-accent) }' para 'color: var(--color-text-primary)' em projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.scss, mantendo o fundo --color-accent-tint. (3) BLOQUEIO DE AMBIENTE - a correcao (2) nao pode ser aplicada porque o harness isola o sdd-implementer em worktree derivado de da1b403 (master), sem os arquivos navigation-rail (BLOCKED:WORKTREE_BASELINE), reproduzindo o bloqueio arquivado da TASK-008 em novo spawn. A whitelist SDD nao permite fallback (codigo executavel exige sdd-implementer). Evidencias PNG capturadas e integras em evidence/SCRUM-1074/ (manifest.json + 7 PNG). Checkout compartilhado intacto; sem worktrees pendentes; nenhum arquivo de componente alterado.",
+      "unblockSteps": [
+        "Garantir que o harness execute o sdd-implementer na shared checkout com feat/scrum-1074-navigation-rail ativa (HEAD 18f128b), OU criar o worktree do agente a partir de 18f128b, para que os arquivos navigation-rail existam antes da edicao.",
+        "Aplicar a correcao minima de contraste no SCSS do componente (color do item ativo: --color-text-primary) e rodar npm run test, npm run build, npm run build-storybook; commitar no branch.",
+        "Registrar os criterios de evidencia visual (AC-001, AC-002, AC-005, AC-006, AC-007, AC-010) no registro do servidor para SCRUM-1074, pre-condicao de sdd_visual_evidence_validate/publish.",
+        "Recapturar a evidencia do item ativo (AC-002 e AC-010-dark) apos a correcao, revalidar e publicar; entao QA final (SCRUM-1093) e code review consultivo, seguidos de BUILD_COMPLETED."
+      ]
+    },
+    {
+      "at": "2026-09-22",
+      "note": "Retomada apos BUILD_BLOCKED WORKTREE_BASELINE. Causa: worktrees isolados de agente derivados de master (da1b403), sem baseline navigation-rail. Correcao: delegar sdd-implementer SEM isolamento de worktree, in-place no checkout compartilhado do branch feat/scrum-1074-navigation-rail, commitando por tarefa. TASK-008 resetada para pending.",
+      "archivedBlock": {
+        "reason": "WORKTREE_BASELINE",
+        "task": "TASK-008",
+        "detail": "O harness isola cada spawn de sdd-implementer em worktree derivado de da1b403 (anterior a TASK-001), sem o baseline navigation-rail. O implementer nao acessa nem edita os arquivos do componente/spec. Reproduzido em 2 spawns (1 retry). Nao ha fallback permitido: a whitelist exige sdd-implementer para tarefas executaveis. Checkout compartilhado intacto em HEAD 3eebaf4 (TASK-001..007). Sem worktrees pendentes.",
+        "blockedAt": "2026-09-22T12:19:40.000Z"
+      }
+    }
+  ],
+  "buildBlocked": {
+    "reason": "VISUAL_QA_PREFLIGHT_VERSION",
+    "stage": "QA_PASSED",
+    "detail": "Evidencia oficial e codigo completos. QA_PASSED rejeitado com VISUAL_QA_BLOCKED: servidor de navegador reporta 1.62.0-alpha-1783623505000; o gate SDD exige v0.0.78+ (namespace proprio). browser_verify_* presentes. Requer servidor de navegador SDD compativel (como no SCRUM-1002).",
+    "resolvable": "Prover servidor de navegador que reporte versao v0.0.78+; entao re-registrar QA_PASSED com eventKey SCRUM-1074/scr1074-plan-20260921/r1/build/qa/passed (idempotente), seguido de code review consultivo e BUILD_COMPLETED."
+  }
+}
