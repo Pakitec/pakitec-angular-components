@@ -5,6 +5,7 @@ export * from './combobox/paki-combobox';
 export * from './date/paki-date.component';
 export * from './input/paki-input';
 export * from './module-tabs/paki-module-tabs';
+export * from './navigation-rail/paki-navigation-rail';
 export * from './page-header/paki-page-header';
 export * from './pagination/paki-pagination';
 export * from './select/paki-select.component';
