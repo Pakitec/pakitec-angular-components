@@ -8,6 +8,12 @@ import {
   PakiNavigationRailItem,
 } from './paki-navigation-rail';
 
+// Import via barrel de componentes (AC-011, FR-012, NFR-004). Usa namespace
+// import para ler o símbolo em runtime sem erro de tipo por membro ausente. Se
+// o barrel ainda não reexportar o componente, a leitura fica undefined e só o
+// teste de export falha, sem quebrar a compilação de todo o spec.
+import * as componentsBarrel from '../index';
+
 /**
  * Host de teste do PakiNavigationRail.
  *
@@ -603,6 +609,41 @@ describe('PakiNavigationRail — robustez de dados parciais', () => {
       // O label segue como nome acessível (aria-label) do controle.
       expect(control.getAttribute('aria-label')).toBe('Ação');
     });
+  });
+});
+
+describe('PakiNavigationRail — acessibilidade de foco (AC-010)', () => {
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  // AC-010 (FR-011, NFR-001): o foco por teclado precisa ser visível. Assere a
+  // presença de uma regra :focus-visible com outline no escopo do componente,
+  // no mesmo estilo do teste de reduced-motion que concatena as regras CSS
+  // aplicadas. O comportamento visual fica para o QA; aqui basta a regra existir.
+  it('o CSS aplicado ao componente declara regra :focus-visible com outline', async () => {
+    const fixture = await createRail();
+    fixture.componentRef.setInput('items', []);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const hasFocusVisibleOutline = collectAppliedCssText().some(
+      (cssText) => /:focus-visible/.test(cssText) && /outline/.test(cssText),
+    );
+
+    expect(hasFocusVisibleOutline).toBe(true);
+  });
+});
+
+describe('PakiNavigationRail — export via barrel (AC-011)', () => {
+  // AC-011 (FR-012, NFR-004): o componente é consumível por quem importa o
+  // barrel de componentes da biblioteca. Assere que o símbolo reexportado está
+  // definido e é a mesma classe do módulo direto.
+  it('reexporta PakiNavigationRail pelo barrel de componentes', () => {
+    const exported = (componentsBarrel as Record<string, unknown>)['PakiNavigationRail'];
+
+    expect(exported).toBeDefined();
+    expect(exported).toBe(PakiNavigationRail);
   });
 });
 
