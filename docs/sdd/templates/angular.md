@@ -240,6 +240,59 @@ Modele estados assíncronos explicitamente, como `idle`, `loading`, `success`,
 `computed`.
 <!-- sdd:section angular.state:end -->
 
+<!-- sdd:section angular.async-feedback:start -->
+## Feedback durante operações assíncronas
+
+- Enquanto a tela aguarda dados remotos pela primeira vez, mostre um *skeleton*
+  que preserve a estrutura, a quantidade aproximada e o tamanho dos elementos
+  que serão exibidos.
+- Use *placeholder* para ocupar temporariamente uma região sem conteúdo
+  definitivo. O placeholder não substitui os estados `empty` e `error` após o
+  término da requisição.
+- Ao concluir o carregamento, remova o skeleton ou placeholder e exiba dados,
+  estado vazio ou erro conforme o estado exposto pelo Controller.
+- Em ações iniciadas por botão, exponha um Signal como `isSubmitting` e, quando
+  disponível no design system, use o estado de loading do componente de botão.
+  Enquanto a ação estiver em andamento, desabilite o botão para evitar envios
+  duplicados e preserve um rótulo acessível que informe o andamento.
+- Reutilize os componentes de skeleton, placeholder e botão do design system.
+  Crie componentes locais somente quando não houver equivalente e o reuso for
+  específico do flow; promova-os para `shared/` apenas após reuso real.
+- O Controller controla somente os estados (`loading`, `submitting`, `success`,
+  `empty` e `error`). A escolha e a renderização do feedback pertencem à View.
+
+Exemplo de View para uma busca inicial:
+
+```html
+@if (controller.isLoading()) {
+  <app-user-list-skeleton aria-label="Carregando usuários" />
+} @else if (controller.errorMessage(); as message) {
+  <p role="alert">{{ message }}</p>
+} @else if (controller.isEmpty()) {
+  <app-empty-state message="Nenhum usuário encontrado." />
+} @else {
+  <app-user-list [users]="controller.users()" />
+}
+```
+
+Exemplo de ação com botão:
+
+```html
+<app-button
+  type="submit"
+  [loading]="controller.isSubmitting()"
+  [disabled]="controller.isSubmitting()"
+  loadingLabel="Enviando dados"
+>
+  Continuar
+</app-button>
+```
+
+Adapte os nomes, inputs e componentes ao design system detectado. Se ele não
+oferecer botão com loading, use o botão nativo ou existente com texto ou ícone
+de progresso acessível, sem mudar a responsabilidade do Controller.
+<!-- sdd:section angular.async-feedback:end -->
+
 <!-- sdd:section angular.rules:start -->
 ## Components, Services e Change Detection
 
@@ -297,6 +350,8 @@ Fontes: [Angular Signals](https://angular.dev/guide/signals),
 - Teste comportamento observável, não detalhes internos de implementação.
 - Teste Controllers com suas transições e falhas relevantes.
 - Teste Repositories com respostas válidas, erros HTTP e payload inválido.
+- Teste na View os estados de skeleton ou placeholder, conteúdo, vazio, erro e
+  loading do botão quando cada um for aplicável ao flow.
 - Rode lint, typecheck, testes e build definidos no `package.json`.
 <!-- sdd:section angular.quality:end -->
 
@@ -311,3 +366,5 @@ Fontes: [Angular Signals](https://angular.dev/guide/signals),
 - Não crie abstrações em `shared/` antes de existir reuso real.
 - Reutilize o design system e os componentes corporativos existentes.
 <!-- sdd:section angular.agent:end -->
+
+
