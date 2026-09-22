@@ -91,10 +91,13 @@
   width: 100%;
 }
 
-// Item de rota ativa: usa o par accent/accent-tint (contraste adequado, R-B).
+// Item de rota ativa: fundo accent-tint marca o estado ativo; o texto usa
+// text-primary para garantir contraste WCAG 2.1 AA nos dois temas (R-B/R-C).
+// O texto accent sobre accent-tint reprovava AA no tema escuro (3.59:1); o
+// text-primary sobe o contraste bem acima de 4.5:1 mantendo o realce pelo fundo.
 .paki-navigation-rail__link.active {
   background: var(--color-accent-tint);
-  color: var(--color-accent);
+  color: var(--color-text-primary);
 }
 
 // Foco visível por teclado nos controles focáveis (AC-010, FR-011, NFR-001).
