@@ -545,6 +545,67 @@ describe('PakiNavigationRail — rodapé e marca', () => {
   });
 });
 
+describe('PakiNavigationRail — robustez de dados parciais', () => {
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
+
+  describe('AC-008 (FR-009) — lista vazia com marca', () => {
+    it('renderiza sem lançar quando items é vazio e mantém o cabeçalho de marca', async () => {
+      const fixture = await createBrandFooterHost();
+      fixture.componentInstance.items = [];
+      fixture.componentInstance.brand = { label: 'Pakitec' };
+
+      // O rail deve montar mesmo sem itens; a marca não depende da lista.
+      expect(() => {
+        fixture.detectChanges();
+      }).not.toThrow();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const header = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__brand',
+      ) as HTMLElement;
+
+      // Com items vazio, o cabeçalho de marca ainda aparece com o label.
+      expect(header).toBeTruthy();
+      expect(header.textContent).toContain('Pakitec');
+
+      // Sem itens, nenhum controle de link é renderizado nas listas.
+      const links = fixture.nativeElement.querySelectorAll(
+        '.paki-navigation-rail__link',
+      );
+      expect(links.length).toBe(0);
+    });
+  });
+
+  describe('AC-009 (FR-010) — item sem ícone', () => {
+    it('renderiza o item sem o span de ícone e mantém o label como nome acessível', async () => {
+      const fixture = await createRail();
+      fixture.componentRef.setInput('items', [
+        { id: 'action', label: 'Ação' } as PakiNavigationRailItem,
+      ]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const control = fixture.nativeElement.querySelector(
+        '.paki-navigation-rail__link',
+      ) as HTMLElement;
+
+      // O item existe mesmo sem ícone declarado.
+      expect(control).toBeTruthy();
+
+      // Sem icon, o span de ícone não deve ser renderizado.
+      const icon = control.querySelector('.paki-navigation-rail__icon');
+      expect(icon).toBeNull();
+
+      // O label segue como nome acessível (aria-label) do controle.
+      expect(control.getAttribute('aria-label')).toBe('Ação');
+    });
+  });
+});
+
 /**
  * Concatena o texto de todas as regras CSS acessíveis do documento.
  *
