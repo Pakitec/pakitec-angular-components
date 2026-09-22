@@ -6,6 +6,24 @@
   recolhido só-ícone.
 -->
 <nav class="paki-navigation-rail" aria-label="Navegação principal">
+  <!--
+    Cabeçalho de marca (TASK-007, AC-006). Só renderiza quando há brand.
+    Com brand.route: <a routerLink> navegável exibindo o label. Sem route:
+    <span> não interativo com o label (premissa R3). O container carrega a
+    classe .paki-navigation-rail__brand em ambos os casos.
+  -->
+  @if (brand(); as brandValue) {
+    <div class="paki-navigation-rail__brand">
+      @if (brandValue.route) {
+        <a class="paki-navigation-rail__brand-link" [routerLink]="brandValue.route">
+          {{ brandValue.label }}
+        </a>
+      } @else {
+        <span class="paki-navigation-rail__brand-label">{{ brandValue.label }}</span>
+      }
+    </div>
+  }
+
   <ul class="paki-navigation-rail__list paki-navigation-rail__list--main">
     @for (item of mainItems(); track item.id) {
       <li class="paki-navigation-rail__item">

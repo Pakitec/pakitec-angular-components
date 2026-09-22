@@ -44,6 +44,29 @@
 .paki-navigation-rail__list--footer {
   // Ancora o grupo de rodapé na base do rail, separado dos itens principais.
   margin-top: auto;
+  // Divisor visual entre o grupo principal e o rodapé (AC-005). Usa o token de
+  // borda sutil do tema para manter contraste coerente nos temas claro e escuro.
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+// Cabeçalho de marca (AC-006). Separa a marca dos itens com um divisor sutil e
+// alinha o conteúdo ao mesmo padding dos grupos de itens.
+.paki-navigation-rail__brand {
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 12px;
+}
+
+// Elemento da marca em ambos os casos (navegável ou não): mesma aparência
+// tipográfica, sem sublinhado no link, com reticências quando o texto excede.
+.paki-navigation-rail__brand-link,
+.paki-navigation-rail__brand-label {
+  color: var(--color-text-primary);
+  display: block;
+  font-weight: 600;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .paki-navigation-rail__item {
