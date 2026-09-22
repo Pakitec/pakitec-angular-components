@@ -97,6 +97,18 @@
   color: var(--color-accent);
 }
 
+// Foco visível por teclado nos controles focáveis (AC-010, FR-011, NFR-001).
+// O outline usa a cor de acento do tema, o que garante contraste do indicador
+// (WCAG 2.1 AA, 3:1) nos temas claro e escuro por ler o mesmo token. O offset
+// separa o contorno da borda arredondada. Restringe a :focus-visible para não
+// exibir o outline em cliques de ponteiro.
+.paki-navigation-rail__link:focus-visible,
+.paki-navigation-rail__toggle:focus-visible,
+.paki-navigation-rail__brand-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 // Item desabilitado: aparência esmaecida e sem interação de ponteiro.
 .paki-navigation-rail__link--disabled {
   cursor: default;
