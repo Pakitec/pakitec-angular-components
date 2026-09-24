@@ -77,43 +77,59 @@ input {
   }
 }
 
+.paki-select__toggle.open svg {
+  transform: rotate(180deg);
+}
+
+// A lista fica DENTRO de .paki-select__control (position: relative): assim a largura
+// acompanha o campo, e não o primeiro ancestral posicionado da página.
 .paki-select__dropdown {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border-subtle, var(--color-border-default));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+  box-sizing: border-box;
+  left: 0;
   list-style: none;
-  margin: 4px 0 0;
+  margin: 0;
   max-height: 260px;
   overflow: auto;
-  padding: 5px;
+  padding: 6px;
   position: absolute;
-  width: 100%;
+  right: 0;
+  top: calc(100% + 6px);
   z-index: 30;
 
+  // Não herdar a tipografia do rótulo (uppercase, negrito, espaçamento).
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+
   li {
-    border-radius: 6px;
+    border-radius: 8px;
     color: var(--color-text-primary);
     cursor: pointer;
-    font-size: 13px;
-    padding: 9px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    padding: 10px 12px;
 
     &:hover,
     &.active {
-      background: var(--color-accent-tint);
-      color: var(--color-accent);
+      background: var(--color-bg-page, var(--color-accent-tint));
     }
 
     &.selected {
-      background: var(--color-accent);
-      color: var(--neutral-0);
-
-      &:hover,
-      &.active {
-        background: var(--color-accent);
-        color: var(--neutral-0);
-      }
+      background: var(--color-accent-tint);
+      color: var(--color-accent);
+      font-weight: 600;
     }
+  }
+
+  mark {
+    background: transparent;
+    color: var(--color-accent);
+    font-weight: 700;
   }
 }
 

@@ -2,6 +2,50 @@
     "pipes": [],
     "interfaces": [
         {
+            "name": "PakiHighlightPart",
+            "id": "interface-PakiHighlightPart-1d12eaefd07794680c1ae1a4ec5df1a714bef6845071ad6ca6862190806a75550dc23822229efcea64689dd4d71cb82a4d4a848f526a3b79d829f15a8fec453e",
+            "file": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface PakiHighlightPart {\n  text: string;\n  match: boolean;\n}\n\nfunction fold(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\n/**\n * Divide `label` em trechos marcando a primeira ocorrência de `term`, sem diferenciar\n * acentos nem maiúsculas (\"sao\" destaca \"São\"). Preserva o texto original do rótulo.\n * Sem termo ou sem ocorrência, devolve o rótulo inteiro como um único trecho não marcado.\n */\nexport function highlightParts(label: string, term: string): PakiHighlightPart[] {\n  const query = fold(term.trim());\n  if (!query) return [{ text: label, match: false }];\n\n  // Monta o texto \"dobrado\" guardando, para cada caractere dobrado, o índice no rótulo original.\n  let folded = '';\n  const origin: number[] = [];\n  for (let i = 0; i < label.length; i++) {\n    for (const ch of fold(label[i]!)) {\n      folded += ch;\n      origin.push(i);\n    }\n  }\n\n  const at = folded.indexOf(query);\n  if (at < 0) return [{ text: label, match: false }];\n\n  const start = origin[at]!;\n  const end = origin[at + query.length - 1]! + 1;\n  return [\n    { text: label.slice(0, start), match: false },\n    { text: label.slice(start, end), match: true },\n    { text: label.slice(end), match: false },\n  ].filter((part) => part.text.length > 0);\n}\n",
+            "displayName": "PakiHighlightPart",
+            "properties": [
+                {
+                    "name": "match",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "text",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "rawdescription": "\n"
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
             "name": "PakiModuleTab",
             "id": "interface-PakiModuleTab-55ee41b8254d3a71ef393672484d8aa4e9f04963865f3881552cbd4c54d592d960731ade4aad632343470809229817e064d98b3919dda36eba162f89d7f16b5a",
             "file": "projects/pakitec-angular-components/src/lib/components/module-tabs/paki-module-tabs.ts",
@@ -46,13 +90,153 @@
             }
         },
         {
+            "name": "PakiNavigationRailBrand",
+            "id": "interface-PakiNavigationRailBrand-87a17d64e846077bb97ab3d251e9d76a38f6219d2d4bd699b562e390e4d1ec179f5ca2647341cec1e4370d30b062b9687e2908473349da38bd81eb88cc91d77a",
+            "file": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { NgTemplateOutlet } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/**\n * Item de navegação do rail.\n *\n * O consumidor fornece a lista completa; o componente apenas renderiza e emite.\n * A ausência de `position` é tratada como `main` para simplificar o uso comum.\n */\nexport interface PakiNavigationRailItem {\n  /** Identificador emitido em `itemSelected`; deve ser único na lista. */\n  id: string;\n  /** Nome exibido e usado como nome acessível no estado recolhido. */\n  label: string;\n  /** Rota opcional; quando presente, o item navega via RouterLink. */\n  route?: string;\n  /** Classe CSS do ícone; os glifos ficam a cargo da aplicação consumidora. */\n  icon?: string;\n  /** Quando verdadeiro, o item não navega e não emite `itemSelected`. */\n  disabled?: boolean;\n  /** Agrupa o item no topo (`main`) ou ancorado ao rodapé (`footer`). */\n  position?: 'main' | 'footer';\n}\n\n/**\n * Cabeçalho de marca do rail.\n *\n * Sem `route` o cabeçalho não é navegável, por simetria com os itens.\n */\nexport interface PakiNavigationRailBrand {\n  /** Texto da marca exibido no cabeçalho. */\n  label: string;\n  /** Rota opcional; quando presente, o cabeçalho navega ao ser acionado. */\n  route?: string;\n}\n\n/**\n * Faixa de navegação vertical recolhível, acessível e temática.\n *\n * Entrega estados recolhido (64px) e expandido (216px) por two-way\n * `expanded`/`expandedChange`, itens com rota opcional, item de rodapé e\n * cabeçalho de marca. O componente não persiste estado; a decisão de\n * persistência é do consumidor.\n */\n@Component({\n  selector: 'paki-navigation-rail',\n  standalone: true,\n  // RouterLink e RouterLinkActive dão navegação e destaque de rota ativa aos\n  // itens com rota. NgTemplateOutlet reaproveita a mesma semântica de item nos\n  // grupos main e footer sem duplicar o markup.\n  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],\n  templateUrl: './paki-navigation-rail.html',\n  styleUrl: './paki-navigation-rail.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-navigation-rail--expanded]': 'expanded()',\n  },\n})\nexport class PakiNavigationRail {\n  /** Estado recolhido/expandido controlado pelo consumidor; inicia recolhido. */\n  readonly expanded = model(false);\n\n  /** Lista de itens de navegação; padrão vazio evita erro em estado inicial. */\n  readonly items = input<readonly PakiNavigationRailItem[]>([]);\n\n  /** Cabeçalho de marca opcional. */\n  readonly brand = input<PakiNavigationRailBrand | undefined>(undefined);\n\n  /** Emite o `id` do item selecionado; suprimido quando o item é `disabled`. */\n  readonly itemSelected = output<string>();\n\n  /** Itens do grupo principal: `position` ausente conta como `main`. */\n  readonly mainItems = computed(() =>\n    this.items().filter((item) => item.position === undefined || item.position === 'main'),\n  );\n\n  /** Itens ancorados ao rodapé, separados visualmente do grupo principal. */\n  readonly footerItems = computed(() =>\n    this.items().filter((item) => item.position === 'footer'),\n  );\n\n  /**\n   * Emite `itemSelected` com o `id` do item acionado.\n   *\n   * Serve aos itens com rota (`<a>`) e sem rota (`<button>`). O item `disabled`\n   * usa um elemento não interativo sem este handler no template; por isso não\n   * navega nem emite. A supressão em `disabled` vem da estrutura do template,\n   * não deste método.\n   *\n   * @param item Item de navegação acionado pelo usuário.\n   */\n  onItemActivate(item: PakiNavigationRailItem): void {\n    this.itemSelected.emit(item.id);\n  }\n\n  /**\n   * Alterna o estado recolhido/expandido do rail.\n   *\n   * Inverte o valor de `expanded` (model), o que emite `expandedChange` com o\n   * novo valor e atualiza a largura via classe de estado no host. Serve ao\n   * controle de expansão nativo (`<button [attr.aria-expanded]>`) (FR-001,\n   * FR-002, AC-001).\n   */\n  toggleExpanded(): void {\n    this.expanded.update((value) => !value);\n  }\n}\n",
+            "displayName": "PakiNavigationRailBrand",
+            "properties": [
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Texto da marca exibido no cabeçalho.</p>\n",
+                    "line": 33,
+                    "rawdescription": "\nTexto da marca exibido no cabeçalho."
+                },
+                {
+                    "name": "route",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Rota opcional; quando presente, o cabeçalho navega ao ser acionado.</p>\n",
+                    "line": 35,
+                    "rawdescription": "\nRota opcional; quando presente, o cabeçalho navega ao ser acionado."
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Cabeçalho de marca do rail.</p>\n<p>Sem <code>route</code> o cabeçalho não é navegável, por simetria com os itens.</p>\n",
+            "rawdescription": "\n\nCabeçalho de marca do rail.\n\nSem `route` o cabeçalho não é navegável, por simetria com os itens.\n",
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
+            "name": "PakiNavigationRailItem",
+            "id": "interface-PakiNavigationRailItem-87a17d64e846077bb97ab3d251e9d76a38f6219d2d4bd699b562e390e4d1ec179f5ca2647341cec1e4370d30b062b9687e2908473349da38bd81eb88cc91d77a",
+            "file": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { NgTemplateOutlet } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/**\n * Item de navegação do rail.\n *\n * O consumidor fornece a lista completa; o componente apenas renderiza e emite.\n * A ausência de `position` é tratada como `main` para simplificar o uso comum.\n */\nexport interface PakiNavigationRailItem {\n  /** Identificador emitido em `itemSelected`; deve ser único na lista. */\n  id: string;\n  /** Nome exibido e usado como nome acessível no estado recolhido. */\n  label: string;\n  /** Rota opcional; quando presente, o item navega via RouterLink. */\n  route?: string;\n  /** Classe CSS do ícone; os glifos ficam a cargo da aplicação consumidora. */\n  icon?: string;\n  /** Quando verdadeiro, o item não navega e não emite `itemSelected`. */\n  disabled?: boolean;\n  /** Agrupa o item no topo (`main`) ou ancorado ao rodapé (`footer`). */\n  position?: 'main' | 'footer';\n}\n\n/**\n * Cabeçalho de marca do rail.\n *\n * Sem `route` o cabeçalho não é navegável, por simetria com os itens.\n */\nexport interface PakiNavigationRailBrand {\n  /** Texto da marca exibido no cabeçalho. */\n  label: string;\n  /** Rota opcional; quando presente, o cabeçalho navega ao ser acionado. */\n  route?: string;\n}\n\n/**\n * Faixa de navegação vertical recolhível, acessível e temática.\n *\n * Entrega estados recolhido (64px) e expandido (216px) por two-way\n * `expanded`/`expandedChange`, itens com rota opcional, item de rodapé e\n * cabeçalho de marca. O componente não persiste estado; a decisão de\n * persistência é do consumidor.\n */\n@Component({\n  selector: 'paki-navigation-rail',\n  standalone: true,\n  // RouterLink e RouterLinkActive dão navegação e destaque de rota ativa aos\n  // itens com rota. NgTemplateOutlet reaproveita a mesma semântica de item nos\n  // grupos main e footer sem duplicar o markup.\n  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],\n  templateUrl: './paki-navigation-rail.html',\n  styleUrl: './paki-navigation-rail.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-navigation-rail--expanded]': 'expanded()',\n  },\n})\nexport class PakiNavigationRail {\n  /** Estado recolhido/expandido controlado pelo consumidor; inicia recolhido. */\n  readonly expanded = model(false);\n\n  /** Lista de itens de navegação; padrão vazio evita erro em estado inicial. */\n  readonly items = input<readonly PakiNavigationRailItem[]>([]);\n\n  /** Cabeçalho de marca opcional. */\n  readonly brand = input<PakiNavigationRailBrand | undefined>(undefined);\n\n  /** Emite o `id` do item selecionado; suprimido quando o item é `disabled`. */\n  readonly itemSelected = output<string>();\n\n  /** Itens do grupo principal: `position` ausente conta como `main`. */\n  readonly mainItems = computed(() =>\n    this.items().filter((item) => item.position === undefined || item.position === 'main'),\n  );\n\n  /** Itens ancorados ao rodapé, separados visualmente do grupo principal. */\n  readonly footerItems = computed(() =>\n    this.items().filter((item) => item.position === 'footer'),\n  );\n\n  /**\n   * Emite `itemSelected` com o `id` do item acionado.\n   *\n   * Serve aos itens com rota (`<a>`) e sem rota (`<button>`). O item `disabled`\n   * usa um elemento não interativo sem este handler no template; por isso não\n   * navega nem emite. A supressão em `disabled` vem da estrutura do template,\n   * não deste método.\n   *\n   * @param item Item de navegação acionado pelo usuário.\n   */\n  onItemActivate(item: PakiNavigationRailItem): void {\n    this.itemSelected.emit(item.id);\n  }\n\n  /**\n   * Alterna o estado recolhido/expandido do rail.\n   *\n   * Inverte o valor de `expanded` (model), o que emite `expandedChange` com o\n   * novo valor e atualiza a largura via classe de estado no host. Serve ao\n   * controle de expansão nativo (`<button [attr.aria-expanded]>`) (FR-001,\n   * FR-002, AC-001).\n   */\n  toggleExpanded(): void {\n    this.expanded.update((value) => !value);\n  }\n}\n",
+            "displayName": "PakiNavigationRailItem",
+            "properties": [
+                {
+                    "name": "disabled",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Quando verdadeiro, o item não navega e não emite <code>itemSelected</code>.</p>\n",
+                    "line": 21,
+                    "rawdescription": "\nQuando verdadeiro, o item não navega e não emite `itemSelected`."
+                },
+                {
+                    "name": "icon",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Classe CSS do ícone; os glifos ficam a cargo da aplicação consumidora.</p>\n",
+                    "line": 19,
+                    "rawdescription": "\nClasse CSS do ícone; os glifos ficam a cargo da aplicação consumidora."
+                },
+                {
+                    "name": "id",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Identificador emitido em <code>itemSelected</code>; deve ser único na lista.</p>\n",
+                    "line": 13,
+                    "rawdescription": "\nIdentificador emitido em `itemSelected`; deve ser único na lista."
+                },
+                {
+                    "name": "label",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Nome exibido e usado como nome acessível no estado recolhido.</p>\n",
+                    "line": 15,
+                    "rawdescription": "\nNome exibido e usado como nome acessível no estado recolhido."
+                },
+                {
+                    "name": "position",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"main\" | \"footer\"",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Agrupa o item no topo (<code>main</code>) ou ancorado ao rodapé (<code>footer</code>).</p>\n",
+                    "line": 23,
+                    "rawdescription": "\nAgrupa o item no topo (`main`) ou ancorado ao rodapé (`footer`)."
+                },
+                {
+                    "name": "route",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "<p>Rota opcional; quando presente, o item navega via RouterLink.</p>\n",
+                    "line": 17,
+                    "rawdescription": "\nRota opcional; quando presente, o item navega via RouterLink."
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "description": "<p>Item de navegação do rail.</p>\n<p>O consumidor fornece a lista completa; o componente apenas renderiza e emite.\nA ausência de <code>position</code> é tratada como <code>main</code> para simplificar o uso comum.</p>\n",
+            "rawdescription": "\n\nItem de navegação do rail.\n\nO consumidor fornece a lista completa; o componente apenas renderiza e emite.\nA ausência de `position` é tratada como `main` para simplificar o uso comum.\n",
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
             "name": "PakiOption",
-            "id": "interface-PakiOption-06de8b8dd1a0c62e5f3460c74dd59eebdaf9fdc4476fe838c336d97b68a8f496afb93b8ae5aee70ea810449c6f7452073cf90945ddf29bc741e21ba26cf46021",
+            "id": "interface-PakiOption-c8bc51d5dea5fb2e7fd42932ae97293014cc1d12398fa2957670a5251c544b066cdef41cf7f67d22abf9878401046c674f082da1275128340822f734c06f2b5d",
             "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? v;\n  });\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.searchTerm.set(option.label);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
             "displayName": "PakiOption",
             "properties": [
                 {
@@ -64,7 +248,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 16,
                     "rawdescription": "\n"
                 },
                 {
@@ -76,7 +260,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 17,
                     "rawdescription": "\n"
                 }
             ],
@@ -510,6 +694,147 @@
         }
     ],
     "components": [
+        {
+            "name": "NavigationRailActiveItemHost",
+            "id": "component-NavigationRailActiveItemHost-fd0e5704898bb0b28123a09d47e1bcb9ee0b414c636890bad4ebfaef59ef87252373410ac4b4f3753be2556636ebab9bdffdebd64ce0aec857585db4ca4c081d",
+            "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "styleUrls": [],
+            "styles": [],
+            "template": "<paki-navigation-rail [items]=\"items()\" [brand]=\"brand()\" [expanded]=\"expanded()\"></paki-navigation-rail>",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "brand",
+                    "coverageIgnore": false,
+                    "defaultValue": "undefined",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PakiNavigationRailBrand | undefined",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiNavigationRailItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 33,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "router",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(Router)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "PakiNavigationRail"
+                }
+            ],
+            "description": "<p>Host da story ItemAtivo.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe <code>active</code> e o aria-current=&quot;page&quot;.</p>\n",
+            "rawdescription": "\n\nHost da story ItemAtivo.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe `active` e o aria-current=\"page\".\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { applicationConfig, moduleMetadata } from '@storybook/angular-vite';\nimport { Component, afterNextRender, inject, input } from '@angular/core';\nimport { Router, provideRouter } from '@angular/router';\n\nimport {\n  PakiNavigationRail,\n  type PakiNavigationRailBrand,\n  type PakiNavigationRailItem,\n} from '../public-api';\n\n/**\n * Rota vazia usada pelas stories que precisam de RouterLink.\n * O Angular exige um componente para cada rota registrada.\n */\n@Component({ standalone: true, template: '' })\nclass StoryRoute {}\n\n/**\n * Host da story ItemAtivo.\n * Navega para a rota do item ativo após a renderização inicial.\n * Assim, RouterLinkActive aplica a classe `active` e o aria-current=\"page\".\n */\n@Component({\n  standalone: true,\n  imports: [PakiNavigationRail],\n  template:\n    '<paki-navigation-rail [items]=\"items()\" [brand]=\"brand()\" [expanded]=\"expanded()\"></paki-navigation-rail>',\n})\nclass NavigationRailActiveItemHost {\n  private readonly router = inject(Router);\n\n  readonly items = input.required<readonly PakiNavigationRailItem[]>();\n  readonly brand = input<PakiNavigationRailBrand | undefined>(undefined);\n  readonly expanded = input<boolean>(false);\n\n  constructor() {\n    afterNextRender(() => {\n      this.router.navigate(['/dashboard']);\n    });\n  }\n}\n\n/**\n * Marca de exemplo navegável.\n * As imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n * (premissa R4). Elas não fazem parte do contrato público do componente.\n */\nconst brandNavegavel: PakiNavigationRailBrand = {\n  label: 'Pakitec',\n  route: '/',\n};\n\n/**\n * Itens base do grupo principal.\n * Cobrem item com rota, item sem rota, item disabled e item sem ícone.\n */\nconst mainItems: readonly PakiNavigationRailItem[] = [\n  { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n  { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  { id: 'actions', label: 'Ações rápidas', icon: 'icon-bolt' },\n  { id: 'archive', label: 'Arquivados', route: '/archive', icon: 'icon-archive', disabled: true },\n  { id: 'legacy', label: 'Sem ícone', route: '/legacy' },\n];\n\n/**\n * Item ancorado ao rodapé, separado do grupo principal (AC-005).\n */\nconst footerItem: PakiNavigationRailItem = {\n  id: 'settings',\n  label: 'Configurações',\n  route: '/settings',\n  icon: 'icon-settings',\n  position: 'footer',\n};\n\n/**\n * Lista completa: itens main mais o item de rodapé.\n */\nconst baseItems: readonly PakiNavigationRailItem[] = [...mainItems, footerItem];\n\n/**\n * Metadados da story do paki-navigation-rail.\n *\n * O Storybook alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\n * Cada story abaixo aparece nos dois temas sem configuração extra.\n */\nconst meta: Meta<PakiNavigationRail> = {\n  title: 'Componentes/Navigation Rail',\n  component: PakiNavigationRail,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: false,\n  },\n};\n\nexport default meta;\ntype Story = StoryObj<PakiNavigationRail>;\n\n/**\n * Recolhido (padrão): expanded=false.\n * Demonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).\n */\nexport const Recolhido: Story = {\n  args: {\n    expanded: false,\n  },\n};\n\n/**\n * Expandido: expanded=true.\n * Demonstra a largura de 216px e os labels visíveis (AC-001).\n */\nexport const Expandido: Story = {\n  args: {\n    expanded: true,\n  },\n};\n\n/**\n * Marca navegável e itens com rota.\n * Navega para /dashboard para que RouterLinkActive aplique `active` e\n * aria-current=\"page\" no item ativo (AC-002, AC-006).\n */\nexport const ItemAtivo: Story = {\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [NavigationRailActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-navigation-rail-active-item-host [items]=\"items\" [brand]=\"brand\" [expanded]=\"expanded\"></app-navigation-rail-active-item-host>',\n  }),\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: true,\n  },\n};\n\n/**\n * Item de rodapé separado dos itens main (AC-005).\n * Mantém o item Configurações ancorado ao rodapé via position='footer'.\n */\nexport const ComRodape: Story = {\n  args: {\n    items: [\n      { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n      { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n      footerItem,\n    ],\n    expanded: true,\n  },\n};\n\n/**\n * Lista vazia com marca presente.\n * Exercita a robustez visual sem itens (complementa AC-008).\n */\nexport const ListaVazia: Story = {\n  args: {\n    items: [],\n    brand: brandNavegavel,\n    expanded: true,\n  },\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 590,
+                    "end": 767,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Host da story ItemAtivo.\nNavega para a rota do item ativo após a renderização inicial.\nAssim, RouterLinkActive aplica a classe `active` e o aria-current=\"page\"."
+                }
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 35,
+                "rawdescription": "\n"
+            },
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "PakiNavigationRail",
+                        "type": "component",
+                        "description": "Faixa de navegação vertical recolhível, acessível e temática. Entrega estados recolhido (64px) e expandido (216px) por two-way `expanded`..."
+                    }
+                ]
+            }
+        },
         {
             "name": "PakiBadge",
             "id": "component-PakiBadge-41c577d4dad79a095abf603855480715f59199046aa4f2d1d1426643a85e0d2706ecd8cc52b1b61f7bd1834f34a1ba1e3c23ddc3d9e696d31817e7bd09e98ece",
@@ -2011,7 +2336,7 @@
                     }
                 ]
             },
-            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <input\n    #trigger\n    type=\"text\"\n    cdkOverlayOrigin\n    [value]=\"displayValue()\"\n    [placeholder]=\"placeholder()\"\n    [disabled]=\"disabled()\"\n    [attr.aria-expanded]=\"open()\"\n    aria-haspopup=\"dialog\"\n    role=\"combobox\"\n    readonly\n    (click)=\"toggle()\"\n    (keydown)=\"onInputKeydown($event)\"\n    (blur)=\"close()\"\n  />\n</label>\n\n<ng-template\n  cdkConnectedOverlay\n  [cdkConnectedOverlayOrigin]=\"triggerRef()\"\n  [cdkConnectedOverlayOpen]=\"open()\"\n  [cdkConnectedOverlayPositions]=\"[\n    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },\n    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 }\n  ]\"\n  [cdkConnectedOverlayHasBackdrop]=\"true\"\n  [cdkConnectedOverlayBackdropClass]=\"'cdk-overlay-transparent-backdrop'\"\n  (backdropClick)=\"close()\"\n>\n  <div class=\"calendar\" role=\"dialog\" aria-label=\"Calendário\" (keydown)=\"onInputKeydown($event)\">\n    <div class=\"calendar-header\">\n      <button type=\"button\" class=\"nav\" [disabled]=\"disabled()\" (click)=\"navigateMonth(-1)\" aria-label=\"Mês anterior\">\n        ‹\n      </button>\n      <span class=\"month-year\" aria-live=\"polite\">{{ monthYearLabel() }}</span>\n      <button type=\"button\" class=\"nav\" [disabled]=\"disabled()\" (click)=\"navigateMonth(1)\" aria-label=\"Próximo mês\">\n        ›\n      </button>\n    </div>\n    <table role=\"grid\">\n      <thead>\n        <tr>\n          <th scope=\"col\" aria-label=\"Domingo\">D</th>\n          <th scope=\"col\" aria-label=\"Segunda\">S</th>\n          <th scope=\"col\" aria-label=\"Terça\">T</th>\n          <th scope=\"col\" aria-label=\"Quarta\">Q</th>\n          <th scope=\"col\" aria-label=\"Quinta\">Q</th>\n          <th scope=\"col\" aria-label=\"Sexta\">S</th>\n          <th scope=\"col\" aria-label=\"Sábado\">S</th>\n        </tr>\n      </thead>\n      <tbody>\n        @for (week of weeks(); track week) {\n          <tr>\n            @for (day of week; track day.iso) {\n              <td\n                role=\"gridcell\"\n                [attr.aria-selected]=\"value() === day.iso ? true : null\"\n                [class.outside]=\"!day.inMonth\"\n                [class.selected]=\"value() === day.iso\"\n                [class.focused]=\"focusedDate() && isSameDay(focusedDate()!, day.date)\"\n                [class.disabled]=\"day.disabled\"\n              >\n                <button\n                  type=\"button\"\n                  [disabled]=\"day.disabled\"\n                  [attr.tabindex]=\"focusedDate() && isSameDay(focusedDate()!, day.date) ? 0 : -1\"\n                  (click)=\"select(day.date, $event)\"\n                  (keydown)=\"onDayKeydown($event, day)\"\n                >\n                  {{ day.day }}\n                </button>\n              </td>\n            }\n          </tr>\n        }\n      </tbody>\n    </table>\n  </div>\n</ng-template>\n"
+            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <input\n    #trigger\n    type=\"text\"\n    cdkOverlayOrigin\n    [value]=\"displayValue()\"\n    [placeholder]=\"placeholder()\"\n    [disabled]=\"disabled()\"\n    [attr.aria-expanded]=\"open()\"\n    aria-haspopup=\"dialog\"\n    role=\"combobox\"\n    readonly\n    (click)=\"toggle()\"\n    (keydown)=\"onInputKeydown($event)\"\n    (blur)=\"close()\"\n  />\n</label>\n\n<ng-template\n  cdkConnectedOverlay\n  [cdkConnectedOverlayOrigin]=\"triggerRef()\"\n  [cdkConnectedOverlayOpen]=\"open()\"\n  [cdkConnectedOverlayPositions]=\"[\n    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 4 },\n    { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -4 }\n  ]\"\n  [cdkConnectedOverlayHasBackdrop]=\"true\"\n  [cdkConnectedOverlayBackdropClass]=\"'cdk-overlay-transparent-backdrop'\"\n  (backdropClick)=\"close()\"\n>\n  <div\n    class=\"calendar\"\n    role=\"dialog\"\n    aria-label=\"Calendário\"\n    (keydown)=\"onInputKeydown($event)\"\n    (mousedown)=\"$event.preventDefault()\"\n  >\n    <div class=\"calendar-header\">\n      <button type=\"button\" class=\"nav\" [disabled]=\"disabled()\" (click)=\"navigateMonth(-1)\" aria-label=\"Mês anterior\">\n        ‹\n      </button>\n      <span class=\"month-year\" aria-live=\"polite\">{{ monthYearLabel() }}</span>\n      <button type=\"button\" class=\"nav\" [disabled]=\"disabled()\" (click)=\"navigateMonth(1)\" aria-label=\"Próximo mês\">\n        ›\n      </button>\n    </div>\n    <table role=\"grid\">\n      <thead>\n        <tr>\n          <th scope=\"col\" aria-label=\"Domingo\">D</th>\n          <th scope=\"col\" aria-label=\"Segunda\">S</th>\n          <th scope=\"col\" aria-label=\"Terça\">T</th>\n          <th scope=\"col\" aria-label=\"Quarta\">Q</th>\n          <th scope=\"col\" aria-label=\"Quinta\">Q</th>\n          <th scope=\"col\" aria-label=\"Sexta\">S</th>\n          <th scope=\"col\" aria-label=\"Sábado\">S</th>\n        </tr>\n      </thead>\n      <tbody>\n        @for (week of weeks(); track week) {\n          <tr>\n            @for (day of week; track day.iso) {\n              <td\n                role=\"gridcell\"\n                [attr.aria-selected]=\"value() === day.iso ? true : null\"\n                [class.outside]=\"!day.inMonth\"\n                [class.selected]=\"value() === day.iso\"\n                [class.focused]=\"focusedDate() && isSameDay(focusedDate()!, day.date)\"\n                [class.disabled]=\"day.disabled\"\n              >\n                <button\n                  type=\"button\"\n                  [disabled]=\"day.disabled\"\n                  [attr.tabindex]=\"focusedDate() && isSameDay(focusedDate()!, day.date) ? 0 : -1\"\n                  (click)=\"select(day.date, $event)\"\n                  (keydown)=\"onDayKeydown($event, day)\"\n                >\n                  {{ day.day }}\n                </button>\n              </td>\n            }\n          </tr>\n        }\n      </tbody>\n    </table>\n  </div>\n</ng-template>\n"
         },
         {
             "name": "PakiInput",
@@ -2955,6 +3280,283 @@
             "templateData": "<nav class=\"module-tabs\" [attr.aria-label]=\"label()\">\n  @for (tab of tabs(); track tab.route) {\n    <a\n      [routerLink]=\"tab.route\"\n      routerLinkActive=\"active\"\n      ariaCurrentWhenActive=\"page\"\n      [routerLinkActiveOptions]=\"{ exact: true }\"\n    >{{ tab.label }}</a>\n  }\n</nav>\n"
         },
         {
+            "name": "PakiNavigationRail",
+            "id": "component-PakiNavigationRail-87a17d64e846077bb97ab3d251e9d76a38f6219d2d4bd699b562e390e4d1ec179f5ca2647341cec1e4370d30b062b9687e2908473349da38bd81eb88cc91d77a",
+            "file": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "paki-navigation-rail",
+            "styleUrls": [
+                "./paki-navigation-rail.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./paki-navigation-rail.html"
+            ],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "brand",
+                    "coverageIgnore": false,
+                    "defaultValue": "undefined",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PakiNavigationRailBrand | undefined",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Cabeçalho de marca opcional.</p>\n",
+                    "line": 68,
+                    "rawdescription": "\nCabeçalho de marca opcional.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Estado recolhido/expandido controlado pelo consumidor; inicia recolhido.</p>\n",
+                    "line": 62,
+                    "rawdescription": "\nEstado recolhido/expandido controlado pelo consumidor; inicia recolhido.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "items",
+                    "coverageIgnore": false,
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiNavigationRailItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Lista de itens de navegação; padrão vazio evita erro em estado inicial.</p>\n",
+                    "line": 65,
+                    "rawdescription": "\nLista de itens de navegação; padrão vazio evita erro em estado inicial.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "expanded",
+                    "coverageIgnore": false,
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Estado recolhido/expandido controlado pelo consumidor; inicia recolhido.</p>\n",
+                    "line": 62,
+                    "rawdescription": "\nEstado recolhido/expandido controlado pelo consumidor; inicia recolhido.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "itemSelected",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Emite o <code>id</code> do item selecionado; suprimido quando o item é <code>disabled</code>.</p>\n",
+                    "line": 71,
+                    "rawdescription": "\nEmite o `id` do item selecionado; suprimido quando o item é `disabled`.",
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "footerItems",
+                    "coverageIgnore": false,
+                    "defaultValue": "computed(() =>\n    this.items().filter((item) => item.position === 'footer'),\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Itens ancorados ao rodapé, separados visualmente do grupo principal.</p>\n",
+                    "line": 79,
+                    "rawdescription": "\nItens ancorados ao rodapé, separados visualmente do grupo principal.",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "mainItems",
+                    "coverageIgnore": false,
+                    "defaultValue": "computed(() =>\n    this.items().filter((item) => item.position === undefined || item.position === 'main'),\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Itens do grupo principal: <code>position</code> ausente conta como <code>main</code>.</p>\n",
+                    "line": 74,
+                    "rawdescription": "\nItens do grupo principal: `position` ausente conta como `main`.",
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onItemActivate",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "PakiNavigationRailItem",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 93,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nEmite `itemSelected` com o `id` do item acionado.\n\nServe aos itens com rota (`<a>`) e sem rota (`<button>`). O item `disabled`\nusa um elemento não interativo sem este handler no template; por isso não\nnavega nem emite. A supressão em `disabled` vem da estrutura do template,\nnão deste método.\n\n",
+                    "description": "<p>Emite <code>itemSelected</code> com o <code>id</code> do item acionado.</p>\n<p>Serve aos itens com rota (<code>&lt;a&gt;</code>) e sem rota (<code>&lt;button&gt;</code>). O item <code>disabled</code>\nusa um elemento não interativo sem este handler no template; por isso não\nnavega nem emite. A supressão em <code>disabled</code> vem da estrutura do template,\nnão deste método.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 3502,
+                                "end": 3506,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "item"
+                            },
+                            "type": "PakiNavigationRailItem",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 3496,
+                                "end": 3501,
+                                "kind": 80,
+                                "id": 0,
+                                "flags": 16842752,
+                                "transformFlags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>Item de navegação acionado pelo usuário.</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleExpanded",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 105,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nAlterna o estado recolhido/expandido do rail.\n\nInverte o valor de `expanded` (model), o que emite `expandedChange` com o\nnovo valor e atualiza a largura via classe de estado no host. Serve ao\ncontrole de expansão nativo (`<button [attr.aria-expanded]>`) (FR-001,\nFR-002, AC-001).\n",
+                    "description": "<p>Alterna o estado recolhido/expandido do rail.</p>\n<p>Inverte o valor de <code>expanded</code> (model), o que emite <code>expandedChange</code> com o\nnovo valor e atualiza a largura via classe de estado no host. Serve ao\ncontrole de expansão nativo (<code>&lt;button [attr.aria-expanded]&gt;</code>) (FR-001,\nFR-002, AC-001).</p>\n"
+                }
+            ],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "NgTemplateOutlet"
+                },
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "<p>Faixa de navegação vertical recolhível, acessível e temática.</p>\n<p>Entrega estados recolhido (64px) e expandido (216px) por two-way\n<code>expanded</code>/<code>expandedChange</code>, itens com rota opcional, item de rodapé e\ncabeçalho de marca. O componente não persiste estado; a decisão de\npersistência é do consumidor.</p>\n",
+            "rawdescription": "\n\nFaixa de navegação vertical recolhível, acessível e temática.\n\nEntrega estados recolhido (64px) e expandido (216px) por two-way\n`expanded`/`expandedChange`, itens com rota opcional, item de rodapé e\ncabeçalho de marca. O componente não persiste estado; a decisão de\npersistência é do consumidor.\n",
+            "type": "component",
+            "sourceCode": "import { NgTemplateOutlet } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\n\n/**\n * Item de navegação do rail.\n *\n * O consumidor fornece a lista completa; o componente apenas renderiza e emite.\n * A ausência de `position` é tratada como `main` para simplificar o uso comum.\n */\nexport interface PakiNavigationRailItem {\n  /** Identificador emitido em `itemSelected`; deve ser único na lista. */\n  id: string;\n  /** Nome exibido e usado como nome acessível no estado recolhido. */\n  label: string;\n  /** Rota opcional; quando presente, o item navega via RouterLink. */\n  route?: string;\n  /** Classe CSS do ícone; os glifos ficam a cargo da aplicação consumidora. */\n  icon?: string;\n  /** Quando verdadeiro, o item não navega e não emite `itemSelected`. */\n  disabled?: boolean;\n  /** Agrupa o item no topo (`main`) ou ancorado ao rodapé (`footer`). */\n  position?: 'main' | 'footer';\n}\n\n/**\n * Cabeçalho de marca do rail.\n *\n * Sem `route` o cabeçalho não é navegável, por simetria com os itens.\n */\nexport interface PakiNavigationRailBrand {\n  /** Texto da marca exibido no cabeçalho. */\n  label: string;\n  /** Rota opcional; quando presente, o cabeçalho navega ao ser acionado. */\n  route?: string;\n}\n\n/**\n * Faixa de navegação vertical recolhível, acessível e temática.\n *\n * Entrega estados recolhido (64px) e expandido (216px) por two-way\n * `expanded`/`expandedChange`, itens com rota opcional, item de rodapé e\n * cabeçalho de marca. O componente não persiste estado; a decisão de\n * persistência é do consumidor.\n */\n@Component({\n  selector: 'paki-navigation-rail',\n  standalone: true,\n  // RouterLink e RouterLinkActive dão navegação e destaque de rota ativa aos\n  // itens com rota. NgTemplateOutlet reaproveita a mesma semântica de item nos\n  // grupos main e footer sem duplicar o markup.\n  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],\n  templateUrl: './paki-navigation-rail.html',\n  styleUrl: './paki-navigation-rail.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.paki-navigation-rail--expanded]': 'expanded()',\n  },\n})\nexport class PakiNavigationRail {\n  /** Estado recolhido/expandido controlado pelo consumidor; inicia recolhido. */\n  readonly expanded = model(false);\n\n  /** Lista de itens de navegação; padrão vazio evita erro em estado inicial. */\n  readonly items = input<readonly PakiNavigationRailItem[]>([]);\n\n  /** Cabeçalho de marca opcional. */\n  readonly brand = input<PakiNavigationRailBrand | undefined>(undefined);\n\n  /** Emite o `id` do item selecionado; suprimido quando o item é `disabled`. */\n  readonly itemSelected = output<string>();\n\n  /** Itens do grupo principal: `position` ausente conta como `main`. */\n  readonly mainItems = computed(() =>\n    this.items().filter((item) => item.position === undefined || item.position === 'main'),\n  );\n\n  /** Itens ancorados ao rodapé, separados visualmente do grupo principal. */\n  readonly footerItems = computed(() =>\n    this.items().filter((item) => item.position === 'footer'),\n  );\n\n  /**\n   * Emite `itemSelected` com o `id` do item acionado.\n   *\n   * Serve aos itens com rota (`<a>`) e sem rota (`<button>`). O item `disabled`\n   * usa um elemento não interativo sem este handler no template; por isso não\n   * navega nem emite. A supressão em `disabled` vem da estrutura do template,\n   * não deste método.\n   *\n   * @param item Item de navegação acionado pelo usuário.\n   */\n  onItemActivate(item: PakiNavigationRailItem): void {\n    this.itemSelected.emit(item.id);\n  }\n\n  /**\n   * Alterna o estado recolhido/expandido do rail.\n   *\n   * Inverte o valor de `expanded` (model), o que emite `expandedChange` com o\n   * novo valor e atualiza a largura via classe de estado no host. Serve ao\n   * controle de expansão nativo (`<button [attr.aria-expanded]>`) (FR-001,\n   * FR-002, AC-001).\n   */\n  toggleExpanded(): void {\n    this.expanded.update((value) => !value);\n  }\n}\n",
+            "styleUrl": "./paki-navigation-rail.scss",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "// Largura controlada por variável CSS local, alternada por classe de estado.\n// As próximas tarefas adicionam tokens de tema, estilo de item ativo, divisor\n// do rodapé e a regra de prefers-reduced-motion.\n:host {\n  display: block;\n  height: 100%;\n  // Estado recolhido padrão: 64px (NFR-005).\n  --paki-navigation-rail-width: 64px;\n}\n\n:host(.paki-navigation-rail--expanded) {\n  // Estado expandido: 216px (NFR-005).\n  --paki-navigation-rail-width: 216px;\n}\n\n.paki-navigation-rail {\n  background: var(--color-bg-surface);\n  border-right: 1px solid var(--color-border-subtle);\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  overflow: hidden;\n  // Anima a mudança de largura entre recolhido (64px) e expandido (216px).\n  transition: width 200ms ease;\n  width: var(--paki-navigation-rail-width);\n}\n\n// Respeita a preferência do usuário por menos movimento: suprime a transição\n// de largura quando prefers-reduced-motion está ativo (NFR-003, AC-001).\n@media (prefers-reduced-motion: reduce) {\n  .paki-navigation-rail {\n    transition: none;\n  }\n}\n\n.paki-navigation-rail__list {\n  display: grid;\n  gap: 4px;\n  list-style: none;\n  margin: 0;\n  padding: 8px;\n}\n\n.paki-navigation-rail__list--footer {\n  // Ancora o grupo de rodapé na base do rail, separado dos itens principais.\n  margin-top: auto;\n  // Divisor visual entre o grupo principal e o rodapé (AC-005). Usa o token de\n  // borda sutil do tema para manter contraste coerente nos temas claro e escuro.\n  border-top: 1px solid var(--color-border-subtle);\n}\n\n// Cabeçalho de marca (AC-006). Separa a marca dos itens com um divisor sutil e\n// alinha o conteúdo ao mesmo padding dos grupos de itens.\n.paki-navigation-rail__brand {\n  border-bottom: 1px solid var(--color-border-subtle);\n  padding: 12px;\n}\n\n// Elemento da marca em ambos os casos (navegável ou não): mesma aparência\n// tipográfica, sem sublinhado no link, com reticências quando o texto excede.\n.paki-navigation-rail__brand-link,\n.paki-navigation-rail__brand-label {\n  color: var(--color-text-primary);\n  display: block;\n  font-weight: 600;\n  overflow: hidden;\n  text-decoration: none;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.paki-navigation-rail__item {\n  display: block;\n}\n\n// Base comum aos três tipos de item (<a>, <button>, <span> disabled) para que\n// a aparência não dependa do elemento HTML escolhido pela semântica.\n.paki-navigation-rail__link {\n  align-items: center;\n  background: none;\n  border: 0;\n  border-radius: 8px;\n  color: var(--color-text-secondary);\n  cursor: pointer;\n  display: flex;\n  font: inherit;\n  gap: 12px;\n  padding: 8px 12px;\n  text-align: left;\n  text-decoration: none;\n  width: 100%;\n}\n\n// Item de rota ativa: fundo accent-tint marca o estado ativo; o texto usa\n// text-primary para garantir contraste WCAG 2.1 AA nos dois temas (R-B/R-C).\n// O texto accent sobre accent-tint reprovava AA no tema escuro (3.59:1); o\n// text-primary sobe o contraste bem acima de 4.5:1 mantendo o realce pelo fundo.\n.paki-navigation-rail__link.active {\n  background: var(--color-accent-tint);\n  color: var(--color-text-primary);\n}\n\n// Foco visível por teclado nos controles focáveis (AC-010, FR-011, NFR-001).\n// O outline usa a cor de acento do tema, o que garante contraste do indicador\n// (WCAG 2.1 AA, 3:1) nos temas claro e escuro por ler o mesmo token. O offset\n// separa o contorno da borda arredondada. Restringe a :focus-visible para não\n// exibir o outline em cliques de ponteiro.\n.paki-navigation-rail__link:focus-visible,\n.paki-navigation-rail__toggle:focus-visible,\n.paki-navigation-rail__brand-link:focus-visible {\n  outline: 2px solid var(--color-accent);\n  outline-offset: 2px;\n}\n\n// Item desabilitado: aparência esmaecida e sem interação de ponteiro.\n.paki-navigation-rail__link--disabled {\n  cursor: default;\n  opacity: 0.5;\n}\n\n.paki-navigation-rail__label {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n// Estado recolhido (padrão): esconde o rótulo textual; o nome acessível vem de\n// aria-label e o tooltip de title (FR-008, AC-007). O ícone permanece visível.\n// display:none também remove o texto da árvore de acessibilidade, restando só\n// o ícone; por isso o nome acessível fica em aria-label no link.\n:host(:not(.paki-navigation-rail--expanded)) .paki-navigation-rail__label {\n  display: none;\n}\n\n// Controle de expansão: botão nativo focável, ancorado abaixo dos grupos.\n.paki-navigation-rail__toggle {\n  align-items: center;\n  background: none;\n  border: 0;\n  border-radius: 8px;\n  color: var(--color-text-secondary);\n  cursor: pointer;\n  display: flex;\n  justify-content: center;\n  margin: 8px;\n  padding: 8px;\n}\n",
+                    "styleUrl": "./paki-navigation-rail.scss"
+                }
+            ],
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 1346,
+                    "end": 1666,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Faixa de navegação vertical recolhível, acessível e temática.\n\nEntrega estados recolhido (64px) e expandido (216px) por two-way\n`expanded`/`expandedChange`, itens com rota opcional, item de rodapé e\ncabeçalho de marca. O componente não persiste estado; a decisão de\npersistência é do consumidor."
+                }
+            ],
+            "extends": [],
+            "relationships": {
+                "incoming": [
+                    {
+                        "name": "NavigationRailActiveItemHost",
+                        "type": "component",
+                        "description": "Host da story ItemAtivo. Navega para a rota do item ativo após a renderização inicial. Assim, RouterLinkActive aplica a classe `active` e..."
+                    }
+                ],
+                "outgoing": [
+                    {
+                        "name": "NgTemplateOutlet",
+                        "type": "module"
+                    },
+                    {
+                        "name": "RouterLink",
+                        "type": "module"
+                    },
+                    {
+                        "name": "RouterLinkActive",
+                        "type": "module"
+                    }
+                ]
+            },
+            "templateData": "<!--\n  Estrutura do rail. Semântica de item (TASK-003): item com rota vira\n  <a routerLink>; item sem rota vira <button>; item disabled vira elemento não\n  interativo com aria-disabled. TASK-005 adiciona o controle de expansão\n  (aria-expanded) e o nome acessível (aria-label/title) por item para o estado\n  recolhido só-ícone.\n-->\n<nav class=\"paki-navigation-rail\" aria-label=\"Navegação principal\">\n  <!--\n    Cabeçalho de marca (TASK-007, AC-006). Só renderiza quando há brand.\n    Com brand.route: <a routerLink> navegável exibindo o label. Sem route:\n    <span> não interativo com o label (premissa R3). O container carrega a\n    classe .paki-navigation-rail__brand em ambos os casos.\n  -->\n  @if (brand(); as brandValue) {\n    <div class=\"paki-navigation-rail__brand\">\n      @if (brandValue.route) {\n        <a class=\"paki-navigation-rail__brand-link\" [routerLink]=\"brandValue.route\">\n          {{ brandValue.label }}\n        </a>\n      } @else {\n        <span class=\"paki-navigation-rail__brand-label\">{{ brandValue.label }}</span>\n      }\n    </div>\n  }\n\n  <ul class=\"paki-navigation-rail__list paki-navigation-rail__list--main\">\n    @for (item of mainItems(); track item.id) {\n      <li class=\"paki-navigation-rail__item\">\n        <!-- Reaproveita a mesma semântica de item nos grupos main e footer. -->\n        <ng-container\n          [ngTemplateOutlet]=\"itemControl\"\n          [ngTemplateOutletContext]=\"{ $implicit: item }\"\n        ></ng-container>\n      </li>\n    }\n  </ul>\n\n  @if (footerItems().length > 0) {\n    <ul class=\"paki-navigation-rail__list paki-navigation-rail__list--footer\">\n      @for (item of footerItems(); track item.id) {\n        <li class=\"paki-navigation-rail__item\">\n          <ng-container\n            [ngTemplateOutlet]=\"itemControl\"\n            [ngTemplateOutletContext]=\"{ $implicit: item }\"\n          ></ng-container>\n        </li>\n      }\n    </ul>\n  }\n\n  <!--\n    Controle de expansão nativo. Expõe aria-expanded refletindo o estado atual\n    (FR-002) e alterna expanded (model), emitindo expandedChange (FR-001,\n    AC-001). Fica após as listas para não interferir na busca do primeiro\n    <button> de item nos testes de item sem rota (AC-003).\n  -->\n  <button\n    type=\"button\"\n    class=\"paki-navigation-rail__toggle\"\n    [attr.aria-expanded]=\"expanded()\"\n    [attr.aria-label]=\"expanded() ? 'Recolher navegação' : 'Expandir navegação'\"\n    (click)=\"toggleExpanded()\"\n  >\n    <span class=\"paki-navigation-rail__toggle-icon\" aria-hidden=\"true\"></span>\n  </button>\n</nav>\n\n<!--\n  Semântica de item por template compartilhado:\n  - disabled: <span> não interativo com aria-disabled; sem routerLink e sem\n    handler, então não navega e não emite itemSelected (AC-004).\n  - com rota: <a routerLink> com destaque de rota ativa e aria-current; emite\n    itemSelected no clique (AC-002).\n  - sem rota: <button> acionável por teclado; emite itemSelected no clique e não\n    navega (AC-003).\n  O label também alimenta aria-label (nome acessível) e title (tooltip) para o\n  estado recolhido só-ícone (FR-008, AC-007).\n-->\n<ng-template #itemControl let-item>\n  @if (item.disabled) {\n    <span\n      class=\"paki-navigation-rail__link paki-navigation-rail__link--disabled\"\n      [attr.aria-disabled]=\"true\"\n      [attr.aria-label]=\"item.label\"\n      [title]=\"item.label\"\n    >\n      @if (item.icon) {\n        <span class=\"paki-navigation-rail__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n      }\n      <span class=\"paki-navigation-rail__label\">{{ item.label }}</span>\n    </span>\n  } @else if (item.route) {\n    <a\n      class=\"paki-navigation-rail__link\"\n      [routerLink]=\"item.route\"\n      routerLinkActive=\"active\"\n      ariaCurrentWhenActive=\"page\"\n      [attr.aria-label]=\"item.label\"\n      [title]=\"item.label\"\n      (click)=\"onItemActivate(item)\"\n    >\n      @if (item.icon) {\n        <span class=\"paki-navigation-rail__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n      }\n      <span class=\"paki-navigation-rail__label\">{{ item.label }}</span>\n    </a>\n  } @else {\n    <button\n      type=\"button\"\n      class=\"paki-navigation-rail__link\"\n      [attr.aria-label]=\"item.label\"\n      [title]=\"item.label\"\n      (click)=\"onItemActivate(item)\"\n    >\n      @if (item.icon) {\n        <span class=\"paki-navigation-rail__icon\" [class]=\"item.icon\" aria-hidden=\"true\"></span>\n      }\n      <span class=\"paki-navigation-rail__label\">{{ item.label }}</span>\n    </button>\n  }\n</ng-template>\n"
+        },
+        {
             "name": "PakiPageHeader",
             "id": "component-PakiPageHeader-5e26267397eec94022de882c9f830f63bcb5b45634a6d9cb6a415b492605bbacd23ecb6a0ed7e647262aa3ece8c99c520f2b8589acb130767ce808e7d9ecbe47",
             "file": "projects/pakitec-angular-components/src/lib/components/page-header/paki-page-header.ts",
@@ -3231,7 +3833,7 @@
         },
         {
             "name": "PakiSelect",
-            "id": "component-PakiSelect-06de8b8dd1a0c62e5f3460c74dd59eebdaf9fdc4476fe838c336d97b68a8f496afb93b8ae5aee70ea810449c6f7452073cf90945ddf29bc741e21ba26cf46021",
+            "id": "component-PakiSelect-c8bc51d5dea5fb2e7fd42932ae97293014cc1d12398fa2957670a5251c544b066cdef41cf7f67d22abf9878401046c674f082da1275128340822f734c06f2b5d",
             "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3265,7 +3867,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 49,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3282,7 +3884,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 46,
+                    "line": 47,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3299,7 +3901,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 53,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3316,23 +3918,23 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 50,
+                    "line": 51,
                     "rawdescription": "",
                     "modifierKind": [
                         148
                     ],
                     "jsdoctags": [
                         {
-                            "pos": 1330,
-                            "end": 1425,
+                            "pos": 1402,
+                            "end": 1497,
                             "kind": 332,
                             "id": 0,
                             "flags": 16842752,
                             "modifierFlagsCache": 0,
                             "transformFlags": 0,
                             "tagName": {
-                                "pos": 1331,
-                                "end": 1341,
+                                "pos": 1403,
+                                "end": 1413,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -3354,7 +3956,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 48,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3371,7 +3973,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 51,
+                    "line": 52,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3391,7 +3993,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 59,
+                    "line": 60,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3408,7 +4010,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 55,
+                    "line": 56,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3425,9 +4027,42 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 76,
+                    "line": 87,
                     "rawdescription": "\n",
                     "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "displayText",
+                    "coverageIgnore": false,
+                    "defaultValue": "computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado.</p>\n",
+                    "line": 83,
+                    "rawdescription": "\nTexto exibido no campo: a busca enquanto edita; senão o rótulo selecionado.",
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "editing",
+                    "coverageIgnore": false,
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado.</p>\n",
+                    "line": 64,
+                    "rawdescription": "\ntrue enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado.",
+                    "modifierKind": [
+                        124,
                         148
                     ]
                 },
@@ -3441,7 +4076,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 63,
+                    "line": 68,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3457,7 +4092,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 58,
+                    "line": 59,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3474,7 +4109,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 82,
+                    "line": 93,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3490,7 +4125,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 67,
+                    "line": 72,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -3506,7 +4141,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 68,
+                    "line": 73,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -3522,7 +4157,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 56,
+                    "line": 57,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3539,7 +4174,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 65,
+                    "line": 70,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123,
@@ -3556,7 +4191,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 61,
+                    "line": 62,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3573,7 +4208,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 66,
+                    "line": 71,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -3589,7 +4224,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 57,
+                    "line": 58,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3599,16 +4234,33 @@
                 {
                     "name": "selectedLabel",
                     "coverageIgnore": false,
-                    "defaultValue": "computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? v;\n  })",
+                    "defaultValue": "computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  })",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "unknown",
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 70,
+                    "line": 75,
                     "rawdescription": "\n",
                     "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "selectedOption",
+                    "coverageIgnore": false,
+                    "defaultValue": "signal<PakiOption | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Última opção escolhida: garante o rótulo na busca remota, quando ela não está em <code>items</code>.</p>\n",
+                    "line": 66,
+                    "rawdescription": "\nÚltima opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`.",
+                    "modifierKind": [
+                        123,
                         148
                     ]
                 },
@@ -3622,7 +4274,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 83,
+                    "line": 94,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3638,7 +4290,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 54,
+                    "line": 55,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3655,7 +4307,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 60,
+                    "line": 61,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -3665,13 +4317,51 @@
             ],
             "methodsClass": [
                 {
+                    "name": "highlight",
+                    "coverageIgnore": false,
+                    "args": [
+                        {
+                            "name": "label",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "PakiHighlightPart[]",
+                    "typeParameters": [],
+                    "line": 180,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "label",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "ngOnDestroy",
                     "coverageIgnore": false,
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 229,
+                    "line": 262,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3684,7 +4374,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 150,
+                    "line": 165,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3696,17 +4386,39 @@
                 {
                     "name": "onFocus",
                     "coverageIgnore": false,
-                    "args": [],
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 143,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
                     "description": "",
                     "modifierKind": [
                         124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": true,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 },
                 {
@@ -3725,7 +4437,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 136,
+                    "line": 148,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3763,7 +4475,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 172,
+                    "line": 203,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3801,7 +4513,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 221,
+                    "line": 254,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3849,7 +4561,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 123,
+                    "line": 135,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3895,7 +4607,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 127,
+                    "line": 139,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3916,6 +4628,22 @@
                     ]
                 },
                 {
+                    "name": "resetQuery",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 172,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nSai do modo de edição e limpa a busca, para a lista reabrir completa.",
+                    "description": "<p>Sai do modo de edição e limpa a busca, para a lista reabrir completa.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "select",
                     "coverageIgnore": false,
                     "args": [
@@ -3931,7 +4659,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 164,
+                    "line": 194,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3969,7 +4697,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 131,
+                    "line": 143,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -3995,7 +4723,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 155,
+                    "line": 184,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4020,7 +4748,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 130,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4050,12 +4778,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? v;\n  });\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.searchTerm.set(option.label);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
             "styleUrl": "./paki-select.component.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: block;\n}\n\nlabel {\n  color: var(--color-text-faint);\n  display: grid;\n  font-size: 11px;\n  font-weight: 700;\n  gap: 6px;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n}\n\n.paki-select__control {\n  position: relative;\n}\n\ninput {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-default);\n  border-radius: var(--radius-sm);\n  color: var(--color-text-primary);\n  font-size: 14px;\n  min-height: 42px;\n  padding: 10px 36px 10px 12px;\n  transition:\n    border-color 0.15s,\n    box-shadow 0.15s;\n  width: 100%;\n\n  &:focus {\n    border-color: var(--color-accent);\n    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);\n    outline: none;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n}\n\n.paki-select__toggle {\n  align-items: center;\n  background: transparent;\n  border: 0;\n  border-radius: var(--radius-sm);\n  color: var(--color-text-faint);\n  cursor: pointer;\n  display: flex;\n  height: 32px;\n  justify-content: center;\n  padding: 0;\n  position: absolute;\n  right: 4px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 32px;\n\n  &:hover:not(:disabled) {\n    color: var(--color-text-primary);\n  }\n\n  &:focus-visible {\n    outline: 2px solid var(--color-accent);\n    outline-offset: 1px;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.5;\n  }\n\n  svg {\n    transition: transform 0.15s;\n  }\n}\n\n.paki-select__dropdown {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-default);\n  border-radius: var(--radius-sm);\n  box-shadow: var(--shadow-card);\n  list-style: none;\n  margin: 4px 0 0;\n  max-height: 260px;\n  overflow: auto;\n  padding: 5px;\n  position: absolute;\n  width: 100%;\n  z-index: 30;\n\n  li {\n    border-radius: 6px;\n    color: var(--color-text-primary);\n    cursor: pointer;\n    font-size: 13px;\n    padding: 9px;\n\n    &:hover,\n    &.active {\n      background: var(--color-accent-tint);\n      color: var(--color-accent);\n    }\n\n    &.selected {\n      background: var(--color-accent);\n      color: var(--neutral-0);\n\n      &:hover,\n      &.active {\n        background: var(--color-accent);\n        color: var(--neutral-0);\n      }\n    }\n  }\n}\n\n.paki-select__feedback {\n  color: var(--color-text-faint);\n  cursor: default;\n  font-size: 12px;\n  padding: 12px;\n  text-align: center;\n\n  &:hover {\n    background: transparent !important;\n  }\n}\n",
+                    "data": ":host {\n  display: block;\n}\n\nlabel {\n  color: var(--color-text-faint);\n  display: grid;\n  font-size: 11px;\n  font-weight: 700;\n  gap: 6px;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n}\n\n.paki-select__control {\n  position: relative;\n}\n\ninput {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-default);\n  border-radius: var(--radius-sm);\n  color: var(--color-text-primary);\n  font-size: 14px;\n  min-height: 42px;\n  padding: 10px 36px 10px 12px;\n  transition:\n    border-color 0.15s,\n    box-shadow 0.15s;\n  width: 100%;\n\n  &:focus {\n    border-color: var(--color-accent);\n    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);\n    outline: none;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n}\n\n.paki-select__toggle {\n  align-items: center;\n  background: transparent;\n  border: 0;\n  border-radius: var(--radius-sm);\n  color: var(--color-text-faint);\n  cursor: pointer;\n  display: flex;\n  height: 32px;\n  justify-content: center;\n  padding: 0;\n  position: absolute;\n  right: 4px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 32px;\n\n  &:hover:not(:disabled) {\n    color: var(--color-text-primary);\n  }\n\n  &:focus-visible {\n    outline: 2px solid var(--color-accent);\n    outline-offset: 1px;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.5;\n  }\n\n  svg {\n    transition: transform 0.15s;\n  }\n}\n\n.paki-select__toggle.open svg {\n  transform: rotate(180deg);\n}\n\n// A lista fica DENTRO de .paki-select__control (position: relative): assim a largura\n// acompanha o campo, e não o primeiro ancestral posicionado da página.\n.paki-select__dropdown {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-subtle, var(--color-border-default));\n  border-radius: 12px;\n  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text-primary) 12%, transparent);\n  box-sizing: border-box;\n  left: 0;\n  list-style: none;\n  margin: 0;\n  max-height: 260px;\n  overflow: auto;\n  padding: 6px;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 6px);\n  z-index: 30;\n\n  // Não herdar a tipografia do rótulo (uppercase, negrito, espaçamento).\n  font-size: 14px;\n  font-weight: 400;\n  letter-spacing: normal;\n  text-transform: none;\n\n  li {\n    border-radius: 8px;\n    color: var(--color-text-primary);\n    cursor: pointer;\n    line-height: 1.35;\n    overflow-wrap: anywhere;\n    padding: 10px 12px;\n\n    &:hover,\n    &.active {\n      background: var(--color-bg-page, var(--color-accent-tint));\n    }\n\n    &.selected {\n      background: var(--color-accent-tint);\n      color: var(--color-accent);\n      font-weight: 600;\n    }\n  }\n\n  mark {\n    background: transparent;\n    color: var(--color-accent);\n    font-weight: 700;\n  }\n}\n\n.paki-select__feedback {\n  color: var(--color-text-faint);\n  cursor: default;\n  font-size: 12px;\n  padding: 12px;\n  text-align: center;\n\n  &:hover {\n    background: transparent !important;\n  }\n}\n",
                     "styleUrl": "./paki-select.component.scss"
                 }
             ],
@@ -4066,7 +4794,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 83,
+                "line": 94,
                 "rawdescription": "\n"
             },
             "extends": [],
@@ -4086,7 +4814,7 @@
                     }
                 ]
             },
-            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <div class=\"paki-select__control\">\n    <input\n      type=\"text\"\n      role=\"combobox\"\n      [value]=\"selectedLabel() || searchTerm()\"\n      [placeholder]=\"placeholder()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-expanded]=\"open()\"\n      aria-haspopup=\"listbox\"\n      [attr.aria-activedescendant]=\"open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null\"\n      (input)=\"onInput($event)\"\n      (focus)=\"onFocus()\"\n      (blur)=\"onBlur()\"\n      (keydown)=\"onKeydown($event)\"\n    />\n    <button\n      type=\"button\"\n      class=\"paki-select__toggle\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"open() ? 'Fechar opções' : 'Abrir opções'\"\n      (mousedown)=\"$event.preventDefault(); toggle()\"\n    >\n      <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\">\n        <path d=\"M6 9l6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n      </svg>\n    </button>\n  </div>\n\n  @if (open()) {\n    <ul class=\"paki-select__dropdown\" role=\"listbox\" (scroll)=\"onScroll($event)\">\n      @if (searching()) {\n        <li class=\"paki-select__feedback\" role=\"status\">Carregando...</li>\n      }\n      @for (option of displayOptions(); track option.value; let i = $index) {\n        <li\n          [id]=\"'paki-option-' + i\"\n          role=\"option\"\n          [attr.aria-selected]=\"value() === option.value\"\n          [class.active]=\"activeIndex() === i\"\n          [class.selected]=\"value() === option.value\"\n          (mousedown)=\"$event.preventDefault(); select(option)\"\n        >\n          {{ option.label }}\n        </li>\n      }\n      @if (showNoResults()) {\n        <li class=\"paki-select__feedback\" role=\"status\">{{ noResultsMessage() }}</li>\n      }\n    </ul>\n  }\n</label>\n"
+            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <div class=\"paki-select__control\">\n    <input\n      type=\"text\"\n      role=\"combobox\"\n      [value]=\"displayText()\"\n      [placeholder]=\"placeholder()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-expanded]=\"open()\"\n      aria-haspopup=\"listbox\"\n      aria-autocomplete=\"list\"\n      [attr.aria-activedescendant]=\"open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null\"\n      (input)=\"onInput($event)\"\n      (focus)=\"onFocus($event)\"\n      (blur)=\"onBlur()\"\n      (keydown)=\"onKeydown($event)\"\n    />\n    <button\n      type=\"button\"\n      class=\"paki-select__toggle\"\n      [class.open]=\"open()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"open() ? 'Fechar opções' : 'Abrir opções'\"\n      (mousedown)=\"$event.preventDefault(); toggle()\"\n    >\n      <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\">\n        <path d=\"M6 9l6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n      </svg>\n    </button>\n\n    @if (open()) {\n      <ul class=\"paki-select__dropdown\" role=\"listbox\" (scroll)=\"onScroll($event)\">\n        @if (searching()) {\n          <li class=\"paki-select__feedback\" role=\"status\">Carregando...</li>\n        }\n        @for (option of displayOptions(); track option.value; let i = $index) {\n          <li\n            [id]=\"'paki-option-' + i\"\n            role=\"option\"\n            [attr.aria-selected]=\"value() === option.value\"\n            [class.active]=\"activeIndex() === i\"\n            [class.selected]=\"value() === option.value\"\n            (mousedown)=\"$event.preventDefault(); select(option)\"\n          >@for (part of highlight(option.label); track $index) {@if (part.match) {<mark>{{ part.text }}</mark>} @else {{{ part.text }}}}</li>\n        }\n        @if (showNoResults()) {\n          <li class=\"paki-select__feedback\" role=\"status\">{{ noResultsMessage() }}</li>\n        }\n      </ul>\n    }\n  </div>\n</label>\n"
         },
         {
             "name": "PakiSidenav",
@@ -5274,7 +6002,63 @@
         },
         {
             "name": "StoryRoute",
-            "id": "component-StoryRoute-42110015882fca370682303cbc27c07bbb5d2dbb2f851c7aa77178839e83b78f4641652d1d56aee4b607d06c2115204dc266c0f84c637e467d3e1f7011a0dc73-1",
+            "id": "component-StoryRoute-fd0e5704898bb0b28123a09d47e1bcb9ee0b414c636890bad4ebfaef59ef87252373410ac4b4f3753be2556636ebab9bdffdebd64ce0aec857585db4ca4c081d-1",
+            "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "styleUrls": [],
+            "styles": [],
+            "template": "",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [],
+            "description": "<p>Rota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada.</p>\n",
+            "rawdescription": "\n\nRota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada.\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { applicationConfig, moduleMetadata } from '@storybook/angular-vite';\nimport { Component, afterNextRender, inject, input } from '@angular/core';\nimport { Router, provideRouter } from '@angular/router';\n\nimport {\n  PakiNavigationRail,\n  type PakiNavigationRailBrand,\n  type PakiNavigationRailItem,\n} from '../public-api';\n\n/**\n * Rota vazia usada pelas stories que precisam de RouterLink.\n * O Angular exige um componente para cada rota registrada.\n */\n@Component({ standalone: true, template: '' })\nclass StoryRoute {}\n\n/**\n * Host da story ItemAtivo.\n * Navega para a rota do item ativo após a renderização inicial.\n * Assim, RouterLinkActive aplica a classe `active` e o aria-current=\"page\".\n */\n@Component({\n  standalone: true,\n  imports: [PakiNavigationRail],\n  template:\n    '<paki-navigation-rail [items]=\"items()\" [brand]=\"brand()\" [expanded]=\"expanded()\"></paki-navigation-rail>',\n})\nclass NavigationRailActiveItemHost {\n  private readonly router = inject(Router);\n\n  readonly items = input.required<readonly PakiNavigationRailItem[]>();\n  readonly brand = input<PakiNavigationRailBrand | undefined>(undefined);\n  readonly expanded = input<boolean>(false);\n\n  constructor() {\n    afterNextRender(() => {\n      this.router.navigate(['/dashboard']);\n    });\n  }\n}\n\n/**\n * Marca de exemplo navegável.\n * As imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n * (premissa R4). Elas não fazem parte do contrato público do componente.\n */\nconst brandNavegavel: PakiNavigationRailBrand = {\n  label: 'Pakitec',\n  route: '/',\n};\n\n/**\n * Itens base do grupo principal.\n * Cobrem item com rota, item sem rota, item disabled e item sem ícone.\n */\nconst mainItems: readonly PakiNavigationRailItem[] = [\n  { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n  { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  { id: 'actions', label: 'Ações rápidas', icon: 'icon-bolt' },\n  { id: 'archive', label: 'Arquivados', route: '/archive', icon: 'icon-archive', disabled: true },\n  { id: 'legacy', label: 'Sem ícone', route: '/legacy' },\n];\n\n/**\n * Item ancorado ao rodapé, separado do grupo principal (AC-005).\n */\nconst footerItem: PakiNavigationRailItem = {\n  id: 'settings',\n  label: 'Configurações',\n  route: '/settings',\n  icon: 'icon-settings',\n  position: 'footer',\n};\n\n/**\n * Lista completa: itens main mais o item de rodapé.\n */\nconst baseItems: readonly PakiNavigationRailItem[] = [...mainItems, footerItem];\n\n/**\n * Metadados da story do paki-navigation-rail.\n *\n * O Storybook alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\n * Cada story abaixo aparece nos dois temas sem configuração extra.\n */\nconst meta: Meta<PakiNavigationRail> = {\n  title: 'Componentes/Navigation Rail',\n  component: PakiNavigationRail,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: false,\n  },\n};\n\nexport default meta;\ntype Story = StoryObj<PakiNavigationRail>;\n\n/**\n * Recolhido (padrão): expanded=false.\n * Demonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).\n */\nexport const Recolhido: Story = {\n  args: {\n    expanded: false,\n  },\n};\n\n/**\n * Expandido: expanded=true.\n * Demonstra a largura de 216px e os labels visíveis (AC-001).\n */\nexport const Expandido: Story = {\n  args: {\n    expanded: true,\n  },\n};\n\n/**\n * Marca navegável e itens com rota.\n * Navega para /dashboard para que RouterLinkActive aplique `active` e\n * aria-current=\"page\" no item ativo (AC-002, AC-006).\n */\nexport const ItemAtivo: Story = {\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [NavigationRailActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-navigation-rail-active-item-host [items]=\"items\" [brand]=\"brand\" [expanded]=\"expanded\"></app-navigation-rail-active-item-host>',\n  }),\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: true,\n  },\n};\n\n/**\n * Item de rodapé separado dos itens main (AC-005).\n * Mantém o item Configurações ancorado ao rodapé via position='footer'.\n */\nexport const ComRodape: Story = {\n  args: {\n    items: [\n      { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n      { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n      footerItem,\n    ],\n    expanded: true,\n  },\n};\n\n/**\n * Lista vazia com marca presente.\n * Exercita a robustez visual sem itens (complementa AC-008).\n */\nexport const ListaVazia: Story = {\n  args: {\n    items: [],\n    brand: brandNavegavel,\n    expanded: true,\n  },\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 392,
+                    "end": 521,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Rota vazia usada pelas stories que precisam de RouterLink.\nO Angular exige um componente para cada rota registrada."
+                }
+            ],
+            "extends": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "StoryRoute-1",
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
+            "name": "StoryRoute",
+            "id": "component-StoryRoute-42110015882fca370682303cbc27c07bbb5d2dbb2f851c7aa77178839e83b78f4641652d1d56aee4b607d06c2115204dc266c0f84c637e467d3e1f7011a0dc73-2",
             "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -5321,8 +6105,8 @@
             ],
             "extends": [],
             "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "StoryRoute-1",
+            "duplicateId": 2,
+            "duplicateName": "StoryRoute-2",
             "relationships": {
                 "incoming": [],
                 "outgoing": []
@@ -5349,6 +6133,19 @@
                 "name": "baseItems",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "readonly PakiNavigationRailItem[]",
+                "defaultValue": "[...mainItems, footerItem]",
+                "rawdescription": "Lista completa: itens main mais o item de rodapé.",
+                "description": "<p>Lista completa: itens main mais o item de rodapé.</p>\n"
+            },
+            {
+                "name": "baseItems",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts",
                 "coverageIgnore": false,
                 "deprecated": false,
@@ -5357,6 +6154,30 @@
                 "defaultValue": "[\n  { label: 'Dashboard', route: '/dashboard', icon: 'icon-dashboard' },\n  { label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  {\n    label: 'Configurações',\n    icon: 'icon-settings',\n    expanded: true,\n    children: [\n      { label: 'Geral', route: '/settings/general', icon: 'icon-general' },\n      { label: 'Usuários', route: '/settings/users', icon: 'icon-users' },\n    ],\n  },\n  { label: 'Ajuda', route: '/help', icon: 'icon-help' },\n]",
                 "rawdescription": "Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.",
                 "description": "<p>Lista base de itens usada pelas variações da story.\nContém itens simples, item com grupo e item sem ícone.</p>\n"
+            },
+            {
+                "name": "brandNavegavel",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "PakiNavigationRailBrand",
+                "defaultValue": "{\n  label: 'Pakitec',\n  route: '/',\n}",
+                "rawdescription": "Marca de exemplo navegável.\nAs imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n(premissa R4). Elas não fazem parte do contrato público do componente.",
+                "description": "<p>Marca de exemplo navegável.\nAs imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n(premissa R4). Elas não fazem parte do contrato público do componente.</p>\n"
+            },
+            {
+                "name": "BREEDS",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "unknown",
+                "defaultValue": "['Akita', 'American Bully', 'Basset Hound', 'Beagle', 'Bernese Mountain Dog', 'Border Collie', 'Boston Terrier', 'Boxer', 'Bulldog Francês', 'Chihuahua', 'Dachshund', 'Golden Retriever', 'Labrador Retriever', 'Lhasa Apso', 'Maltês', 'Pastor Alemão', 'Pinscher', 'Poodle', 'Shih-Tzu', 'Spitz Alemão', 'Vira-lata (SRD)', 'Yorkshire Terrier'].map((label) => ({ label, value: label }))"
             },
             {
                 "name": "Collapsed",
@@ -5370,6 +6191,19 @@
                 "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
                 "rawdescription": "Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.",
                 "description": "<p>Sidenav colapsado.\nDemonstra a largura reduzida e o comportamento dos ícones.</p>\n"
+            },
+            {
+                "name": "ComRodape",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    items: [\n      { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n      { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n      footerItem,\n    ],\n    expanded: true,\n  },\n}",
+                "rawdescription": "Item de rodapé separado dos itens main (AC-005).\nMantém o item Configurações ancorado ao rodapé via position='footer'.",
+                "description": "<p>Item de rodapé separado dos itens main (AC-005).\nMantém o item Configurações ancorado ao rodapé via position=&#39;footer&#39;.</p>\n"
             },
             {
                 "name": "DEBOUNCE_MS",
@@ -5394,6 +6228,32 @@
                 "defaultValue": "{ args: { page: { number: 1, size: 10, totalElements: 0, totalPages: 0, first: true, last: true } } }"
             },
             {
+                "name": "Expandido",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    expanded: true,\n  },\n}",
+                "rawdescription": "Expandido: expanded=true.\nDemonstra a largura de 216px e os labels visíveis (AC-001).",
+                "description": "<p>Expandido: expanded=true.\nDemonstra a largura de 216px e os labels visíveis (AC-001).</p>\n"
+            },
+            {
+                "name": "footerItem",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "PakiNavigationRailItem",
+                "defaultValue": "{\n  id: 'settings',\n  label: 'Configurações',\n  route: '/settings',\n  icon: 'icon-settings',\n  position: 'footer',\n}",
+                "rawdescription": "Item ancorado ao rodapé, separado do grupo principal (AC-005).",
+                "description": "<p>Item ancorado ao rodapé, separado do grupo principal (AC-005).</p>\n"
+            },
+            {
                 "name": "GroupClosed",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5416,6 +6276,58 @@
                 "deprecationMessage": "",
                 "type": "number",
                 "defaultValue": "10"
+            },
+            {
+                "name": "InsideWideCard",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: { label: 'Raça', placeholder: 'Selecione', items: BREEDS },\n  render: (args) => ({\n    props: { ...args, selected: 'Akita' },\n    template: `<article style=\"position:relative;width:900px;padding:16px;border:1px solid #ddd;border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px\">\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n      <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n    </article>`,\n  }),\n}",
+                "rawdescription": "Select numa coluna estreita dentro de um card largo e posicionado (como o card do\nanimal no amora). A lista deve acompanhar a largura do campo, e não a do card.",
+                "description": "<p>Select numa coluna estreita dentro de um card largo e posicionado (como o card do\nanimal no amora). A lista deve acompanhar a largura do campo, e não a do card.</p>\n"
+            },
+            {
+                "name": "ItemAtivo",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [NavigationRailActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-navigation-rail-active-item-host [items]=\"items\" [brand]=\"brand\" [expanded]=\"expanded\"></app-navigation-rail-active-item-host>',\n  }),\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: true,\n  },\n}",
+                "rawdescription": "Marca navegável e itens com rota.\nNavega para /dashboard para que RouterLinkActive aplique `active` e\naria-current=\"page\" no item ativo (AC-002, AC-006).",
+                "description": "<p>Marca navegável e itens com rota.\nNavega para /dashboard para que RouterLinkActive aplique <code>active</code> e\naria-current=&quot;page&quot; no item ativo (AC-002, AC-006).</p>\n"
+            },
+            {
+                "name": "ListaVazia",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    items: [],\n    brand: brandNavegavel,\n    expanded: true,\n  },\n}",
+                "rawdescription": "Lista vazia com marca presente.\nExercita a robustez visual sem itens (complementa AC-008).",
+                "description": "<p>Lista vazia com marca presente.\nExercita a robustez visual sem itens (complementa AC-008).</p>\n"
+            },
+            {
+                "name": "mainItems",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "readonly PakiNavigationRailItem[]",
+                "defaultValue": "[\n  { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n  { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  { id: 'actions', label: 'Ações rápidas', icon: 'icon-bolt' },\n  { id: 'archive', label: 'Arquivados', route: '/archive', icon: 'icon-archive', disabled: true },\n  { id: 'legacy', label: 'Sem ícone', route: '/legacy' },\n]",
+                "rawdescription": "Itens base do grupo principal.\nCobrem item com rota, item sem rota, item disabled e item sem ícone.",
+                "description": "<p>Itens base do grupo principal.\nCobrem item com rota, item sem rota, item disabled e item sem ícone.</p>\n"
             },
             {
                 "name": "MAX_RESULTS",
@@ -5504,6 +6416,19 @@
                 "deprecationMessage": "",
                 "type": "Meta<PakiModuleTabs>",
                 "defaultValue": "{ title: 'Componentes/Module Tabs', component: PakiModuleTabs, decorators: [applicationConfig({ providers: [provideRouter([{ path: '**', component: StoryRoute }])] })], args: { label: 'Seções do módulo', tabs: [{ label: 'Visão geral', route: '/' }, { label: 'Histórico', route: '/history' }, { label: 'Configurações', route: '/settings' }] } }"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PakiNavigationRail>",
+                "defaultValue": "{\n  title: 'Componentes/Navigation Rail',\n  component: PakiNavigationRail,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: false,\n  },\n}",
+                "rawdescription": "Metadados da story do paki-navigation-rail.\n\nO Storybook alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\nCada story abaixo aparece nos dois temas sem configuração extra.",
+                "description": "<p>Metadados da story do paki-navigation-rail.</p>\n<p>O Storybook alterna entre tema claro e escuro pela toolbar global &quot;Tema visual&quot;.\nCada story abaixo aparece nos dois temas sem configuração extra.</p>\n"
             },
             {
                 "name": "meta",
@@ -5714,7 +6639,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
+                "defaultValue": "{ render: (args) => ({ props: { ...args, selected: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" /></div>' }) }"
             },
             {
                 "name": "Playground",
@@ -5772,6 +6697,19 @@
                 "deprecationMessage": "",
                 "type": "Preview",
                 "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Tema visual',\n      defaultValue: 'light',\n      toolbar: { icon: 'paintbrush', items: ['light', 'dark'] },\n    },\n  },\n  decorators: [\n    (story, context) => {\n      document.documentElement.dataset['theme'] = context.globals['theme'];\n      return story();\n    },\n  ],\n  parameters: {\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i,\n      },\n    },\n\n    a11y: {\n      // 'todo' - show a11y violations in the test UI only\n      // 'error' - fail CI on a11y violations\n      // 'off' - skip a11y checks entirely\n      test: 'todo',\n    },\n  },\n}"
+            },
+            {
+                "name": "Recolhido",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
+                "rawdescription": "Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).",
+                "description": "<p>Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).</p>\n"
             }
         ],
         "functions": [
@@ -5857,6 +6795,85 @@
                     {
                         "name": "d",
                         "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "fold",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "displayName": "fold",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "string",
+                "jsdoctags": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "highlightParts",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "Divide `label` em trechos marcando a primeira ocorrência de `term`, sem diferenciar\nacentos nem maiúsculas (\"sao\" destaca \"São\"). Preserva o texto original do rótulo.\nSem termo ou sem ocorrência, devolve o rótulo inteiro como um único trecho não marcado.",
+                "description": "<p>Divide <code>label</code> em trechos marcando a primeira ocorrência de <code>term</code>, sem diferenciar\nacentos nem maiúsculas (&quot;sao&quot; destaca &quot;São&quot;). Preserva o texto original do rótulo.\nSem termo ou sem ocorrência, devolve o rótulo inteiro como um único trecho não marcado.</p>\n",
+                "displayName": "highlightParts",
+                "args": [
+                    {
+                        "name": "label",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "term",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "PakiHighlightPart[]",
+                "jsdoctags": [
+                    {
+                        "name": "label",
+                        "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "term",
+                        "type": "string",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -6266,6 +7283,19 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "coverageIgnore": false,
+                "rawtype": "StoryObj<PakiNavigationRail>",
+                "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "coverageIgnore": false,
                 "rawtype": "StoryObj<PakiPageHeader>",
                 "file": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
                 "deprecated": false,
@@ -6446,6 +7476,186 @@
                     "defaultValue": "{}",
                     "rawdescription": "Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.",
                     "description": "<p>Variação padrão: sidenav expandido com grupo aberto.\nUse a toolbar de tema para alternar entre claro e escuro.</p>\n"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts": [
+                {
+                    "name": "baseItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiNavigationRailItem[]",
+                    "defaultValue": "[...mainItems, footerItem]",
+                    "rawdescription": "Lista completa: itens main mais o item de rodapé.",
+                    "description": "<p>Lista completa: itens main mais o item de rodapé.</p>\n"
+                },
+                {
+                    "name": "brandNavegavel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PakiNavigationRailBrand",
+                    "defaultValue": "{\n  label: 'Pakitec',\n  route: '/',\n}",
+                    "rawdescription": "Marca de exemplo navegável.\nAs imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n(premissa R4). Elas não fazem parte do contrato público do componente.",
+                    "description": "<p>Marca de exemplo navegável.\nAs imagens compactImageUrl/expandedImageUrl ficam apenas aqui nas stories\n(premissa R4). Elas não fazem parte do contrato público do componente.</p>\n"
+                },
+                {
+                    "name": "ComRodape",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    items: [\n      { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n      { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n      footerItem,\n    ],\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Item de rodapé separado dos itens main (AC-005).\nMantém o item Configurações ancorado ao rodapé via position='footer'.",
+                    "description": "<p>Item de rodapé separado dos itens main (AC-005).\nMantém o item Configurações ancorado ao rodapé via position=&#39;footer&#39;.</p>\n"
+                },
+                {
+                    "name": "Expandido",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Expandido: expanded=true.\nDemonstra a largura de 216px e os labels visíveis (AC-001).",
+                    "description": "<p>Expandido: expanded=true.\nDemonstra a largura de 216px e os labels visíveis (AC-001).</p>\n"
+                },
+                {
+                    "name": "footerItem",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PakiNavigationRailItem",
+                    "defaultValue": "{\n  id: 'settings',\n  label: 'Configurações',\n  route: '/settings',\n  icon: 'icon-settings',\n  position: 'footer',\n}",
+                    "rawdescription": "Item ancorado ao rodapé, separado do grupo principal (AC-005).",
+                    "description": "<p>Item ancorado ao rodapé, separado do grupo principal (AC-005).</p>\n"
+                },
+                {
+                    "name": "ItemAtivo",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  decorators: [\n    applicationConfig({\n      providers: [\n        provideRouter([\n          { path: 'dashboard', component: StoryRoute },\n          { path: '**', component: StoryRoute },\n        ]),\n      ],\n    }),\n    moduleMetadata({\n      imports: [NavigationRailActiveItemHost],\n    }),\n  ],\n  render: (args) => ({\n    props: args,\n    template:\n      '<app-navigation-rail-active-item-host [items]=\"items\" [brand]=\"brand\" [expanded]=\"expanded\"></app-navigation-rail-active-item-host>',\n  }),\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Marca navegável e itens com rota.\nNavega para /dashboard para que RouterLinkActive aplique `active` e\naria-current=\"page\" no item ativo (AC-002, AC-006).",
+                    "description": "<p>Marca navegável e itens com rota.\nNavega para /dashboard para que RouterLinkActive aplique <code>active</code> e\naria-current=&quot;page&quot; no item ativo (AC-002, AC-006).</p>\n"
+                },
+                {
+                    "name": "ListaVazia",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    items: [],\n    brand: brandNavegavel,\n    expanded: true,\n  },\n}",
+                    "rawdescription": "Lista vazia com marca presente.\nExercita a robustez visual sem itens (complementa AC-008).",
+                    "description": "<p>Lista vazia com marca presente.\nExercita a robustez visual sem itens (complementa AC-008).</p>\n"
+                },
+                {
+                    "name": "mainItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PakiNavigationRailItem[]",
+                    "defaultValue": "[\n  { id: 'dashboard', label: 'Painel', route: '/dashboard', icon: 'icon-dashboard' },\n  { id: 'reports', label: 'Relatórios', route: '/reports', icon: 'icon-reports' },\n  { id: 'actions', label: 'Ações rápidas', icon: 'icon-bolt' },\n  { id: 'archive', label: 'Arquivados', route: '/archive', icon: 'icon-archive', disabled: true },\n  { id: 'legacy', label: 'Sem ícone', route: '/legacy' },\n]",
+                    "rawdescription": "Itens base do grupo principal.\nCobrem item com rota, item sem rota, item disabled e item sem ícone.",
+                    "description": "<p>Itens base do grupo principal.\nCobrem item com rota, item sem rota, item disabled e item sem ícone.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiNavigationRail>",
+                    "defaultValue": "{\n  title: 'Componentes/Navigation Rail',\n  component: PakiNavigationRail,\n  decorators: [\n    applicationConfig({\n      providers: [provideRouter([{ path: '**', component: StoryRoute }])],\n    }),\n  ],\n  args: {\n    items: baseItems,\n    brand: brandNavegavel,\n    expanded: false,\n  },\n}",
+                    "rawdescription": "Metadados da story do paki-navigation-rail.\n\nO Storybook alterna entre tema claro e escuro pela toolbar global \"Tema visual\".\nCada story abaixo aparece nos dois temas sem configuração extra.",
+                    "description": "<p>Metadados da story do paki-navigation-rail.</p>\n<p>O Storybook alterna entre tema claro e escuro pela toolbar global &quot;Tema visual&quot;.\nCada story abaixo aparece nos dois temas sem configuração extra.</p>\n"
+                },
+                {
+                    "name": "Recolhido",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
+                    "rawdescription": "Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).",
+                    "description": "<p>Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).</p>\n"
+                }
+            ],
+            "projects/pakitec-angular-components/src/stories/select.stories.ts": [
+                {
+                    "name": "BREEDS",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "defaultValue": "['Akita', 'American Bully', 'Basset Hound', 'Beagle', 'Bernese Mountain Dog', 'Border Collie', 'Boston Terrier', 'Boxer', 'Bulldog Francês', 'Chihuahua', 'Dachshund', 'Golden Retriever', 'Labrador Retriever', 'Lhasa Apso', 'Maltês', 'Pastor Alemão', 'Pinscher', 'Poodle', 'Shih-Tzu', 'Spitz Alemão', 'Vira-lata (SRD)', 'Yorkshire Terrier'].map((label) => ({ label, value: label }))"
+                },
+                {
+                    "name": "InsideWideCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: { label: 'Raça', placeholder: 'Selecione', items: BREEDS },\n  render: (args) => ({\n    props: { ...args, selected: 'Akita' },\n    template: `<article style=\"position:relative;width:900px;padding:16px;border:1px solid #ddd;border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px\">\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n      <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n      <div style=\"height:42px;border:1px dashed #ccc;border-radius:8px\"></div>\n    </article>`,\n  }),\n}",
+                    "rawdescription": "Select numa coluna estreita dentro de um card largo e posicionado (como o card do\nanimal no amora). A lista deve acompanhar a largura do campo, e não a do card.",
+                    "description": "<p>Select numa coluna estreita dentro de um card largo e posicionado (como o card do\nanimal no amora). A lista deve acompanhar a largura do campo, e não a do card.</p>\n"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PakiSelect>",
+                    "defaultValue": "{ title: 'Componentes/Select', component: PakiSelect, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Especialidade', placeholder: 'Selecione', items: [{ label: 'Clínica geral', value: 'general' }, { label: 'Cirurgia', value: 'surgery' }, { label: 'Dermatologia', value: 'dermatology' }] } }"
+                },
+                {
+                    "name": "Playground",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{ render: (args) => ({ props: { ...args, selected: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" /></div>' }) }"
                 }
             ],
             "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
@@ -6732,30 +7942,6 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{ render: (args) => ({ props: args, template: '<paki-placeholder [title]=\"title\" [description]=\"description\" />' }) }"
-                }
-            ],
-            "projects/pakitec-angular-components/src/stories/select.stories.ts": [
-                {
-                    "name": "meta",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Meta<PakiSelect>",
-                    "defaultValue": "{ title: 'Componentes/Select', component: PakiSelect, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Especialidade', placeholder: 'Selecione', items: [{ label: 'Clínica geral', value: 'general' }, { label: 'Cirurgia', value: 'surgery' }, { label: 'Dermatologia', value: 'dermatology' }] } }"
-                },
-                {
-                    "name": "Playground",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "{ render: (args) => ({ props: { ...args, value: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"value\" /></div>' }) }"
                 }
             ],
             "projects/pakitec-angular-components/src/stories/skeleton.stories.ts": [
@@ -7110,6 +8296,87 @@
                     ]
                 }
             ],
+            "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts": [
+                {
+                    "name": "fold",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "displayName": "fold",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "highlightParts",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "Divide `label` em trechos marcando a primeira ocorrência de `term`, sem diferenciar\nacentos nem maiúsculas (\"sao\" destaca \"São\"). Preserva o texto original do rótulo.\nSem termo ou sem ocorrência, devolve o rótulo inteiro como um único trecho não marcado.",
+                    "description": "<p>Divide <code>label</code> em trechos marcando a primeira ocorrência de <code>term</code>, sem diferenciar\nacentos nem maiúsculas (&quot;sao&quot; destaca &quot;São&quot;). Preserva o texto original do rótulo.\nSem termo ou sem ocorrência, devolve o rótulo inteiro como um único trecho não marcado.</p>\n",
+                    "displayName": "highlightParts",
+                    "args": [
+                        {
+                            "name": "label",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "term",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "PakiHighlightPart[]",
+                    "jsdoctags": [
+                        {
+                            "name": "label",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "term",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
                 {
                     "name": "normalize",
@@ -7358,6 +8625,21 @@
                     "kind": 184
                 }
             ],
+            "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "coverageIgnore": false,
+                    "rawtype": "StoryObj<PakiNavigationRail>",
+                    "file": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/page-header.stories.ts": [
                 {
                     "name": "Story",
@@ -7488,12 +8770,18 @@
                 "name": "dashboard",
                 "kind": "route-path",
                 "component": "StoryRoute",
+                "filename": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts"
+            },
+            {
+                "name": "dashboard",
+                "kind": "route-path",
+                "component": "StoryRoute",
                 "filename": "projects/pakitec-angular-components/src/stories/sidenav.stories.ts"
             }
         ]
     },
     "coverage": {
-        "count": 12,
+        "count": 24,
         "status": "low",
         "files": [
             {
@@ -7679,6 +8967,33 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PakiNavigationRail",
+                "coveragePercent": 100,
+                "coverageCount": "10/10",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PakiNavigationRailBrand",
+                "coveragePercent": 100,
+                "coverageCount": "3/3",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/navigation-rail/paki-navigation-rail.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PakiNavigationRailItem",
+                "coveragePercent": 100,
+                "coverageCount": "7/7",
+                "status": "very-good"
+            },
+            {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/page-header/paki-page-header.ts",
                 "type": "component",
                 "linktype": "component",
@@ -7710,8 +9025,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "PakiSelect",
-                "coveragePercent": 0,
-                "coverageCount": "0/37",
+                "coveragePercent": 9,
+                "coverageCount": "4/42",
                 "status": "low"
             },
             {
@@ -7782,6 +9097,35 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PakiHighlightPart",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "fold",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "highlightParts",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/sidenav/paki-sidenav.ts",
@@ -8085,6 +9429,134 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NavigationRailActiveItemHost",
+                "coveragePercent": 16,
+                "coverageCount": "1/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StoryRoute",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "baseItems",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "brandNavegavel",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ComRodape",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Expandido",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "footerItem",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ItemAtivo",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ListaVazia",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "mainItems",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Recolhido",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/navigation-rail.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/pakitec-angular-components/src/stories/page-header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -8183,6 +9655,26 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BREEDS",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InsideWideCard",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",

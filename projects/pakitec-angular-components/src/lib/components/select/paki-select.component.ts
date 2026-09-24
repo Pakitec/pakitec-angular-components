@@ -10,6 +10,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { highlightParts, PakiHighlightPart } from './select-highlight';
 
 export interface PakiOption {
   label: string;
@@ -59,6 +60,10 @@ export class PakiSelect implements ControlValueAccessor {
   protected readonly activeIndex = signal(-1);
   protected readonly visibleCount = signal(INITIAL_VISIBLE);
   protected readonly searching = signal(false);
+  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */
+  protected readonly editing = signal(false);
+  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */
+  private readonly selectedOption = signal<PakiOption | null>(null);
 
   readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));
 
@@ -70,8 +75,14 @@ export class PakiSelect implements ControlValueAccessor {
   readonly selectedLabel = computed(() => {
     const v = this.value();
     if (!v) return '';
-    return this.effectiveItems().find((o) => o.value === v)?.label ?? v;
+    const picked = this.selectedOption();
+    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);
   });
+
+  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */
+  readonly displayText = computed(() =>
+    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),
+  );
 
   readonly displayOptions = computed(() => {
     const all = this.filtered();
@@ -118,6 +129,7 @@ export class PakiSelect implements ControlValueAccessor {
 
   writeValue(value: string | null | undefined): void {
     this.value.set(value ?? '');
+    this.editing.set(false);
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -135,27 +147,45 @@ export class PakiSelect implements ControlValueAccessor {
 
   protected onInput(event: Event): void {
     const term = (event.target as HTMLInputElement).value;
+    this.editing.set(true);
     this.searchTerm.set(term);
     this.open.set(true);
     this.search$.next(term);
   }
 
-  protected onFocus(): void {
+  protected onFocus(event?: FocusEvent): void {
     this.open.set(true);
     if (this.filtered().length === 0) {
       this.search$.next(this.searchTerm());
     }
+    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.
+    (event?.target as HTMLInputElement | undefined)?.select();
   }
 
   protected onBlur(): void {
     this.onTouched();
     this.open.set(false);
+    this.resetQuery();
+  }
+
+  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */
+  private resetQuery(): void {
+    this.editing.set(false);
+    if (this.searchTerm() !== '') {
+      this.searchTerm.set('');
+      this.search$.next('');
+    }
+  }
+
+  protected highlight(label: string): PakiHighlightPart[] {
+    return highlightParts(label, this.editing() ? this.searchTerm() : '');
   }
 
   protected toggle(): void {
     if (this.disabled()) return;
     this.open.update((o) => !o);
     if (this.open()) {
+      this.editing.set(false);
       this.searchTerm.set('');
       this.search$.next('');
     }
@@ -163,9 +193,10 @@ export class PakiSelect implements ControlValueAccessor {
 
   protected select(option: PakiOption): void {
     this.value.set(option.value);
-    this.searchTerm.set(option.label);
+    this.selectedOption.set(option);
     this.onChange(option.value);
     this.open.set(false);
+    this.resetQuery();
     this.onTouched();
   }
 
@@ -176,11 +207,13 @@ export class PakiSelect implements ControlValueAccessor {
 
     if (event.key === 'Escape') {
       this.open.set(false);
+      this.resetQuery();
       return;
     }
 
     if (event.key === 'Tab') {
       this.open.set(false);
+      this.resetQuery();
       return;
     }
 

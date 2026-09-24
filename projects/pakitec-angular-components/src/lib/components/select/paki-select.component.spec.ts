@@ -185,6 +185,60 @@ describe('PakiSelect', () => {
     expect(document.querySelector('.paki-select__dropdown')).toBeFalsy();
   });
 
+  it('keeps the typed search visible even when a value is already selected', async () => {
+    await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
+    const fixture = TestBed.createComponent(LocalHost);
+    fixture.componentInstance.control.setValue('2');
+    fixture.detectChanges();
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    expect(input.value).toBe('Gato');
+
+    input.dispatchEvent(new Event('focus'));
+    input.value = 'Ca';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(input.value).toBe('Ca');
+
+    await wait(320);
+    fixture.detectChanges();
+    expect(input.value).toBe('Ca');
+    const labels = Array.from(fixture.nativeElement.querySelectorAll('li[role="option"]')).map((li) => (li as HTMLElement).textContent?.trim());
+    expect(labels).toEqual(['Cachorro', 'Cavalo', 'Vaca', 'Cabra']);
+  });
+
+  it('restores the selected label and clears the search on blur', async () => {
+    await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
+    const fixture = TestBed.createComponent(LocalHost);
+    fixture.componentInstance.control.setValue('2');
+    fixture.detectChanges();
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.dispatchEvent(new Event('focus'));
+    input.value = 'Ca';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    input.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(input.value).toBe('Gato');
+    expect(fixture.componentInstance.control.value).toBe('2');
+  });
+
+  it('renders the dropdown inside the positioned control and highlights the match', async () => {
+    await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
+    const fixture = TestBed.createComponent(LocalHost);
+    fixture.detectChanges();
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.dispatchEvent(new Event('focus'));
+    input.value = 'pass';
+    input.dispatchEvent(new Event('input'));
+    await wait(320);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.paki-select__control > .paki-select__dropdown')).toBeTruthy();
+    const mark: HTMLElement = fixture.nativeElement.querySelector('li[role="option"] mark');
+    expect(mark.textContent).toBe('Páss');
+  });
+
   it('reflects external form control value', async () => {
     await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
     const fixture = TestBed.createComponent(LocalHost);
