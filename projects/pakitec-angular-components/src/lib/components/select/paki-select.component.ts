@@ -1,11 +1,16 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   effect,
+  ElementRef,
   forwardRef,
+  inject,
+  Injector,
   input,
   signal,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -22,6 +27,19 @@ export type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOpti
 const INITIAL_VISIBLE = 10;
 const MAX_RESULTS = 50;
 const DEBOUNCE_MS = 300;
+const PANEL_MAX_HEIGHT = 260;
+const PANEL_MIN_HEIGHT = 120;
+const PANEL_GAP = 6;
+const VIEWPORT_MARGIN = 8;
+
+interface PanelPosition {
+  top: number;
+  left: number;
+  width: number;
+  maxHeight: number;
+  up: boolean;
+  ready: boolean;
+}
 
 function normalize(value: string): string {
   return value
@@ -66,6 +84,16 @@ export class PakiSelect implements ControlValueAccessor {
   private readonly selectedOption = signal<PakiOption | null>(null);
 
   readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));
+
+  private readonly injector = inject(Injector);
+  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
+  /**
+   * Posição da lista (position: fixed) calculada a partir do campo. Fixed escapa do
+   * overflow: hidden de cards e continua dentro de <dialog> modais (top layer),
+   * o que um overlay no <body> não faria.
+   */
+  protected readonly panelPos = signal<PanelPosition>({ top: 0, left: 0, width: 0, maxHeight: PANEL_MAX_HEIGHT, up: false, ready: false });
 
   private readonly search$ = new Subject<string>();
   private searchSubscription: Subscription | null = null;
@@ -117,7 +145,31 @@ export class PakiSelect implements ControlValueAccessor {
         this.activeIndex.set(limited.length > 0 ? 0 : -1);
         this.visibleCount.set(INITIAL_VISIBLE);
         this.searching.set(false);
+        this.schedulePosition();
       });
+
+    // Enquanto aberta, acompanha rolagem (inclusive de containers, via capture) e resize.
+    effect((onCleanup) => {
+      if (!this.open()) {
+        this.panelPos.update((p) => ({ ...p, ready: false }));
+        return;
+      }
+      this.schedulePosition();
+      let frame = 0;
+      const onMove = () => {
+        if (frame) return;
+        frame = requestFrame(() => {
+          frame = 0;
+          this.reposition();
+        });
+      };
+      window.addEventListener('scroll', onMove, true);
+      window.addEventListener('resize', onMove);
+      onCleanup(() => {
+        window.removeEventListener('scroll', onMove, true);
+        window.removeEventListener('resize', onMove);
+      });
+    });
 
     effect(() => {
       this.effectiveItems();
@@ -251,6 +303,29 @@ export class PakiSelect implements ControlValueAccessor {
     }
   }
 
+  private schedulePosition(): void {
+    afterNextRender(() => this.reposition(), { injector: this.injector });
+  }
+
+  /** Posiciona a lista junto ao campo; abre para cima quando falta espaço embaixo. */
+  private reposition(): void {
+    const panel = this.panel()?.nativeElement;
+    if (!this.open() || !panel) return;
+    const field = this.control().nativeElement.getBoundingClientRect();
+    const viewport = window.innerHeight;
+    const below = viewport - field.bottom - PANEL_GAP - VIEWPORT_MARGIN;
+    const above = field.top - PANEL_GAP - VIEWPORT_MARGIN;
+    const content = Math.min(panel.scrollHeight, PANEL_MAX_HEIGHT);
+    const up = content > below && above > below;
+    const maxHeight = Math.max(PANEL_MIN_HEIGHT, Math.min(PANEL_MAX_HEIGHT, up ? above : below));
+    const height = Math.min(content, maxHeight);
+    // Se algum ancestral criar bloco de contenção para fixed (transform, filter...),
+    // top/left passam a ser relativos a ele: compensa a origem desse ancestral.
+    const origin = fixedOrigin(panel);
+    const top = up ? field.top - PANEL_GAP - height : field.bottom + PANEL_GAP;
+    this.panelPos.set({ top: top - origin.top, left: field.left - origin.left, width: field.width, maxHeight, up, ready: true });
+  }
+
   protected onScroll(event: Event): void {
     const target = event.target as HTMLElement;
     const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;
@@ -262,4 +337,29 @@ export class PakiSelect implements ControlValueAccessor {
   ngOnDestroy(): void {
     this.searchSubscription?.unsubscribe();
   }
+}
+
+function requestFrame(callback: () => void): number {
+  return typeof requestAnimationFrame === 'function'
+    ? requestAnimationFrame(callback)
+    : (setTimeout(callback, 16) as unknown as number);
+}
+
+/** Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção. */
+function fixedOrigin(element: HTMLElement): { top: number; left: number } {
+  for (let node = element.parentElement; node; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    const contain = style.contain ?? '';
+    const createsBlock =
+      (style.transform && style.transform !== 'none') ||
+      (style.perspective && style.perspective !== 'none') ||
+      (style.filter && style.filter !== 'none') ||
+      /paint|layout|strict|content/.test(contain) ||
+      /transform|perspective|filter/.test(style.willChange ?? '');
+    if (createsBlock) {
+      const rect = node.getBoundingClientRect();
+      return { top: rect.top + node.clientTop, left: rect.left + node.clientLeft };
+    }
+  }
+  return { top: 0, left: 0 };
 }

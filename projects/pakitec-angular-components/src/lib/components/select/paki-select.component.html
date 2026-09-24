@@ -1,6 +1,6 @@
 <label>
   <span>{{ label() }}</span>
-  <div class="paki-select__control">
+  <div class="paki-select__control" #control>
     <input
       type="text"
       role="combobox"
@@ -32,7 +32,19 @@
     </button>
 
     @if (open()) {
-      <ul class="paki-select__dropdown" role="listbox" (scroll)="onScroll($event)">
+      <ul
+        #panel
+        class="paki-select__dropdown"
+        role="listbox"
+        [class.up]="panelPos().up"
+        [style.top.px]="panelPos().top"
+        [style.left.px]="panelPos().left"
+        [style.width.px]="panelPos().width"
+        [style.max-height.px]="panelPos().maxHeight"
+        [style.visibility]="panelPos().ready ? null : 'hidden'"
+        (mousedown)="$event.preventDefault()"
+        (scroll)="onScroll($event)"
+      >
         @if (searching()) {
           <li class="paki-select__feedback" role="status">Carregando...</li>
         }

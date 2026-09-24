@@ -231,12 +231,12 @@
         },
         {
             "name": "PakiOption",
-            "id": "interface-PakiOption-c8bc51d5dea5fb2e7fd42932ae97293014cc1d12398fa2957670a5251c544b066cdef41cf7f67d22abf9878401046c674f082da1275128340822f734c06f2b5d",
+            "id": "interface-PakiOption-6b3950b448642118823e43ce47c3b5642305c4e59e178c1270b73f75c2bb3a772aa7202017e2b94fe9e40cabef2e230d8d1632bf177b148c8feac626dda08464",
             "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
+            "sourceCode": "import {\n  afterNextRender,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  ElementRef,\n  forwardRef,\n  inject,\n  Injector,\n  input,\n  signal,\n  viewChild,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\nconst PANEL_MAX_HEIGHT = 260;\nconst PANEL_MIN_HEIGHT = 120;\nconst PANEL_GAP = 6;\nconst VIEWPORT_MARGIN = 8;\n\ninterface PanelPosition {\n  top: number;\n  left: number;\n  width: number;\n  maxHeight: number;\n  up: boolean;\n  ready: boolean;\n}\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly injector = inject(Injector);\n  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');\n  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');\n  /**\n   * Posição da lista (position: fixed) calculada a partir do campo. Fixed escapa do\n   * overflow: hidden de cards e continua dentro de <dialog> modais (top layer),\n   * o que um overlay no <body> não faria.\n   */\n  protected readonly panelPos = signal<PanelPosition>({ top: 0, left: 0, width: 0, maxHeight: PANEL_MAX_HEIGHT, up: false, ready: false });\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n        this.schedulePosition();\n      });\n\n    // Enquanto aberta, acompanha rolagem (inclusive de containers, via capture) e resize.\n    effect((onCleanup) => {\n      if (!this.open()) {\n        this.panelPos.update((p) => ({ ...p, ready: false }));\n        return;\n      }\n      this.schedulePosition();\n      let frame = 0;\n      const onMove = () => {\n        if (frame) return;\n        frame = requestFrame(() => {\n          frame = 0;\n          this.reposition();\n        });\n      };\n      window.addEventListener('scroll', onMove, true);\n      window.addEventListener('resize', onMove);\n      onCleanup(() => {\n        window.removeEventListener('scroll', onMove, true);\n        window.removeEventListener('resize', onMove);\n      });\n    });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  private schedulePosition(): void {\n    afterNextRender(() => this.reposition(), { injector: this.injector });\n  }\n\n  /** Posiciona a lista junto ao campo; abre para cima quando falta espaço embaixo. */\n  private reposition(): void {\n    const panel = this.panel()?.nativeElement;\n    if (!this.open() || !panel) return;\n    const field = this.control().nativeElement.getBoundingClientRect();\n    const viewport = window.innerHeight;\n    const below = viewport - field.bottom - PANEL_GAP - VIEWPORT_MARGIN;\n    const above = field.top - PANEL_GAP - VIEWPORT_MARGIN;\n    const content = Math.min(panel.scrollHeight, PANEL_MAX_HEIGHT);\n    const up = content > below && above > below;\n    const maxHeight = Math.max(PANEL_MIN_HEIGHT, Math.min(PANEL_MAX_HEIGHT, up ? above : below));\n    const height = Math.min(content, maxHeight);\n    // Se algum ancestral criar bloco de contenção para fixed (transform, filter...),\n    // top/left passam a ser relativos a ele: compensa a origem desse ancestral.\n    const origin = fixedOrigin(panel);\n    const top = up ? field.top - PANEL_GAP - height : field.bottom + PANEL_GAP;\n    this.panelPos.set({ top: top - origin.top, left: field.left - origin.left, width: field.width, maxHeight, up, ready: true });\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n\nfunction requestFrame(callback: () => void): number {\n  return typeof requestAnimationFrame === 'function'\n    ? requestAnimationFrame(callback)\n    : (setTimeout(callback, 16) as unknown as number);\n}\n\n/** Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção. */\nfunction fixedOrigin(element: HTMLElement): { top: number; left: number } {\n  for (let node = element.parentElement; node; node = node.parentElement) {\n    const style = getComputedStyle(node);\n    const contain = style.contain ?? '';\n    const createsBlock =\n      (style.transform && style.transform !== 'none') ||\n      (style.perspective && style.perspective !== 'none') ||\n      (style.filter && style.filter !== 'none') ||\n      /paint|layout|strict|content/.test(contain) ||\n      /transform|perspective|filter/.test(style.willChange ?? '');\n    if (createsBlock) {\n      const rect = node.getBoundingClientRect();\n      return { top: rect.top + node.clientTop, left: rect.left + node.clientLeft };\n    }\n  }\n  return { top: 0, left: 0 };\n}\n",
             "displayName": "PakiOption",
             "properties": [
                 {
@@ -248,7 +248,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 21,
                     "rawdescription": "\n"
                 },
                 {
@@ -260,7 +260,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 17,
+                    "line": 22,
                     "rawdescription": "\n"
                 }
             ],
@@ -474,6 +474,98 @@
             "kind": 172,
             "description": "<p>Estado atual do sidenav.</p>\n",
             "rawdescription": "\nEstado atual do sidenav.",
+            "methods": [],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": []
+            }
+        },
+        {
+            "name": "PanelPosition",
+            "id": "interface-PanelPosition-6b3950b448642118823e43ce47c3b5642305c4e59e178c1270b73f75c2bb3a772aa7202017e2b94fe9e40cabef2e230d8d1632bf177b148c8feac626dda08464",
+            "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {\n  afterNextRender,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  ElementRef,\n  forwardRef,\n  inject,\n  Injector,\n  input,\n  signal,\n  viewChild,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\nconst PANEL_MAX_HEIGHT = 260;\nconst PANEL_MIN_HEIGHT = 120;\nconst PANEL_GAP = 6;\nconst VIEWPORT_MARGIN = 8;\n\ninterface PanelPosition {\n  top: number;\n  left: number;\n  width: number;\n  maxHeight: number;\n  up: boolean;\n  ready: boolean;\n}\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly injector = inject(Injector);\n  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');\n  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');\n  /**\n   * Posição da lista (position: fixed) calculada a partir do campo. Fixed escapa do\n   * overflow: hidden de cards e continua dentro de <dialog> modais (top layer),\n   * o que um overlay no <body> não faria.\n   */\n  protected readonly panelPos = signal<PanelPosition>({ top: 0, left: 0, width: 0, maxHeight: PANEL_MAX_HEIGHT, up: false, ready: false });\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n        this.schedulePosition();\n      });\n\n    // Enquanto aberta, acompanha rolagem (inclusive de containers, via capture) e resize.\n    effect((onCleanup) => {\n      if (!this.open()) {\n        this.panelPos.update((p) => ({ ...p, ready: false }));\n        return;\n      }\n      this.schedulePosition();\n      let frame = 0;\n      const onMove = () => {\n        if (frame) return;\n        frame = requestFrame(() => {\n          frame = 0;\n          this.reposition();\n        });\n      };\n      window.addEventListener('scroll', onMove, true);\n      window.addEventListener('resize', onMove);\n      onCleanup(() => {\n        window.removeEventListener('scroll', onMove, true);\n        window.removeEventListener('resize', onMove);\n      });\n    });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  private schedulePosition(): void {\n    afterNextRender(() => this.reposition(), { injector: this.injector });\n  }\n\n  /** Posiciona a lista junto ao campo; abre para cima quando falta espaço embaixo. */\n  private reposition(): void {\n    const panel = this.panel()?.nativeElement;\n    if (!this.open() || !panel) return;\n    const field = this.control().nativeElement.getBoundingClientRect();\n    const viewport = window.innerHeight;\n    const below = viewport - field.bottom - PANEL_GAP - VIEWPORT_MARGIN;\n    const above = field.top - PANEL_GAP - VIEWPORT_MARGIN;\n    const content = Math.min(panel.scrollHeight, PANEL_MAX_HEIGHT);\n    const up = content > below && above > below;\n    const maxHeight = Math.max(PANEL_MIN_HEIGHT, Math.min(PANEL_MAX_HEIGHT, up ? above : below));\n    const height = Math.min(content, maxHeight);\n    // Se algum ancestral criar bloco de contenção para fixed (transform, filter...),\n    // top/left passam a ser relativos a ele: compensa a origem desse ancestral.\n    const origin = fixedOrigin(panel);\n    const top = up ? field.top - PANEL_GAP - height : field.bottom + PANEL_GAP;\n    this.panelPos.set({ top: top - origin.top, left: field.left - origin.left, width: field.width, maxHeight, up, ready: true });\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n\nfunction requestFrame(callback: () => void): number {\n  return typeof requestAnimationFrame === 'function'\n    ? requestAnimationFrame(callback)\n    : (setTimeout(callback, 16) as unknown as number);\n}\n\n/** Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção. */\nfunction fixedOrigin(element: HTMLElement): { top: number; left: number } {\n  for (let node = element.parentElement; node; node = node.parentElement) {\n    const style = getComputedStyle(node);\n    const contain = style.contain ?? '';\n    const createsBlock =\n      (style.transform && style.transform !== 'none') ||\n      (style.perspective && style.perspective !== 'none') ||\n      (style.filter && style.filter !== 'none') ||\n      /paint|layout|strict|content/.test(contain) ||\n      /transform|perspective|filter/.test(style.willChange ?? '');\n    if (createsBlock) {\n      const rect = node.getBoundingClientRect();\n      return { top: rect.top + node.clientTop, left: rect.left + node.clientLeft };\n    }\n  }\n  return { top: 0, left: 0 };\n}\n",
+            "displayName": "PanelPosition",
+            "properties": [
+                {
+                    "name": "left",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "maxHeight",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "ready",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 41,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "top",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 36,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "up",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40,
+                    "rawdescription": "\n"
+                },
+                {
+                    "name": "width",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 38,
+                    "rawdescription": "\n"
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
             "methods": [],
             "extends": [],
             "relationships": {
@@ -3833,7 +3925,7 @@
         },
         {
             "name": "PakiSelect",
-            "id": "component-PakiSelect-c8bc51d5dea5fb2e7fd42932ae97293014cc1d12398fa2957670a5251c544b066cdef41cf7f67d22abf9878401046c674f082da1275128340822f734c06f2b5d",
+            "id": "component-PakiSelect-6b3950b448642118823e43ce47c3b5642305c4e59e178c1270b73f75c2bb3a772aa7202017e2b94fe9e40cabef2e230d8d1632bf177b148c8feac626dda08464",
             "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3867,7 +3959,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 49,
+                    "line": 67,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3884,7 +3976,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 65,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3901,7 +3993,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 53,
+                    "line": 71,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3918,23 +4010,23 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 51,
+                    "line": 69,
                     "rawdescription": "",
                     "modifierKind": [
                         148
                     ],
                     "jsdoctags": [
                         {
-                            "pos": 1402,
-                            "end": 1497,
+                            "pos": 1709,
+                            "end": 1804,
                             "kind": 332,
                             "id": 0,
                             "flags": 16842752,
                             "modifierFlagsCache": 0,
                             "transformFlags": 0,
                             "tagName": {
-                                "pos": 1403,
-                                "end": 1413,
+                                "pos": 1710,
+                                "end": 1720,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -3956,7 +4048,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 66,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3973,7 +4065,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 70,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -3993,10 +4085,27 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 60,
+                    "line": 78,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
+                        148
+                    ]
+                },
+                {
+                    "name": "control",
+                    "coverageIgnore": false,
+                    "defaultValue": "viewChild.required<ElementRef<HTMLElement>>('control')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 89,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
                         148
                     ]
                 },
@@ -4010,7 +4119,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 56,
+                    "line": 74,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4027,7 +4136,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 87,
+                    "line": 115,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -4043,7 +4152,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado.</p>\n",
-                    "line": 83,
+                    "line": 111,
                     "rawdescription": "\nTexto exibido no campo: a busca enquanto edita; senão o rótulo selecionado.",
                     "modifierKind": [
                         148
@@ -4059,7 +4168,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado.</p>\n",
-                    "line": 64,
+                    "line": 82,
                     "rawdescription": "\ntrue enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado.",
                     "modifierKind": [
                         124,
@@ -4076,7 +4185,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 68,
+                    "line": 86,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -4092,7 +4201,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 59,
+                    "line": 77,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4109,9 +4218,26 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 93,
+                    "line": 121,
                     "rawdescription": "\n",
                     "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "injector",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(Injector)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 88,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
                         148
                     ]
                 },
@@ -4125,7 +4251,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 72,
+                    "line": 100,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -4141,7 +4267,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 73,
+                    "line": 101,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -4157,8 +4283,42 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 57,
+                    "line": 75,
                     "rawdescription": "\n",
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "panel",
+                    "coverageIgnore": false,
+                    "defaultValue": "viewChild<ElementRef<HTMLElement>>('panel')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 90,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "panelPos",
+                    "coverageIgnore": false,
+                    "defaultValue": "signal<PanelPosition>({ top: 0, left: 0, width: 0, maxHeight: PANEL_MAX_HEIGHT, up: false, ready: false })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Posição da lista (position: fixed) calculada a partir do campo. Fixed escapa do\noverflow: hidden de cards e continua dentro de <dialog> modais (top layer),\no que um overlay no <body> não faria.</p>\n",
+                    "line": 96,
+                    "rawdescription": "\n\nPosição da lista (position: fixed) calculada a partir do campo. Fixed escapa do\noverflow: hidden de cards e continua dentro de <dialog> modais (top layer),\no que um overlay no <body> não faria.\n",
                     "modifierKind": [
                         124,
                         148
@@ -4174,7 +4334,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 70,
+                    "line": 98,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123,
@@ -4191,7 +4351,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 62,
+                    "line": 80,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4208,7 +4368,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 71,
+                    "line": 99,
                     "rawdescription": "\n",
                     "modifierKind": [
                         123
@@ -4224,7 +4384,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 58,
+                    "line": 76,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4241,7 +4401,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 75,
+                    "line": 103,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -4257,7 +4417,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Última opção escolhida: garante o rótulo na busca remota, quando ela não está em <code>items</code>.</p>\n",
-                    "line": 66,
+                    "line": 84,
                     "rawdescription": "\nÚltima opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`.",
                     "modifierKind": [
                         123,
@@ -4274,7 +4434,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 94,
+                    "line": 122,
                     "rawdescription": "\n",
                     "modifierKind": [
                         148
@@ -4290,7 +4450,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 55,
+                    "line": 73,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4307,7 +4467,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 61,
+                    "line": 79,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -4332,7 +4492,7 @@
                     "optional": false,
                     "returnType": "PakiHighlightPart[]",
                     "typeParameters": [],
-                    "line": 180,
+                    "line": 232,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4361,7 +4521,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 262,
+                    "line": 337,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4374,7 +4534,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 165,
+                    "line": 217,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4399,7 +4559,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 208,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4437,7 +4597,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 148,
+                    "line": 200,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4475,7 +4635,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 203,
+                    "line": 255,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4513,7 +4673,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 254,
+                    "line": 329,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4561,7 +4721,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 135,
+                    "line": 187,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4607,7 +4767,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 139,
+                    "line": 191,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4628,17 +4788,49 @@
                     ]
                 },
                 {
+                    "name": "reposition",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 311,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nPosiciona a lista junto ao campo; abre para cima quando falta espaço embaixo.",
+                    "description": "<p>Posiciona a lista junto ao campo; abre para cima quando falta espaço embaixo.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "resetQuery",
                     "coverageIgnore": false,
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 172,
+                    "line": 224,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\nSai do modo de edição e limpa a busca, para a lista reabrir completa.",
                     "description": "<p>Sai do modo de edição e limpa a busca, para a lista reabrir completa.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "schedulePosition",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 306,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
                     "modifierKind": [
                         123
                     ]
@@ -4659,7 +4851,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 194,
+                    "line": 246,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4697,7 +4889,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 143,
+                    "line": 195,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4723,7 +4915,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 184,
+                    "line": 236,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4748,7 +4940,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 182,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -4778,12 +4970,12 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  forwardRef,\n  input,\n  signal,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n      });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n",
+            "sourceCode": "import {\n  afterNextRender,\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  ElementRef,\n  forwardRef,\n  inject,\n  Injector,\n  input,\n  signal,\n  viewChild,\n} from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { Observable, of, Subject, Subscription } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';\nimport { highlightParts, PakiHighlightPart } from './select-highlight';\n\nexport interface PakiOption {\n  label: string;\n  value: string;\n}\n\nexport type PakiSearchFn = (term: string) => Observable<PakiOption[]> | PakiOption[];\n\nconst INITIAL_VISIBLE = 10;\nconst MAX_RESULTS = 50;\nconst DEBOUNCE_MS = 300;\nconst PANEL_MAX_HEIGHT = 260;\nconst PANEL_MIN_HEIGHT = 120;\nconst PANEL_GAP = 6;\nconst VIEWPORT_MARGIN = 8;\n\ninterface PanelPosition {\n  top: number;\n  left: number;\n  width: number;\n  maxHeight: number;\n  up: boolean;\n  ready: boolean;\n}\n\nfunction normalize(value: string): string {\n  return value\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLocaleLowerCase('pt-BR');\n}\n\nfunction toObservable<T>(value: T | Observable<T>): Observable<T> {\n  return value instanceof Observable ? value : of(value);\n}\n\n@Component({\n  selector: 'paki-select',\n  templateUrl: './paki-select.component.html',\n  styleUrl: './paki-select.component.scss',\n  providers: [\n    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => PakiSelect), multi: true },\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiSelect implements ControlValueAccessor {\n  readonly label = input('');\n  readonly placeholder = input('Selecione');\n  readonly items = input<PakiOption[]>([]);\n  /** @deprecated Use `items` instead. Kept temporarily for backward compatibility during migration. */\n  readonly options = input<PakiOption[]>([]);\n  readonly searchFn = input<PakiSearchFn | undefined>(undefined);\n  readonly noResultsMessage = input('Nenhum resultado');\n\n  protected readonly value = signal<string>('');\n  protected readonly disabled = signal(false);\n  protected readonly open = signal(false);\n  protected readonly searchTerm = signal('');\n  protected readonly filtered = signal<PakiOption[]>([]);\n  protected readonly activeIndex = signal(-1);\n  protected readonly visibleCount = signal(INITIAL_VISIBLE);\n  protected readonly searching = signal(false);\n  /** true enquanto o usuário digita: o campo mostra a busca em vez do rótulo selecionado. */\n  protected readonly editing = signal(false);\n  /** Última opção escolhida: garante o rótulo na busca remota, quando ela não está em `items`. */\n  private readonly selectedOption = signal<PakiOption | null>(null);\n\n  readonly effectiveItems = computed(() => (this.items().length > 0 ? this.items() : this.options()));\n\n  private readonly injector = inject(Injector);\n  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');\n  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');\n  /**\n   * Posição da lista (position: fixed) calculada a partir do campo. Fixed escapa do\n   * overflow: hidden de cards e continua dentro de <dialog> modais (top layer),\n   * o que um overlay no <body> não faria.\n   */\n  protected readonly panelPos = signal<PanelPosition>({ top: 0, left: 0, width: 0, maxHeight: PANEL_MAX_HEIGHT, up: false, ready: false });\n\n  private readonly search$ = new Subject<string>();\n  private searchSubscription: Subscription | null = null;\n  private onChange: (value: string) => void = () => undefined;\n  private onTouched: () => void = () => undefined;\n\n  readonly selectedLabel = computed(() => {\n    const v = this.value();\n    if (!v) return '';\n    const picked = this.selectedOption();\n    return this.effectiveItems().find((o) => o.value === v)?.label ?? (picked?.value === v ? picked.label : v);\n  });\n\n  /** Texto exibido no campo: a busca enquanto edita; senão o rótulo selecionado. */\n  readonly displayText = computed(() =>\n    this.editing() ? this.searchTerm() : this.selectedLabel() || this.searchTerm(),\n  );\n\n  readonly displayOptions = computed(() => {\n    const all = this.filtered();\n    const count = Math.min(this.visibleCount(), MAX_RESULTS, all.length);\n    return all.slice(0, count);\n  });\n\n  readonly hasResults = computed(() => this.displayOptions().length > 0);\n  readonly showNoResults = computed(() => this.open() && !this.searching() && this.filtered().length === 0);\n\n  constructor() {\n    this.searchSubscription = this.search$\n      .pipe(\n        debounceTime(DEBOUNCE_MS),\n        distinctUntilChanged(),\n        switchMap((term) => {\n          this.searching.set(true);\n          const fn = this.searchFn();\n          if (fn) {\n            return toObservable(fn(term));\n          }\n          const normalized = normalize(term);\n          const local = this.effectiveItems().filter((o) =>\n            normalize(o.label).includes(normalized),\n          );\n          return of(local);\n        }),\n      )\n      .subscribe((results) => {\n        const limited = results.slice(0, MAX_RESULTS);\n        this.filtered.set(limited);\n        this.activeIndex.set(limited.length > 0 ? 0 : -1);\n        this.visibleCount.set(INITIAL_VISIBLE);\n        this.searching.set(false);\n        this.schedulePosition();\n      });\n\n    // Enquanto aberta, acompanha rolagem (inclusive de containers, via capture) e resize.\n    effect((onCleanup) => {\n      if (!this.open()) {\n        this.panelPos.update((p) => ({ ...p, ready: false }));\n        return;\n      }\n      this.schedulePosition();\n      let frame = 0;\n      const onMove = () => {\n        if (frame) return;\n        frame = requestFrame(() => {\n          frame = 0;\n          this.reposition();\n        });\n      };\n      window.addEventListener('scroll', onMove, true);\n      window.addEventListener('resize', onMove);\n      onCleanup(() => {\n        window.removeEventListener('scroll', onMove, true);\n        window.removeEventListener('resize', onMove);\n      });\n    });\n\n    effect(() => {\n      this.effectiveItems();\n      if (!this.searchFn() && this.open()) {\n        this.search$.next(this.searchTerm());\n      }\n    });\n  }\n\n  writeValue(value: string | null | undefined): void {\n    this.value.set(value ?? '');\n    this.editing.set(false);\n  }\n\n  registerOnChange(fn: (value: string) => void): void {\n    this.onChange = fn;\n  }\n\n  registerOnTouched(fn: () => void): void {\n    this.onTouched = fn;\n  }\n\n  setDisabledState(disabled: boolean): void {\n    this.disabled.set(disabled);\n    if (disabled) this.open.set(false);\n  }\n\n  protected onInput(event: Event): void {\n    const term = (event.target as HTMLInputElement).value;\n    this.editing.set(true);\n    this.searchTerm.set(term);\n    this.open.set(true);\n    this.search$.next(term);\n  }\n\n  protected onFocus(event?: FocusEvent): void {\n    this.open.set(true);\n    if (this.filtered().length === 0) {\n      this.search$.next(this.searchTerm());\n    }\n    // Seleciona o rótulo atual: digitar substitui em vez de concatenar.\n    (event?.target as HTMLInputElement | undefined)?.select();\n  }\n\n  protected onBlur(): void {\n    this.onTouched();\n    this.open.set(false);\n    this.resetQuery();\n  }\n\n  /** Sai do modo de edição e limpa a busca, para a lista reabrir completa. */\n  private resetQuery(): void {\n    this.editing.set(false);\n    if (this.searchTerm() !== '') {\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected highlight(label: string): PakiHighlightPart[] {\n    return highlightParts(label, this.editing() ? this.searchTerm() : '');\n  }\n\n  protected toggle(): void {\n    if (this.disabled()) return;\n    this.open.update((o) => !o);\n    if (this.open()) {\n      this.editing.set(false);\n      this.searchTerm.set('');\n      this.search$.next('');\n    }\n  }\n\n  protected select(option: PakiOption): void {\n    this.value.set(option.value);\n    this.selectedOption.set(option);\n    this.onChange(option.value);\n    this.open.set(false);\n    this.resetQuery();\n    this.onTouched();\n  }\n\n  protected onKeydown(event: KeyboardEvent): void {\n    if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {\n      event.preventDefault();\n    }\n\n    if (event.key === 'Escape') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Tab') {\n      this.open.set(false);\n      this.resetQuery();\n      return;\n    }\n\n    if (event.key === 'Enter') {\n      const idx = this.activeIndex();\n      const options = this.displayOptions();\n      if (this.open() && idx >= 0 && idx < options.length) {\n        this.select(options[idx]);\n      } else {\n        this.open.set(!this.open());\n        if (this.open()) this.search$.next(this.searchTerm());\n      }\n      return;\n    }\n\n    if (event.key === 'ArrowDown') {\n      if (!this.open()) {\n        this.open.set(true);\n        this.search$.next(this.searchTerm());\n      }\n      this.activeIndex.update((i) => {\n        const next = i + 1;\n        return next >= this.displayOptions().length ? 0 : next;\n      });\n      return;\n    }\n\n    if (event.key === 'ArrowUp') {\n      if (!this.open()) return;\n      this.activeIndex.update((i) => {\n        const next = i - 1;\n        return next < 0 ? this.displayOptions().length - 1 : next;\n      });\n      return;\n    }\n  }\n\n  private schedulePosition(): void {\n    afterNextRender(() => this.reposition(), { injector: this.injector });\n  }\n\n  /** Posiciona a lista junto ao campo; abre para cima quando falta espaço embaixo. */\n  private reposition(): void {\n    const panel = this.panel()?.nativeElement;\n    if (!this.open() || !panel) return;\n    const field = this.control().nativeElement.getBoundingClientRect();\n    const viewport = window.innerHeight;\n    const below = viewport - field.bottom - PANEL_GAP - VIEWPORT_MARGIN;\n    const above = field.top - PANEL_GAP - VIEWPORT_MARGIN;\n    const content = Math.min(panel.scrollHeight, PANEL_MAX_HEIGHT);\n    const up = content > below && above > below;\n    const maxHeight = Math.max(PANEL_MIN_HEIGHT, Math.min(PANEL_MAX_HEIGHT, up ? above : below));\n    const height = Math.min(content, maxHeight);\n    // Se algum ancestral criar bloco de contenção para fixed (transform, filter...),\n    // top/left passam a ser relativos a ele: compensa a origem desse ancestral.\n    const origin = fixedOrigin(panel);\n    const top = up ? field.top - PANEL_GAP - height : field.bottom + PANEL_GAP;\n    this.panelPos.set({ top: top - origin.top, left: field.left - origin.left, width: field.width, maxHeight, up, ready: true });\n  }\n\n  protected onScroll(event: Event): void {\n    const target = event.target as HTMLElement;\n    const nearBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - 20;\n    if (nearBottom) {\n      this.visibleCount.update((c) => Math.min(c + INITIAL_VISIBLE, MAX_RESULTS));\n    }\n  }\n\n  ngOnDestroy(): void {\n    this.searchSubscription?.unsubscribe();\n  }\n}\n\nfunction requestFrame(callback: () => void): number {\n  return typeof requestAnimationFrame === 'function'\n    ? requestAnimationFrame(callback)\n    : (setTimeout(callback, 16) as unknown as number);\n}\n\n/** Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção. */\nfunction fixedOrigin(element: HTMLElement): { top: number; left: number } {\n  for (let node = element.parentElement; node; node = node.parentElement) {\n    const style = getComputedStyle(node);\n    const contain = style.contain ?? '';\n    const createsBlock =\n      (style.transform && style.transform !== 'none') ||\n      (style.perspective && style.perspective !== 'none') ||\n      (style.filter && style.filter !== 'none') ||\n      /paint|layout|strict|content/.test(contain) ||\n      /transform|perspective|filter/.test(style.willChange ?? '');\n    if (createsBlock) {\n      const rect = node.getBoundingClientRect();\n      return { top: rect.top + node.clientTop, left: rect.left + node.clientLeft };\n    }\n  }\n  return { top: 0, left: 0 };\n}\n",
             "styleUrl": "./paki-select.component.scss",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\n  display: block;\n}\n\nlabel {\n  color: var(--color-text-faint);\n  display: grid;\n  font-size: 11px;\n  font-weight: 700;\n  gap: 6px;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n}\n\n.paki-select__control {\n  position: relative;\n}\n\ninput {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-default);\n  border-radius: var(--radius-sm);\n  color: var(--color-text-primary);\n  font-size: 14px;\n  min-height: 42px;\n  padding: 10px 36px 10px 12px;\n  transition:\n    border-color 0.15s,\n    box-shadow 0.15s;\n  width: 100%;\n\n  &:focus {\n    border-color: var(--color-accent);\n    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);\n    outline: none;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n}\n\n.paki-select__toggle {\n  align-items: center;\n  background: transparent;\n  border: 0;\n  border-radius: var(--radius-sm);\n  color: var(--color-text-faint);\n  cursor: pointer;\n  display: flex;\n  height: 32px;\n  justify-content: center;\n  padding: 0;\n  position: absolute;\n  right: 4px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 32px;\n\n  &:hover:not(:disabled) {\n    color: var(--color-text-primary);\n  }\n\n  &:focus-visible {\n    outline: 2px solid var(--color-accent);\n    outline-offset: 1px;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.5;\n  }\n\n  svg {\n    transition: transform 0.15s;\n  }\n}\n\n.paki-select__toggle.open svg {\n  transform: rotate(180deg);\n}\n\n// A lista fica DENTRO de .paki-select__control (position: relative): assim a largura\n// acompanha o campo, e não o primeiro ancestral posicionado da página.\n.paki-select__dropdown {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-subtle, var(--color-border-default));\n  border-radius: 12px;\n  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text-primary) 12%, transparent);\n  box-sizing: border-box;\n  left: 0;\n  list-style: none;\n  margin: 0;\n  max-height: 260px;\n  overflow: auto;\n  padding: 6px;\n  position: absolute;\n  right: 0;\n  top: calc(100% + 6px);\n  z-index: 30;\n\n  // Não herdar a tipografia do rótulo (uppercase, negrito, espaçamento).\n  font-size: 14px;\n  font-weight: 400;\n  letter-spacing: normal;\n  text-transform: none;\n\n  li {\n    border-radius: 8px;\n    color: var(--color-text-primary);\n    cursor: pointer;\n    line-height: 1.35;\n    overflow-wrap: anywhere;\n    padding: 10px 12px;\n\n    &:hover,\n    &.active {\n      background: var(--color-bg-page, var(--color-accent-tint));\n    }\n\n    &.selected {\n      background: var(--color-accent-tint);\n      color: var(--color-accent);\n      font-weight: 600;\n    }\n  }\n\n  mark {\n    background: transparent;\n    color: var(--color-accent);\n    font-weight: 700;\n  }\n}\n\n.paki-select__feedback {\n  color: var(--color-text-faint);\n  cursor: default;\n  font-size: 12px;\n  padding: 12px;\n  text-align: center;\n\n  &:hover {\n    background: transparent !important;\n  }\n}\n",
+                    "data": ":host {\n  display: block;\n}\n\nlabel {\n  color: var(--color-text-faint);\n  display: grid;\n  font-size: 11px;\n  font-weight: 700;\n  gap: 6px;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n}\n\n.paki-select__control {\n  position: relative;\n}\n\ninput {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-default);\n  border-radius: var(--radius-sm);\n  color: var(--color-text-primary);\n  font-size: 14px;\n  min-height: 42px;\n  padding: 10px 36px 10px 12px;\n  transition:\n    border-color 0.15s,\n    box-shadow 0.15s;\n  width: 100%;\n\n  &:focus {\n    border-color: var(--color-accent);\n    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);\n    outline: none;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.6;\n  }\n}\n\n.paki-select__toggle {\n  align-items: center;\n  background: transparent;\n  border: 0;\n  border-radius: var(--radius-sm);\n  color: var(--color-text-faint);\n  cursor: pointer;\n  display: flex;\n  height: 32px;\n  justify-content: center;\n  padding: 0;\n  position: absolute;\n  right: 4px;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 32px;\n\n  &:hover:not(:disabled) {\n    color: var(--color-text-primary);\n  }\n\n  &:focus-visible {\n    outline: 2px solid var(--color-accent);\n    outline-offset: 1px;\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.5;\n  }\n\n  svg {\n    transition: transform 0.15s;\n  }\n}\n\n.paki-select__toggle.open svg {\n  transform: rotate(180deg);\n}\n\n// A lista usa position: fixed com posição/largura calculadas a partir do campo:\n// acompanha a largura dele, não é recortada por overflow: hidden de cards e\n// continua visível dentro de <dialog> modais.\n.paki-select__dropdown {\n  background: var(--color-bg-surface);\n  border: 1px solid var(--color-border-subtle, var(--color-border-default));\n  border-radius: 12px;\n  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text-primary) 12%, transparent);\n  box-sizing: border-box;\n  list-style: none;\n  margin: 0;\n  max-height: 260px;\n  overflow: auto;\n  padding: 6px;\n  // top/left/width/max-height vêm do componente (posição real do campo).\n  position: fixed;\n  z-index: 1000;\n\n  // Não herdar a tipografia do rótulo (uppercase, negrito, espaçamento).\n  font-size: 14px;\n  font-weight: 400;\n  letter-spacing: normal;\n  text-transform: none;\n\n  li {\n    border-radius: 8px;\n    color: var(--color-text-primary);\n    cursor: pointer;\n    line-height: 1.35;\n    overflow-wrap: anywhere;\n    padding: 10px 12px;\n\n    &:hover,\n    &.active {\n      background: var(--color-bg-page, var(--color-accent-tint));\n    }\n\n    &.selected {\n      background: var(--color-accent-tint);\n      color: var(--color-accent);\n      font-weight: 600;\n    }\n  }\n\n  mark {\n    background: transparent;\n    color: var(--color-accent);\n    font-weight: 700;\n  }\n}\n\n.paki-select__feedback {\n  color: var(--color-text-faint);\n  cursor: default;\n  font-size: 12px;\n  padding: 12px;\n  text-align: center;\n\n  &:hover {\n    background: transparent !important;\n  }\n}\n",
                     "styleUrl": "./paki-select.component.scss"
                 }
             ],
@@ -4794,7 +4986,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 94,
+                "line": 122,
                 "rawdescription": "\n"
             },
             "extends": [],
@@ -4814,7 +5006,7 @@
                     }
                 ]
             },
-            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <div class=\"paki-select__control\">\n    <input\n      type=\"text\"\n      role=\"combobox\"\n      [value]=\"displayText()\"\n      [placeholder]=\"placeholder()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-expanded]=\"open()\"\n      aria-haspopup=\"listbox\"\n      aria-autocomplete=\"list\"\n      [attr.aria-activedescendant]=\"open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null\"\n      (input)=\"onInput($event)\"\n      (focus)=\"onFocus($event)\"\n      (blur)=\"onBlur()\"\n      (keydown)=\"onKeydown($event)\"\n    />\n    <button\n      type=\"button\"\n      class=\"paki-select__toggle\"\n      [class.open]=\"open()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"open() ? 'Fechar opções' : 'Abrir opções'\"\n      (mousedown)=\"$event.preventDefault(); toggle()\"\n    >\n      <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\">\n        <path d=\"M6 9l6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n      </svg>\n    </button>\n\n    @if (open()) {\n      <ul class=\"paki-select__dropdown\" role=\"listbox\" (scroll)=\"onScroll($event)\">\n        @if (searching()) {\n          <li class=\"paki-select__feedback\" role=\"status\">Carregando...</li>\n        }\n        @for (option of displayOptions(); track option.value; let i = $index) {\n          <li\n            [id]=\"'paki-option-' + i\"\n            role=\"option\"\n            [attr.aria-selected]=\"value() === option.value\"\n            [class.active]=\"activeIndex() === i\"\n            [class.selected]=\"value() === option.value\"\n            (mousedown)=\"$event.preventDefault(); select(option)\"\n          >@for (part of highlight(option.label); track $index) {@if (part.match) {<mark>{{ part.text }}</mark>} @else {{{ part.text }}}}</li>\n        }\n        @if (showNoResults()) {\n          <li class=\"paki-select__feedback\" role=\"status\">{{ noResultsMessage() }}</li>\n        }\n      </ul>\n    }\n  </div>\n</label>\n"
+            "templateData": "<label>\n  <span>{{ label() }}</span>\n  <div class=\"paki-select__control\" #control>\n    <input\n      type=\"text\"\n      role=\"combobox\"\n      [value]=\"displayText()\"\n      [placeholder]=\"placeholder()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-expanded]=\"open()\"\n      aria-haspopup=\"listbox\"\n      aria-autocomplete=\"list\"\n      autocomplete=\"off\"\n      spellcheck=\"false\"\n      [attr.aria-activedescendant]=\"open() && activeIndex() >= 0 ? 'paki-option-' + activeIndex() : null\"\n      (input)=\"onInput($event)\"\n      (focus)=\"onFocus($event)\"\n      (blur)=\"onBlur()\"\n      (keydown)=\"onKeydown($event)\"\n    />\n    <button\n      type=\"button\"\n      class=\"paki-select__toggle\"\n      [class.open]=\"open()\"\n      [disabled]=\"disabled()\"\n      [attr.aria-label]=\"open() ? 'Fechar opções' : 'Abrir opções'\"\n      (mousedown)=\"$event.preventDefault(); toggle()\"\n    >\n      <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"16\" height=\"16\">\n        <path d=\"M6 9l6 6 6-6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" />\n      </svg>\n    </button>\n\n    @if (open()) {\n      <ul\n        #panel\n        class=\"paki-select__dropdown\"\n        role=\"listbox\"\n        [class.up]=\"panelPos().up\"\n        [style.top.px]=\"panelPos().top\"\n        [style.left.px]=\"panelPos().left\"\n        [style.width.px]=\"panelPos().width\"\n        [style.max-height.px]=\"panelPos().maxHeight\"\n        [style.visibility]=\"panelPos().ready ? null : 'hidden'\"\n        (mousedown)=\"$event.preventDefault()\"\n        (scroll)=\"onScroll($event)\"\n      >\n        @if (searching()) {\n          <li class=\"paki-select__feedback\" role=\"status\">Carregando...</li>\n        }\n        @for (option of displayOptions(); track option.value; let i = $index) {\n          <li\n            [id]=\"'paki-option-' + i\"\n            role=\"option\"\n            [attr.aria-selected]=\"value() === option.value\"\n            [class.active]=\"activeIndex() === i\"\n            [class.selected]=\"value() === option.value\"\n            (mousedown)=\"$event.preventDefault(); select(option)\"\n          >@for (part of highlight(option.label); track $index) {@if (part.match) {<mark>{{ part.text }}</mark>} @else {{{ part.text }}}}</li>\n        }\n        @if (showNoResults()) {\n          <li class=\"paki-select__feedback\" role=\"status\">{{ noResultsMessage() }}</li>\n        }\n      </ul>\n    }\n  </div>\n</label>\n"
         },
         {
             "name": "PakiSidenav",
@@ -6278,6 +6470,32 @@
                 "defaultValue": "10"
             },
             {
+                "name": "InsideClippedCard",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: { label: 'Regime tributário', placeholder: 'Selecione', items: REGIMES },\n  render: (args) => ({\n    props: { ...args, selected: 'SIMPLES_NACIONAL' },\n    template: `<section style=\"width:360px;height:96px;overflow:hidden;padding:16px;border:1px solid #ddd;border-radius:12px;background:#fff\">\n      <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n    </section>`,\n  }),\n}",
+                "rawdescription": "Select no fim de um card com overflow: hidden (ex.: \"Regime tributário\" nas\nconfigurações). A lista não pode ser recortada pela borda do card.",
+                "description": "<p>Select no fim de um card com overflow: hidden (ex.: &quot;Regime tributário&quot; nas\nconfigurações). A lista não pode ser recortada pela borda do card.</p>\n"
+            },
+            {
+                "name": "InsideModalDialog",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: { label: 'Raça', placeholder: 'Selecione', items: BREEDS },\n  render: (args) => ({\n    props: { ...args, selected: '' },\n    template: `<button type=\"button\" id=\"open-dialog\" (click)=\"dialog.showModal()\">Abrir modal</button>\n      <dialog #dialog style=\"width:420px;padding:0;border:0;border-radius:12px\">\n        <div style=\"max-height:220px;overflow:auto;padding:20px\">\n          <p style=\"margin:0 0 12px\">Cadastro do animal</p>\n          <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n        </div>\n      </dialog>`,\n  }),\n}",
+                "rawdescription": "Select dentro de um <dialog> modal (top layer), como o cadastro do animal no amora.\nA lista precisa aparecer por cima do modal, não atrás dele.",
+                "description": "<p>Select dentro de um <dialog> modal (top layer), como o cadastro do animal no amora.\nA lista precisa aparecer por cima do modal, não atrás dele.</p>\n"
+            },
+            {
                 "name": "InsideWideCard",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -6521,6 +6739,39 @@
                 "defaultValue": "{ title: 'Componentes/Textarea', component: PakiTextarea, decorators: [moduleMetadata({ imports: [FormsModule] })], args: { label: 'Observações', placeholder: 'Digite os detalhes', rows: 4 } }"
             },
             {
+                "name": "PANEL_GAP",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "number",
+                "defaultValue": "6"
+            },
+            {
+                "name": "PANEL_MAX_HEIGHT",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "number",
+                "defaultValue": "260"
+            },
+            {
+                "name": "PANEL_MIN_HEIGHT",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "number",
+                "defaultValue": "120"
+            },
+            {
                 "name": "Playground",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -6710,6 +6961,28 @@
                 "defaultValue": "{\n  args: {\n    expanded: false,\n  },\n}",
                 "rawdescription": "Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).",
                 "description": "<p>Recolhido (padrão): expanded=false.\nDemonstra o modo só-ícone (AC-007) e a largura de 64px (AC-001).</p>\n"
+            },
+            {
+                "name": "REGIMES",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\n  { label: 'Simples Nacional', value: 'SIMPLES_NACIONAL' },\n  { label: 'Simples Nacional - excesso de sublimite', value: 'SIMPLES_EXCESSO' },\n  { label: 'Lucro Presumido', value: 'LUCRO_PRESUMIDO' },\n  { label: 'Lucro Real', value: 'LUCRO_REAL' },\n  { label: 'MEI', value: 'MEI' },\n]"
+            },
+            {
+                "name": "VIEWPORT_MARGIN",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "number",
+                "defaultValue": "8"
             }
         ],
         "functions": [
@@ -6795,6 +7068,38 @@
                     {
                         "name": "d",
                         "type": "Date",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "fixedOrigin",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção.",
+                "description": "<p>Origem de <code>position: fixed</code> para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção.</p>\n",
+                "displayName": "fixedOrigin",
+                "args": [
+                    {
+                        "name": "element",
+                        "type": "HTMLElement",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "{ top: number; left: number }",
+                "jsdoctags": [
+                    {
+                        "name": "element",
+                        "type": "HTMLElement",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -7015,6 +7320,36 @@
                 "jsdoctags": [
                     {
                         "name": "value",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "requestFrame",
+                "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "",
+                "description": "",
+                "displayName": "requestFrame",
+                "args": [
+                    {
+                        "name": "callback",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "number",
+                "jsdoctags": [
+                    {
+                        "name": "callback",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -7623,6 +7958,32 @@
                     "defaultValue": "['Akita', 'American Bully', 'Basset Hound', 'Beagle', 'Bernese Mountain Dog', 'Border Collie', 'Boston Terrier', 'Boxer', 'Bulldog Francês', 'Chihuahua', 'Dachshund', 'Golden Retriever', 'Labrador Retriever', 'Lhasa Apso', 'Maltês', 'Pastor Alemão', 'Pinscher', 'Poodle', 'Shih-Tzu', 'Spitz Alemão', 'Vira-lata (SRD)', 'Yorkshire Terrier'].map((label) => ({ label, value: label }))"
                 },
                 {
+                    "name": "InsideClippedCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: { label: 'Regime tributário', placeholder: 'Selecione', items: REGIMES },\n  render: (args) => ({\n    props: { ...args, selected: 'SIMPLES_NACIONAL' },\n    template: `<section style=\"width:360px;height:96px;overflow:hidden;padding:16px;border:1px solid #ddd;border-radius:12px;background:#fff\">\n      <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n    </section>`,\n  }),\n}",
+                    "rawdescription": "Select no fim de um card com overflow: hidden (ex.: \"Regime tributário\" nas\nconfigurações). A lista não pode ser recortada pela borda do card.",
+                    "description": "<p>Select no fim de um card com overflow: hidden (ex.: &quot;Regime tributário&quot; nas\nconfigurações). A lista não pode ser recortada pela borda do card.</p>\n"
+                },
+                {
+                    "name": "InsideModalDialog",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: { label: 'Raça', placeholder: 'Selecione', items: BREEDS },\n  render: (args) => ({\n    props: { ...args, selected: '' },\n    template: `<button type=\"button\" id=\"open-dialog\" (click)=\"dialog.showModal()\">Abrir modal</button>\n      <dialog #dialog style=\"width:420px;padding:0;border:0;border-radius:12px\">\n        <div style=\"max-height:220px;overflow:auto;padding:20px\">\n          <p style=\"margin:0 0 12px\">Cadastro do animal</p>\n          <paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" />\n        </div>\n      </dialog>`,\n  }),\n}",
+                    "rawdescription": "Select dentro de um <dialog> modal (top layer), como o cadastro do animal no amora.\nA lista precisa aparecer por cima do modal, não atrás dele.",
+                    "description": "<p>Select dentro de um <dialog> modal (top layer), como o cadastro do animal no amora.\nA lista precisa aparecer por cima do modal, não atrás dele.</p>\n"
+                },
+                {
                     "name": "InsideWideCard",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -7656,6 +8017,17 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{ render: (args) => ({ props: { ...args, selected: '' }, template: '<div style=\"width:360px\"><paki-select [label]=\"label\" [placeholder]=\"placeholder\" [items]=\"items\" [(ngModel)]=\"selected\" /></div>' }) }"
+                },
+                {
+                    "name": "REGIMES",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  { label: 'Simples Nacional', value: 'SIMPLES_NACIONAL' },\n  { label: 'Simples Nacional - excesso de sublimite', value: 'SIMPLES_EXCESSO' },\n  { label: 'Lucro Presumido', value: 'LUCRO_PRESUMIDO' },\n  { label: 'Lucro Real', value: 'LUCRO_REAL' },\n  { label: 'MEI', value: 'MEI' },\n]"
                 }
             ],
             "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
@@ -7691,6 +8063,50 @@
                     "deprecationMessage": "",
                     "type": "number",
                     "defaultValue": "50"
+                },
+                {
+                    "name": "PANEL_GAP",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "defaultValue": "6"
+                },
+                {
+                    "name": "PANEL_MAX_HEIGHT",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "defaultValue": "260"
+                },
+                {
+                    "name": "PANEL_MIN_HEIGHT",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "defaultValue": "120"
+                },
+                {
+                    "name": "VIEWPORT_MARGIN",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "defaultValue": "8"
                 }
             ],
             "projects/pakitec-angular-components/src/stories/pagination.stories.ts": [
@@ -8296,6 +8712,135 @@
                     ]
                 }
             ],
+            "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
+                {
+                    "name": "fixedOrigin",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "Origem de `position: fixed` para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção.",
+                    "description": "<p>Origem de <code>position: fixed</code> para o elemento: a viewport, ou o primeiro ancestral que crie bloco de contenção.</p>\n",
+                    "displayName": "fixedOrigin",
+                    "args": [
+                        {
+                            "name": "element",
+                            "type": "HTMLElement",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "{ top: number; left: number }",
+                    "jsdoctags": [
+                        {
+                            "name": "element",
+                            "type": "HTMLElement",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "normalize",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "displayName": "normalize",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "string",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "requestFrame",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "displayName": "requestFrame",
+                    "args": [
+                        {
+                            "name": "callback",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "number",
+                    "jsdoctags": [
+                        {
+                            "name": "callback",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toObservable",
+                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "",
+                    "description": "",
+                    "displayName": "toObservable<T>",
+                    "typeParameters": [
+                        "T"
+                    ],
+                    "args": [
+                        {
+                            "name": "value",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "Observable<T>",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "projects/pakitec-angular-components/src/lib/components/select/select-highlight.ts": [
                 {
                     "name": "fold",
@@ -8368,73 +8913,6 @@
                         {
                             "name": "term",
                             "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts": [
-                {
-                    "name": "normalize",
-                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "",
-                    "description": "",
-                    "displayName": "normalize",
-                    "args": [
-                        {
-                            "name": "value",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "returnType": "string",
-                    "jsdoctags": [
-                        {
-                            "name": "value",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "toObservable",
-                    "file": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "coverageIgnore": false,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "",
-                    "description": "",
-                    "displayName": "toObservable<T>",
-                    "typeParameters": [
-                        "T"
-                    ],
-                    "args": [
-                        {
-                            "name": "value",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "returnType": "Observable<T>",
-                    "jsdoctags": [
-                        {
-                            "name": "value",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -8781,7 +9259,7 @@
         ]
     },
     "coverage": {
-        "count": 24,
+        "count": 25,
         "status": "low",
         "files": [
             {
@@ -9025,8 +9503,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "PakiSelect",
-                "coveragePercent": 9,
-                "coverageCount": "4/42",
+                "coveragePercent": 12,
+                "coverageCount": "6/48",
                 "status": "low"
             },
             {
@@ -9040,10 +9518,39 @@
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PanelPosition",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "fixedOrigin",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
                 "type": "function",
                 "linktype": "miscellaneous",
                 "linksubtype": "function",
                 "name": "normalize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "requestFrame",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -9084,6 +9591,46 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "MAX_RESULTS",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PANEL_GAP",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PANEL_MAX_HEIGHT",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PANEL_MIN_HEIGHT",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/select/paki-select.component.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "VIEWPORT_MARGIN",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -9671,6 +10218,26 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "InsideClippedCard",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InsideModalDialog",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "InsideWideCard",
                 "coveragePercent": 100,
                 "coverageCount": "1/1",
@@ -9692,6 +10259,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Playground",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "REGIMES",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

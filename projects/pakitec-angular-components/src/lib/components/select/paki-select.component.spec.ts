@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -237,6 +238,50 @@ describe('PakiSelect', () => {
     expect(fixture.nativeElement.querySelector('.paki-select__control > .paki-select__dropdown')).toBeTruthy();
     const mark: HTMLElement = fixture.nativeElement.querySelector('li[role="option"] mark');
     expect(mark.textContent).toBe('Páss');
+  });
+
+  it('positions the fixed dropdown at the field with the field width', async () => {
+    await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
+    const fixture = TestBed.createComponent(LocalHost);
+    fixture.detectChanges();
+    const control: HTMLElement = fixture.nativeElement.querySelector('.paki-select__control');
+    control.getBoundingClientRect = () => ({ top: 100, bottom: 142, left: 40, right: 280, width: 240, height: 42, x: 40, y: 100, toJSON: () => ({}) }) as DOMRect;
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    await wait(320);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const panel: HTMLElement = fixture.nativeElement.querySelector('.paki-select__dropdown');
+    expect(panel.style.width).toBe('240px');
+    expect(panel.style.left).toBe('40px');
+    expect(panel.style.top).toBe('148px');
+    expect(panel.classList.contains('up')).toBe(false);
+  });
+
+  it('opens upwards when there is no room below the field', async () => {
+    const scroll = vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockReturnValue(200);
+    try {
+      await TestBed.configureTestingModule({ imports: [LocalHost] }).compileComponents();
+      const fixture = TestBed.createComponent(LocalHost);
+      fixture.detectChanges();
+      const bottomEdge = window.innerHeight - 10;
+      const control: HTMLElement = fixture.nativeElement.querySelector('.paki-select__control');
+      control.getBoundingClientRect = () => ({ top: bottomEdge - 42, bottom: bottomEdge, left: 40, right: 280, width: 240, height: 42, x: 40, y: bottomEdge - 42, toJSON: () => ({}) }) as DOMRect;
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+      input.dispatchEvent(new Event('focus'));
+      fixture.detectChanges();
+      await wait(320);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const panel: HTMLElement = fixture.nativeElement.querySelector('.paki-select__dropdown');
+      expect(panel.classList.contains('up')).toBe(true);
+      expect(parseFloat(panel.style.top)).toBe(bottomEdge - 42 - 6 - 200);
+    } finally {
+      scroll.mockRestore();
+    }
   });
 
   it('reflects external form control value', async () => {

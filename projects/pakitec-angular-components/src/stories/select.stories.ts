@@ -26,3 +26,43 @@ export const InsideWideCard: Story = {
   }),
 };
 
+
+const REGIMES = [
+  { label: 'Simples Nacional', value: 'SIMPLES_NACIONAL' },
+  { label: 'Simples Nacional - excesso de sublimite', value: 'SIMPLES_EXCESSO' },
+  { label: 'Lucro Presumido', value: 'LUCRO_PRESUMIDO' },
+  { label: 'Lucro Real', value: 'LUCRO_REAL' },
+  { label: 'MEI', value: 'MEI' },
+];
+
+/**
+ * Select no fim de um card com overflow: hidden (ex.: "Regime tributário" nas
+ * configurações). A lista não pode ser recortada pela borda do card.
+ */
+export const InsideClippedCard: Story = {
+  args: { label: 'Regime tributário', placeholder: 'Selecione', items: REGIMES },
+  render: (args) => ({
+    props: { ...args, selected: 'SIMPLES_NACIONAL' },
+    template: `<section style="width:360px;height:96px;overflow:hidden;padding:16px;border:1px solid #ddd;border-radius:12px;background:#fff">
+      <paki-select [label]="label" [placeholder]="placeholder" [items]="items" [(ngModel)]="selected" />
+    </section>`,
+  }),
+};
+
+/**
+ * Select dentro de um <dialog> modal (top layer), como o cadastro do animal no amora.
+ * A lista precisa aparecer por cima do modal, não atrás dele.
+ */
+export const InsideModalDialog: Story = {
+  args: { label: 'Raça', placeholder: 'Selecione', items: BREEDS },
+  render: (args) => ({
+    props: { ...args, selected: '' },
+    template: `<button type="button" id="open-dialog" (click)="dialog.showModal()">Abrir modal</button>
+      <dialog #dialog style="width:420px;padding:0;border:0;border-radius:12px">
+        <div style="max-height:220px;overflow:auto;padding:20px">
+          <p style="margin:0 0 12px">Cadastro do animal</p>
+          <paki-select [label]="label" [placeholder]="placeholder" [items]="items" [(ngModel)]="selected" />
+        </div>
+      </dialog>`,
+  }),
+};
