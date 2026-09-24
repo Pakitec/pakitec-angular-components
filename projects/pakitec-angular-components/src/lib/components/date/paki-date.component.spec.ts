@@ -82,6 +82,38 @@ describe('PakiDate', () => {
     expect(monthYearAfter).not.toBe(monthYearBefore);
   });
 
+  it('navigates months with the arrow buttons and keeps the calendar open', async () => {
+    await TestBed.configureTestingModule({ imports: [Host] }).compileComponents();
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input');
+    input.click();
+    fixture.detectChanges();
+
+    const monthBefore = document.querySelector('.month-year')?.textContent ?? '';
+    const next = document.querySelector('button[aria-label="Próximo mês"]') as HTMLButtonElement;
+    expect(next).toBeTruthy();
+    next.click();
+    fixture.detectChanges();
+
+    expect(document.querySelector('.calendar')).toBeTruthy();
+    expect(document.querySelector('.month-year')?.textContent ?? '').not.toBe(monthBefore);
+  });
+
+  it('prevents the trigger blur when interacting inside the calendar', async () => {
+    await TestBed.configureTestingModule({ imports: [Host] }).compileComponents();
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input');
+    input.click();
+    fixture.detectChanges();
+
+    const calendar = document.querySelector('.calendar') as HTMLElement;
+    const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
+    calendar.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
   it('closes calendar on Escape', async () => {
     await TestBed.configureTestingModule({ imports: [Host] }).compileComponents();
     const fixture = TestBed.createComponent(Host);

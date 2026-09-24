@@ -29,7 +29,13 @@
   [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
   (backdropClick)="close()"
 >
-  <div class="calendar" role="dialog" aria-label="Calendário" (keydown)="onInputKeydown($event)">
+  <div
+    class="calendar"
+    role="dialog"
+    aria-label="Calendário"
+    (keydown)="onInputKeydown($event)"
+    (mousedown)="$event.preventDefault()"
+  >
     <div class="calendar-header">
       <button type="button" class="nav" [disabled]="disabled()" (click)="navigateMonth(-1)" aria-label="Mês anterior">
         ‹
