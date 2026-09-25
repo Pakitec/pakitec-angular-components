@@ -6,3 +6,21 @@ const meta: Meta<PakiInput> = { title: 'Componentes/Input', component: PakiInput
 export default meta;
 type Story = StoryObj<PakiInput>;
 export const Playground: Story = { render: (args) => ({ props: { ...args, value: '' }, template: '<paki-input [label]="label" [placeholder]="placeholder" [type]="type" [hint]="hint" [error]="error" [(ngModel)]="value" />' }) };
+
+/** Campo inválido com mensagem de erro (AC-008, AC-011). */
+export const InvalidWithMessage: Story = {
+  args: { error: 'Campo obrigatório.', value: '' },
+  render: (args) => ({
+    props: { ...args },
+    template: '<paki-input [label]="label" [placeholder]="placeholder" [type]="type" [error]="error" [(ngModel)]="value" />',
+  }),
+};
+
+/** Campo marcado como inválido sem mensagem de erro. */
+export const InvalidNoMessage: Story = {
+  args: { invalid: true, value: '' },
+  render: (args) => ({
+    props: { ...args },
+    template: '<paki-input [label]="label" [placeholder]="placeholder" [type]="type" [invalid]="invalid" [(ngModel)]="value" />',
+  }),
+};
