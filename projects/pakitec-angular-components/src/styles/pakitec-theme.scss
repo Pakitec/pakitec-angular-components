@@ -29,6 +29,8 @@
   --color-warning-text: #92400e;
   --color-error-bg: #fee2e2;
   --color-error-text: #991b1b;
+  // Erro inline de campo (borda e mensagem); no escuro fica mais claro para 4.5:1 no fundo.
+  --color-error-field: var(--error-500);
   --color-info-bg: #cffafe;
   --color-info-text: #155e75;
   --color-overlay: color-mix(in srgb, var(--ink-900) 45%, transparent);
@@ -59,6 +61,7 @@
   --color-warning-text: #fcd34d;
   --color-error-bg: #450a0a;
   --color-error-text: #fca5a5;
+  --color-error-field: #f87171;
   --color-info-bg: #164e63;
   --color-info-text: #a5f3fc;
   color-scheme: dark;

@@ -35,7 +35,7 @@ input {
     outline: none;
   }
   &[aria-invalid='true'] {
-    border-color: var(--error-500);
+    border-color: var(--color-error-field);
   }
   &:disabled {
     cursor: not-allowed;
@@ -91,5 +91,5 @@ small {
   text-transform: none;
 }
 .error {
-  color: var(--error-500);
+  color: var(--color-error-field);
 }
