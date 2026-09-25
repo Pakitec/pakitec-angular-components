@@ -140,8 +140,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-008-dark-desktop.png",
       "mimeType": "image/png",
-      "size": 22147,
-      "sha256": "0094d51bba0b754d97c6fa568ffb4c8c48e9765d13e82d7d8c1783f98f139e39",
+      "size": 8646,
+      "sha256": "2c94512b2b4cfef788a378ae4a9022372f1c1073a26c7d2fc7f89e244e8f87a4",
       "containsSensitiveData": false
     },
     {
@@ -151,8 +151,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-008-desktop.png",
       "mimeType": "image/png",
-      "size": 22453,
-      "sha256": "769508de407f97a871370276e799b64b85908bb34da5aa782826f3a6bebf9efd",
+      "size": 8543,
+      "sha256": "ed74adf19000c68ba8324b0fe1bfeef0f6d6b05a8b16da7252610def27579b27",
       "containsSensitiveData": false
     },
     {
@@ -162,8 +162,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-009-dark-desktop.png",
       "mimeType": "image/png",
-      "size": 20892,
-      "sha256": "1e5da33211656bababd4c6a903488f3ac4f3c384b9f7fd9b9c3b8db476619d8a",
+      "size": 9014,
+      "sha256": "f65df3b6941527d9153714fb7964c11f3d2f2f4996104dd0a05345571d9488ae",
       "containsSensitiveData": false
     },
     {
@@ -173,8 +173,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-009-desktop.png",
       "mimeType": "image/png",
-      "size": 20863,
-      "sha256": "c39f3ac19ce6ad7e7c30037eecd56397ae3520d8d4bbf1bbbfb19bfd2b40f553",
+      "size": 8921,
+      "sha256": "4db9336778f08902611a406e3ce24587cf656abd6761771070fe1b3d05ce8689",
       "containsSensitiveData": false
     },
     {
@@ -184,8 +184,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-011-dark-desktop.png",
       "mimeType": "image/png",
-      "size": 21546,
-      "sha256": "de1cda509f661ee9753de96037e8a52091bcc1c87f4291d9b3be43f53f1bc425",
+      "size": 9455,
+      "sha256": "dc87974124b311b54721c86a1f5b685b198a02b4ad4589cebdf3ebdcbb86d68a",
       "containsSensitiveData": false
     },
     {
@@ -195,8 +195,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-011-desktop.png",
       "mimeType": "image/png",
-      "size": 22143,
-      "sha256": "f001994007fbef9739265a34297b34aa240c777df683c8f4d7ef54858be475de",
+      "size": 9350,
+      "sha256": "6f6a01997aa35c5ecb94b9851a2d5137eb48fcc81b64e96eec8bacfb9fa530c9",
       "containsSensitiveData": false
     },
     {
@@ -206,8 +206,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-012-dark-desktop.png",
       "mimeType": "image/png",
-      "size": 31255,
-      "sha256": "1bc110f742f45890d3f3c9ab3d9d276d3f28565ca7793d2b6c7e364245f0fe9e",
+      "size": 23384,
+      "sha256": "07a6d50e5b2b1d68ae446398b279a1d5f0ed738c2c2fe0cecd192e93bb0d8516",
       "containsSensitiveData": false
     },
     {
@@ -217,8 +217,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-012-desktop.png",
       "mimeType": "image/png",
-      "size": 31958,
-      "sha256": "b9016b7e8c1d9abe28d98143f5d3ef463d8c18fec34454fa7588cd2053b95e92",
+      "size": 23861,
+      "sha256": "607a9cc8b1fc84f653c0be2a53fc85c6532bf8e1ee270d3a526cb42e126bf605",
       "containsSensitiveData": false
     },
     {
@@ -246,12 +246,12 @@
     {
       "criteriaId": "AC-015",
       "kind": "official",
-      "status": "fail",
+      "status": "pass",
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-015-dark-desktop.png",
       "mimeType": "image/png",
-      "size": 34124,
-      "sha256": "ba5f5bf16af7b78948e817732cb916f6b3f5ffc817c958fb5c940827d8a06139",
+      "size": 35290,
+      "sha256": "4483186ca433baa65bb2f458989b53badb235e77f3277a38090cae681200830b",
       "containsSensitiveData": false
     },
     {
@@ -261,8 +261,8 @@
       "viewport": "1280x720",
       "file": "SCRUM-1110-AC-015-desktop.png",
       "mimeType": "image/png",
-      "size": 35068,
-      "sha256": "ad13609e82a9e7e077db25d40ea1f257812590e4102ca5395456b933a43e2344",
+      "size": 35738,
+      "sha256": "47ca1161b0f337db56120145faa556fcb5643d03ed34933cf36af152440a0856",
       "containsSensitiveData": false
     }
   ]

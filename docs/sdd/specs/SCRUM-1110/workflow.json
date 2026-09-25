@@ -5,10 +5,10 @@
   "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
   "phase": "BUILD",
   "lastStablePhase": "READY_TO_BUILD",
-  "status": "blocked",
+  "status": "in_progress",
   "planRevision": 1,
-  "attempts": 1,
-  "updatedAt": "2026-09-25T23:19:10+00:00",
+  "attempts": 2,
+  "updatedAt": "2026-09-25T23:27:15+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -504,18 +504,26 @@
     },
     "TASK-020": {
       "issueKey": "SCRUM-1133",
-      "status": "failed",
-      "owner": "sdd-implementer",
-      "startedAt": "2026-09-25T23:11:52+00:00",
-      "finishedAt": "2026-09-25T23:18:48+00:00",
-      "observation": "FAIL r2: 24 capturas oficiais (11 AC, claro/escuro), validate 24/24 accepted; AC-015 dark FAIL: texto do erro inline 4.02:1 (--error-500 #dc2626 sobre rgb(11,13,18)) < 4.5:1 (R-G). Publish retido. Stories do PakiInput invalid-* e playground com erros de console (AC-008 capturado via save-failure-combined).",
-      "previousAttempt": {
-        "status": "failed",
-        "startedAt": "2026-09-25T22:54:49+00:00",
-        "finishedAt": "2026-09-25T23:00:56+00:00",
-        "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
-      },
-      "attempts": 2
+      "status": "completed",
+      "owner": "sdd-visual-qa",
+      "startedAt": "2026-09-25T23:22:19+00:00",
+      "finishedAt": "2026-09-25T23:27:15+00:00",
+      "observation": "PASS r3: 24 capturas oficiais (11 AC, claro/escuro) 24/24 pass; recapturados AC-008/009/011/012/015, demais reaproveitados com hash conferido; AC-015 contraste erro inline claro 4.54:1 (sobre #f7f8fa), escuro 7.03:1; validate 24/24 accepted; publish anexos 10211-10234, comentario 14013; console sem erros.",
+      "attempts": 3,
+      "previousAttempts": [
+        {
+          "status": "failed",
+          "startedAt": "2026-09-25T22:54:49+00:00",
+          "finishedAt": "2026-09-25T23:00:56+00:00",
+          "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
+        },
+        {
+          "status": "failed",
+          "startedAt": "2026-09-25T23:11:52+00:00",
+          "finishedAt": "2026-09-25T23:18:48+00:00",
+          "observation": "FAIL r2: 24 capturas oficiais (11 AC, claro/escuro), validate 24/24 accepted; AC-015 dark FAIL: texto do erro inline 4.02:1 (--error-500 #dc2626 sobre rgb(11,13,18)) < 4.5:1 (R-G). Publish retido. Stories do PakiInput invalid-* e playground com erros de console (AC-008 capturado via save-failure-combined)."
+        }
+      ]
     },
     "TASK-021": {
       "issueKey": "SCRUM-1134",
@@ -591,12 +599,43 @@
         "criteriaId": "AC-015",
         "journey": "Tokens de tema claro e escuro aplicados"
       }
-    ]
+    ],
+    "published": {
+      "attachmentIds": [
+        "10211",
+        "10212",
+        "10213",
+        "10214",
+        "10215",
+        "10216",
+        "10217",
+        "10218",
+        "10219",
+        "10220",
+        "10221",
+        "10222",
+        "10223",
+        "10224",
+        "10225",
+        "10226",
+        "10227",
+        "10228",
+        "10229",
+        "10230",
+        "10231",
+        "10232",
+        "10233",
+        "10234"
+      ],
+      "commentId": "14013",
+      "publishedAt": "2026-09-25T23:27:15+00:00",
+      "items": 24
+    }
   },
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-25T01:10:21+00:00",
   "workingBranch": "feat/scrum-1110-toast-error-states",
-  "buildFinishedAt": "2026-09-25T23:18:48+00:00",
+  "buildFinishedAt": null,
   "resumeNotes": [
     {
       "at": "2026-09-25T18:01:23+00:00",
@@ -613,18 +652,30 @@
     {
       "at": "2026-09-25T23:11:00+00:00",
       "note": "Retomada autorizada apos bloqueio da TASK-020 (comment 14003). Correcoes: d54fa33 (SCRUM-1132, stories toast), 3e53b8a (SCRUM-1126, erro select), pakitec-cloud-mcp 3e03914 (criterios da spec + versao core Playwright). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"Stories do toast (TASK-019) falham com NG0203 e demos sem moduleMetadata; registro visual do servidor reconhece apenas AC-001; servidor de navegador reporta 1.62.0-alpha-1783623505000.\", \"resolvable\": \"Autorizar correcao das stories, alinhar registro de criterios e ligar navegador v0.0.78+; retomar a partir da TASK-020.\"}"
+    },
+    {
+      "at": "2026-09-25T23:21:33+00:00",
+      "note": "Retomada autorizada apos bloqueio da TASK-020 r2 (comment 14008). Correcoes: 4fb2487 (token --color-error-field; AC-015 escuro 7.03:1) e ec3bdef (SCRUM-1132, stories do PakiInput). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"AC-015 tema escuro: contraste do texto de erro inline 4.02:1 abaixo de 4.5:1; exige token de erro mais claro no tema escuro (producao, fora do escopo da TASK-020). Stories do PakiInput com erros de console (arg value colide com signal; error undefined no playground).\", \"resolvable\": \"Autorizar ajuste do token de erro do tema escuro e correcao das stories do input; retomar a partir da TASK-020 (capturas e manifesto ja regerados; recapturar AC-008/009/011/012/015).\"}"
     }
   ],
   "visualPreflight": {
     "available": true,
     "version": "1.62.0-alpha-1783623505000",
-    "observedAt": "2026-09-25T23:17:00+00:00",
-    "source": "serverInfo.version do handshake do servidor playwright (imagem mcr.microsoft.com/playwright/mcp:v0.0.78)"
-  },
-  "buildBlocked": {
-    "reason": "VISUAL_EVIDENCE_FAILED",
-    "stage": "TASK-020",
-    "detail": "AC-015 tema escuro: contraste do texto de erro inline 4.02:1 abaixo de 4.5:1; exige token de erro mais claro no tema escuro (producao, fora do escopo da TASK-020). Stories do PakiInput com erros de console (arg value colide com signal; error undefined no playground).",
-    "resolvable": "Autorizar ajuste do token de erro do tema escuro e correcao das stories do input; retomar a partir da TASK-020 (capturas e manifesto ja regerados; recapturar AC-008/009/011/012/015)."
+    "observedAt": "2026-09-25T23:27:15+00:00",
+    "source": "serverInfo.version do handshake do servidor playwright (imagem mcr.microsoft.com/playwright/mcp:v0.0.78)",
+    "tools": [
+      "browser_close",
+      "browser_resize",
+      "browser_console_messages",
+      "browser_evaluate",
+      "browser_navigate",
+      "browser_take_screenshot",
+      "browser_snapshot",
+      "browser_click",
+      "browser_wait_for",
+      "browser_verify_element_visible",
+      "browser_verify_text_visible"
+    ],
+    "toolsNote": "subconjunto; lista completa no retorno do sdd-visual-qa r3"
   }
 }
