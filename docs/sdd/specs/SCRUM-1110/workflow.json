@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 2,
+  "runId": "scr1110-plan-20260924",
+  "issueKey": "SCRUM-1110",
+  "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
+  "phase": "BUILD",
+  "lastStablePhase": "READY_TO_BUILD",
+  "status": "in_progress",
+  "planRevision": 1,
+  "attempts": 1,
+  "updatedAt": "2026-09-24T22:09:30.000-03:00",
+  "jira": {
+    "profileId": "pakitec",
+    "projectKey": "SCRUM"
+  },
+  "executionContext": {
+    "phase": "task"
+  },
+  "refinement": {
+    "verdict": "PASS",
+    "issueHash": "9711307e5dd2",
+    "checkedAt": "2026-09-24T20:23:00.000-03:00",
+    "warnings": [
+      "customfield_10077 (historia do usuario) permanece com template vazio por limitacao do customFieldMap; conteudo equivalente (ator/problema/resultado) registrado na descricao.",
+      "Estados loading/offline e requisitos de performance/observabilidade nao se aplicam a biblioteca de UI; registrar como nao aplicavel na spec."
+    ]
+  },
+  "assets": {
+    "manifestPath": "assets/manifest.json",
+    "items": []
+  },
+  "eventLedger": [
+    {
+      "eventKey": "SCRUM-1110/plan/9711307e5dd2/started",
+      "eventType": "PLAN_STARTED",
+      "commentId": "13934",
+      "recordedAt": "2026-09-24T23:19:36.357Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/plan/9711307e5dd2/blocked",
+      "eventType": "PLAN_BLOCKED",
+      "commentId": "13935",
+      "recordedAt": "2026-09-24T23:20:54.284Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/phase-started",
+      "eventType": "PHASE_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13936",
+      "recordedAt": "2026-09-25T00:52:41.438Z"
+    },
+    {
+      "eventKey": "SCRUM-1111/scr1110-plan-20260924/r1/spec-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1111",
+      "commentId": "13937",
+      "recordedAt": "2026-09-25T00:53:02.664Z"
+    },
+    {
+      "eventKey": "SCRUM-1111/scr1110-plan-20260924/r1/spec-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1111",
+      "commentId": "13938",
+      "recordedAt": "2026-09-25T00:55:40.755Z"
+    },
+    {
+      "eventKey": "SCRUM-1112/scr1110-plan-20260924/r1/research-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1112",
+      "commentId": "13939",
+      "recordedAt": "2026-09-25T00:56:02.187Z"
+    },
+    {
+      "eventKey": "SCRUM-1112/scr1110-plan-20260924/r1/research-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1112",
+      "commentId": "13940",
+      "recordedAt": "2026-09-25T00:59:05.652Z"
+    },
+    {
+      "eventKey": "SCRUM-1113/scr1110-plan-20260924/r1/plan-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1113",
+      "commentId": "13941",
+      "recordedAt": "2026-09-25T00:59:16.135Z"
+    },
+    {
+      "eventKey": "SCRUM-1113/scr1110-plan-20260924/r1/plan-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1113",
+      "commentId": "13942",
+      "recordedAt": "2026-09-25T01:04:42.780Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/ready-to-build",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13943",
+      "recordedAt": "2026-09-25T01:09:32.496Z"
+    }
+  ],
+  "pendingJiraEvents": [],
+  "phaseSubtasks": {
+    "spec": {
+      "issueKey": "SCRUM-1111",
+      "title": "[SDD][SPEC] Specification",
+      "owner": "sdd-spec-writer",
+      "artifact": "docs/sdd/specs/SCRUM-1110/spec.md"
+    },
+    "research": {
+      "issueKey": "SCRUM-1112",
+      "title": "[SDD][RESEARCH] Technical Research",
+      "owner": "sdd-researcher",
+      "artifact": "docs/sdd/specs/SCRUM-1110/research.md"
+    },
+    "plan": {
+      "issueKey": "SCRUM-1113",
+      "title": "[SDD][PLAN] Technical Plan",
+      "owner": "sdd-planner",
+      "artifacts": [
+        "docs/sdd/specs/SCRUM-1110/plan.md",
+        "docs/sdd/specs/SCRUM-1110/tasks.md"
+      ],
+      "dependsOn": ["SCRUM-1111", "SCRUM-1112"]
+    }
+  },
+  "subtasks": {
+    "TASK-001": { "issueKey": "SCRUM-1114", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-002": { "issueKey": "SCRUM-1115", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-003": { "issueKey": "SCRUM-1116", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-004": { "issueKey": "SCRUM-1117", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-005": { "issueKey": "SCRUM-1118", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-006": { "issueKey": "SCRUM-1119", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-007": { "issueKey": "SCRUM-1120", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-008": { "issueKey": "SCRUM-1121", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-009": { "issueKey": "SCRUM-1122", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-010": { "issueKey": "SCRUM-1123", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-011": { "issueKey": "SCRUM-1124", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-012": { "issueKey": "SCRUM-1125", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-013": { "issueKey": "SCRUM-1126", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-014": { "issueKey": "SCRUM-1127", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-015": { "issueKey": "SCRUM-1128", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-016": { "issueKey": "SCRUM-1129", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-017": { "issueKey": "SCRUM-1130", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-018": { "issueKey": "SCRUM-1131", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-019": { "issueKey": "SCRUM-1132", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-020": { "issueKey": "SCRUM-1133", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-021": { "issueKey": "SCRUM-1134", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null }
+  },
+  "qa": {
+    "issueKey": "SCRUM-1135",
+    "status": "pending",
+    "attempts": 0,
+    "startedAt": null,
+    "finishedAt": null,
+    "observation": null
+  },
+  "hashes": {
+    "issue": "9711307e5dd2",
+    "issueSnapshot": "8703f849c2e5",
+    "assetsManifest": "f359b4bc0ab1",
+    "spec": "99b19ee4208e",
+    "checklist": "8b1f21c2e148",
+    "research": "1117015929f3",
+    "plan": "5aad93f4c8a8",
+    "tasks": "e0cd34777f3b"
+  },
+  "visualEvidence": {
+    "manifestPath": "evidence/SCRUM-1110/manifest.json",
+    "criteria": [
+      { "criteriaId": "AC-001", "journey": "Toast success com titulo e descricao" },
+      { "criteriaId": "AC-002", "journey": "Fechamento manual do toast" },
+      { "criteriaId": "AC-004", "journey": "Toast de erro persistente" },
+      { "criteriaId": "AC-005", "journey": "Empilhamento com limite de 3 toasts visiveis (FIFO)" },
+      { "criteriaId": "AC-006", "journey": "Toast de erro retido no empilhamento" },
+      { "criteriaId": "AC-008", "journey": "Erro inline no PakiInput nos temas claro e escuro" },
+      { "criteriaId": "AC-009", "journey": "Erro inline no PakiSelect nos temas claro e escuro" },
+      { "criteriaId": "AC-011", "journey": "Estado invalido sem depender apenas de cor" },
+      { "criteriaId": "AC-012", "journey": "Toast de erro e erro inline simultaneos" },
+      { "criteriaId": "AC-014", "journey": "Toast sem animacao de movimento com prefers-reduced-motion" },
+      { "criteriaId": "AC-015", "journey": "Tokens de tema claro e escuro aplicados" }
+    ]
+  },
+  "buildConcurrency": "sequential",
+  "buildStartedAt": "2026-09-25T01:10:21+00:00",
+  "workingBranch": "feat/scrum-1110-toast-error-states"
+}
