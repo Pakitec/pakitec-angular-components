@@ -7,6 +7,8 @@
       [value]="displayText()"
       [placeholder]="placeholder()"
       [disabled]="disabled()"
+      [attr.aria-invalid]="isInvalid() ? 'true' : null"
+      [attr.aria-describedby]="ariaDescribedBy()"
       [attr.aria-expanded]="open()"
       aria-haspopup="listbox"
       aria-autocomplete="list"
@@ -62,6 +64,11 @@
           <li class="paki-select__feedback" role="status">{{ noResultsMessage() }}</li>
         }
       </ul>
+    }
+    @if (error()) {
+      <small class="error" [id]="errorId">{{ error() }}</small>
+    } @else if (hint()) {
+      <small [id]="hintId">{{ hint() }}</small>
     }
   </div>
 </label>
