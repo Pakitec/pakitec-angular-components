@@ -1,0 +1,16 @@
+{
+  "runner": "claude",
+  "evidence": [
+    {
+      "criteriaId": "AC-001",
+      "kind": "official",
+      "status": "fail",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-001-desktop.png",
+      "mimeType": "image/png",
+      "size": 110128,
+      "sha256": "322696461a71ef6157ab2938b4daa46c096779e3c9bb9d56d3ed181806a593bc",
+      "containsSensitiveData": false
+    }
+  ]
+}
