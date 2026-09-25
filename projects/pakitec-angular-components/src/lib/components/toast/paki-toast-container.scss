@@ -1,0 +1,33 @@
+// Pilha de toasts fixada em um canto da tela. O z-index alto garante que os
+// toasts fiquem acima de modais e overlays (FR-008).
+:host {
+  position: fixed;
+  z-index: 1100;
+}
+
+.paki-toast-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+}
+
+:host:has(.paki-toast-stack--top-right) {
+  top: 16px;
+  right: 16px;
+}
+
+:host:has(.paki-toast-stack--top-left) {
+  top: 16px;
+  left: 16px;
+}
+
+:host:has(.paki-toast-stack--bottom-right) {
+  bottom: 16px;
+  right: 16px;
+}
+
+:host:has(.paki-toast-stack--bottom-left) {
+  bottom: 16px;
+  left: 16px;
+}

@@ -1,0 +1,52 @@
+// Cada variante usa o par de tokens de feedback do tema
+// (--color-<tipo>-bg / --color-<tipo>-text), definido em pakitec-theme.scss.
+.paki-toast__card {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.paki-toast__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.paki-toast__description {
+  margin: 0;
+}
+
+.paki-toast__close {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  padding: 0 4px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+}
+
+.paki-toast--success {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.paki-toast--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+
+.paki-toast--error {
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
+}
+
+.paki-toast--info {
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
+}

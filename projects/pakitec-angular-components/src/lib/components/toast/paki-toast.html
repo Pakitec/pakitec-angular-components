@@ -1,0 +1,7 @@
+<div class="paki-toast__card" [class]="typeClass()">
+  <div class="paki-toast__content">
+    <strong class="paki-toast__title">{{ data().title }}</strong>
+    <p class="paki-toast__description">{{ data().description }}</p>
+  </div>
+  <button type="button" class="paki-toast__close" aria-label="Fechar" (click)="close()">×</button>
+</div>
