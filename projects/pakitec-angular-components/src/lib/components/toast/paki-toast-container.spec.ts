@@ -1,6 +1,9 @@
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
+import { PakiInput } from '../input/paki-input';
+import { PakiSelect } from '../select/paki-select.component';
 import { PakiToastContainer } from './paki-toast-container';
 import { PakiToastService } from './paki-toast.service';
 
@@ -134,5 +137,67 @@ describe('PakiToastContainer', () => {
       vi.advanceTimersByTime(1);
       expect(naJanelaAtiva(id)).toBe(false);
     });
+  });
+});
+
+describe('AC-012/AC-013: feedback combinado em falha de salvamento (TASK-014)', () => {
+  @Component({
+    imports: [PakiInput, PakiSelect, PakiToastContainer],
+    template: `
+      <paki-input label="Nome" [error]="nameError()" />
+      <paki-select label="Espécie" [items]="items" [error]="speciesError()" />
+      <paki-toast-container />
+    `,
+  })
+  class SaveFailureHost {
+    items = [
+      { value: '1', label: 'Cachorro' },
+      { value: '2', label: 'Gato' },
+    ];
+    nameError = signal('');
+    speciesError = signal('');
+  }
+
+  afterEach(() => {
+    TestBed.inject(PakiToastService).dismissAll();
+  });
+
+  it('toast de erro global e erros inline aparecem ao mesmo tempo (AC-012)', async () => {
+    await TestBed.configureTestingModule({ imports: [SaveFailureHost] }).compileComponents();
+    const fixture = TestBed.createComponent(SaveFailureHost);
+    const toastService = TestBed.inject(PakiToastService);
+    toastService.dismissAll();
+    fixture.detectChanges();
+
+    fixture.componentInstance.nameError.set('Nome é obrigatório.');
+    fixture.componentInstance.speciesError.set('Espécie é obrigatória.');
+    toastService.error('Não foi possível salvar', 'Verifique os campos informados.');
+    fixture.detectChanges();
+
+    const toasts = fixture.nativeElement.querySelectorAll('paki-toast');
+    const inlineErrors = fixture.nativeElement.querySelectorAll('small.error');
+
+    expect(toasts.length).toBe(1);
+    expect(fixture.nativeElement.querySelector('.paki-toast__title')?.textContent).toContain('Não foi possível salvar');
+    expect(inlineErrors.length).toBe(2);
+    expect(Array.from(inlineErrors).some((el) => (el as HTMLElement).textContent === 'Nome é obrigatório.')).toBe(true);
+    expect(Array.from(inlineErrors).some((el) => (el as HTMLElement).textContent === 'Espécie é obrigatória.')).toBe(true);
+  });
+
+  it('erro sem campo específico mostra somente o toast (AC-013)', async () => {
+    await TestBed.configureTestingModule({ imports: [SaveFailureHost] }).compileComponents();
+    const fixture = TestBed.createComponent(SaveFailureHost);
+    const toastService = TestBed.inject(PakiToastService);
+    toastService.dismissAll();
+    fixture.detectChanges();
+
+    toastService.error('Não foi possível salvar', 'Tente novamente mais tarde.');
+    fixture.detectChanges();
+
+    const toasts = fixture.nativeElement.querySelectorAll('paki-toast');
+    const inlineErrors = fixture.nativeElement.querySelectorAll('small.error');
+
+    expect(toasts.length).toBe(1);
+    expect(inlineErrors.length).toBe(0);
   });
 });
