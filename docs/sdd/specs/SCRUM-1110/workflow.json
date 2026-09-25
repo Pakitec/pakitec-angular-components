@@ -8,7 +8,7 @@
   "status": "in_progress",
   "planRevision": 1,
   "attempts": 1,
-  "updatedAt": "2026-09-25T01:12:47+00:00",
+  "updatedAt": "2026-09-25T01:14:40+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -111,6 +111,20 @@
       "issueKey": "SCRUM-1114",
       "commentId": "13946",
       "recordedAt": "2026-09-25T01:12:51.065Z"
+    },
+    {
+      "eventKey": "SCRUM-1115/scr1110-plan-20260924/r1/task-002-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1115",
+      "commentId": "13947",
+      "recordedAt": "2026-09-25T01:13:17.004Z"
+    },
+    {
+      "eventKey": "SCRUM-1115/scr1110-plan-20260924/r1/task-002-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1115",
+      "commentId": "13948",
+      "recordedAt": "2026-09-25T01:14:44.796Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -140,7 +154,7 @@
   },
   "subtasks": {
     "TASK-001": { "issueKey": "SCRUM-1114", "status": "completed", "owner": "sdd-implementer", "startedAt": "2026-09-25T01:11:14+00:00", "finishedAt": "2026-09-25T01:12:47+00:00", "observation": "Tokens --color-info-bg/--color-info-text nos dois temas; npm run build PASS." },
-    "TASK-002": { "issueKey": "SCRUM-1115", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-002": { "issueKey": "SCRUM-1115", "status": "completed", "owner": "sdd-implementer", "startedAt": "2026-09-25T01:13:13+00:00", "finishedAt": "2026-09-25T01:14:40+00:00", "observation": "Modelos do toast criados conforme spec; npm run build e tsc isolado PASS." },
     "TASK-003": { "issueKey": "SCRUM-1116", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
     "TASK-004": { "issueKey": "SCRUM-1117", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
     "TASK-005": { "issueKey": "SCRUM-1118", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
