@@ -1,10 +1,62 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { Component, inject, signal } from '@angular/core';
+import { moduleMetadata } from '@storybook/angular-vite';
+import { Component, OnInit, inject, input, signal } from '@angular/core';
 
 import { PakiInput } from '../public-api';
 import { PakiSelect } from '../public-api';
 import { PakiToastContainer } from '../public-api';
 import { PakiToastService, PakiToastPosition } from '../public-api';
+
+/** Cenarios de disparo usados pelas stories do toast. */
+type ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';
+
+/**
+ * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).
+ *
+ * O `inject()` fica no componente porque `render()` da story roda fora de um
+ * contexto de injecao (erro NG0203).
+ */
+@Component({
+  selector: 'paki-toast-demo',
+  imports: [PakiToastContainer],
+  template: `
+    <button type="button" (click)="trigger()">{{ label() }}</button>
+    <paki-toast-container />
+  `,
+})
+class ToastDemo implements OnInit {
+  readonly toast = inject(PakiToastService);
+  readonly scenario = input<ToastScenario>('success');
+  readonly label = input('Disparar');
+  readonly autoTrigger = input(false);
+
+  ngOnInit(): void {
+    if (this.autoTrigger()) this.trigger();
+  }
+
+  trigger(): void {
+    switch (this.scenario()) {
+      case 'success':
+        this.toast.success('Sucesso', 'Operação concluída.');
+        break;
+      case 'error':
+        this.toast.error('Erro', 'Falha persistente.');
+        break;
+      case 'dismissible':
+        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });
+        break;
+      case 'custom':
+        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });
+        break;
+      case 'stacking':
+        this.toast.success('1', 'Primeiro');
+        this.toast.warning('2', 'Segundo');
+        this.toast.error('3', 'Erro permanece.');
+        this.toast.info('4', 'Quarto entra.');
+        break;
+    }
+  }
+}
 
 @Component({
   selector: 'paki-toast-playground',
@@ -31,7 +83,7 @@ import { PakiToastService, PakiToastPosition } from '../public-api';
   `,
 })
 class ToastPlayground {
-  private readonly toast = inject(PakiToastService);
+  readonly toast = inject(PakiToastService);
   readonly position = signal<PakiToastPosition>('top-right');
 
   stack(): void {
@@ -56,7 +108,7 @@ class ToastPlayground {
   `,
 })
 class SaveFailureDemo {
-  private readonly toast = inject(PakiToastService);
+  readonly toast = inject(PakiToastService);
 
   readonly items = [
     { value: '1', label: 'Cachorro' },
@@ -80,77 +132,45 @@ class SaveFailureDemo {
   }
 }
 
-const meta: Meta = { title: 'Componentes/Toast' };
+const meta: Meta = {
+  title: 'Componentes/Toast',
+  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],
+};
 export default meta;
 type Story = StoryObj;
 
+/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */
+function scenarioStory(scenario: ToastScenario, label: string): Story {
+  return {
+    args: { autoTrigger: false },
+    render: (args) => ({
+      props: { ...args, scenario, label },
+      template: '<paki-toast-demo [scenario]="scenario" [label]="label" [autoTrigger]="autoTrigger" />',
+    }),
+  };
+}
+
 /** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */
-export const Success: Story = {
-  render: () => ({
-    props: { toast: inject(PakiToastService) },
-    template: `
-      <button type="button" (click)="toast.success('Sucesso', 'Operação concluída.')">Disparar success</button>
-      <paki-toast-container />
-    `,
-  }),
-};
+export const Success: Story = scenarioStory('success', 'Disparar success');
 
 /** Error: permanece na tela até fechamento manual (AC-004). */
-export const ErrorPersistent: Story = {
-  render: () => ({
-    props: { toast: inject(PakiToastService) },
-    template: `
-      <button type="button" (click)="toast.error('Erro', 'Falha persistente.')">Disparar error</button>
-      <paki-toast-container />
-    `,
-  }),
-};
+export const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');
 
 /** Fechamento manual de qualquer toast (AC-002). */
-export const Dismissible: Story = {
-  render: () => ({
-    props: { toast: inject(PakiToastService) },
-    template: `
-      <button type="button" (click)="toast.info('Info', 'Feche manualmente.', { duration: 30000 })">Disparar info</button>
-      <paki-toast-container />
-    `,
-  }),
-};
+export const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');
 
 /** Duração personalizada sobrescreve o padrão (AC-003). */
-export const CustomDuration: Story = {
-  render: () => ({
-    props: { toast: inject(PakiToastService) },
-    template: `
-      <button type="button" (click)="toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 })">1 segundo</button>
-      <paki-toast-container />
-    `,
-  }),
-};
+export const CustomDuration: Story = scenarioStory('custom', '1 segundo');
 
 /** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */
-export const Stacking: Story = {
-  render: () => ({
-    props: { toast: inject(PakiToastService) },
-    template: `
-      <button type="button" (click)="toast.success('1', 'Primeiro'); toast.warning('2', 'Segundo'); toast.error('3', 'Erro permanece.'); toast.info('4', 'Quarto entra.');">Empilhar 4 toasts</button>
-      <paki-toast-container />
-    `,
-  }),
-};
+export const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');
 
 /** Playground com as 4 posições (FR-008). */
 export const Positions: Story = {
-  render: () => ({
-    props: {},
-    template: '<paki-toast-playground />',
-  }),
+  render: () => ({ template: '<paki-toast-playground />' }),
 };
 
 /** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */
 export const SaveFailureCombined: Story = {
-  render: () => ({
-    props: {},
-    template: '<paki-save-failure-demo />',
-  }),
+  render: () => ({ template: '<paki-save-failure-demo />' }),
 };
