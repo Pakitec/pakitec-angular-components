@@ -118,4 +118,63 @@ describe('PakiToastService', () => {
       expect(service.toasts()).toHaveLength(0);
     });
   });
+
+  /**
+   * Empilhamento e fase de saida (US-002, TASK-008). Escritos antes da
+   * implementacao da TASK-009 (TDD): contra o servico atual, AC-005, AC-006 e
+   * R-I falham porque ainda nao ha limite de janela nem fase `leaving`.
+   *
+   * `ativos()` devolve a janela de toasts que contam para o limite de 3.
+   * Toasts em fase `leaving` ja liberaram a vaga, mas seguem na fila durante
+   * a transicao de saida, entao nao entram na contagem (risco R-I).
+   */
+  describe('US-002: empilhamento seguro', () => {
+    const ativos = () => service.toasts().filter((toast) => !toast.leaving);
+
+    it('AC-005: com 3 toasts visiveis, o quarto remove o mais antigo (FIFO)', () => {
+      const um = service.success('Um', 'Primeiro');
+      const dois = service.info('Dois', 'Segundo');
+      const tres = service.warning('Tres', 'Terceiro');
+      const quatro = service.success('Quatro', 'Quarto');
+      expect(ativos()).toHaveLength(3);
+      expect(ativos().map((toast) => toast.id)).toEqual([dois, tres, quatro]);
+      expect(ativos().some((toast) => toast.id === um)).toBe(false);
+    });
+
+    it('AC-005: o descarte FIFO preserva a ordem de chegada dos demais', () => {
+      service.success('Um', 'Primeiro');
+      service.info('Dois', 'Segundo');
+      const tres = service.warning('Tres', 'Terceiro');
+      const quatro = service.success('Quatro', 'Quarto');
+      const cinco = service.info('Cinco', 'Quinto');
+      expect(ativos().map((toast) => toast.id)).toEqual([tres, quatro, cinco]);
+    });
+
+    it('AC-006: com um erro visivel, o nao critico mais antigo sai primeiro e o erro permanece', () => {
+      const um = service.success('Um', 'Nao critico mais antigo');
+      const erro = service.error('Falha', 'Nao foi possivel salvar');
+      const tres = service.info('Tres', 'Terceiro');
+      const quatro = service.warning('Quatro', 'Quarto');
+      expect(ativos().map((toast) => toast.id)).toEqual([erro, tres, quatro]);
+      expect(ativos().some((toast) => toast.id === um)).toBe(false);
+    });
+
+    it('AC-006: se todos os visiveis forem erros, a fila cresce alem de 3', () => {
+      const erro1 = service.error('Falha 1', 'Primeira falha');
+      const erro2 = service.error('Falha 2', 'Segunda falha');
+      const erro3 = service.error('Falha 3', 'Terceira falha');
+      const erro4 = service.error('Falha 4', 'Quarta falha');
+      expect(ativos().map((toast) => toast.id)).toEqual([erro1, erro2, erro3, erro4]);
+    });
+
+    it('R-I: toast em fase leaving libera a janela sem aguardar o fim da transicao', () => {
+      const um = service.success('Um', 'Expira em 5 s');
+      const dois = service.error('Falha', 'Nao foi possivel salvar');
+      const tres = service.warning('Tres', 'Terceiro');
+      vi.advanceTimersByTime(5000);
+      expect(service.toasts().find((toast) => toast.id === um)?.leaving).toBe(true);
+      const quatro = service.success('Quatro', 'Quarto');
+      expect(ativos().map((toast) => toast.id)).toEqual([dois, tres, quatro]);
+    });
+  });
 });

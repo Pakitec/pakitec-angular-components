@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 
 import { PakiToastContainer } from './paki-toast-container';
 import { PakiToastService } from './paki-toast.service';
@@ -73,6 +74,65 @@ describe('PakiToastContainer', () => {
       closeButton.click();
       fixture.detectChanges();
       expect(service.toasts().map((toast) => toast.id)).toEqual([segundo]);
+    });
+  });
+
+  /**
+   * Pausa do autodismiss por hover e foco (AC-007, TASK-008). Escritos antes
+   * da implementacao da TASK-009 (TDD): sem pausa, o toast expira durante o
+   * hover/foco e estes testes falham. Timers falsos tambem controlam o
+   * `Date.now()` que o servico usa para medir o tempo restante.
+   */
+  describe('AC-007: pausa do autodismiss por hover e foco', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    /** Primeiro item de toast renderizado na pilha. */
+    function toastRenderizado(): HTMLElement {
+      return fixture.nativeElement.querySelector('paki-toast') as HTMLElement;
+    }
+
+    /** Verdadeiro quando o toast ainda ocupa a janela ativa (nao saiu nem entrou em `leaving`). */
+    function naJanelaAtiva(id: number): boolean {
+      return service.toasts().some((toast) => toast.id === id && !toast.leaving);
+    }
+
+    it('mouseenter pausa o timer e mouseleave retoma com o tempo restante', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      fixture.detectChanges();
+      vi.advanceTimersByTime(1000);
+
+      toastRenderizado().dispatchEvent(new MouseEvent('mouseenter'));
+      vi.advanceTimersByTime(10000);
+      expect(naJanelaAtiva(id)).toBe(true);
+      expect(fixture.nativeElement.querySelectorAll('paki-toast')).toHaveLength(1);
+
+      toastRenderizado().dispatchEvent(new MouseEvent('mouseleave'));
+      vi.advanceTimersByTime(3999);
+      expect(naJanelaAtiva(id)).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
+
+    it('focusin pausa o timer e focusout retoma com o tempo restante', () => {
+      const id = service.warning('Atencao', 'Estoque baixo');
+      fixture.detectChanges();
+      vi.advanceTimersByTime(2000);
+
+      toastRenderizado().dispatchEvent(new FocusEvent('focusin'));
+      vi.advanceTimersByTime(10000);
+      expect(naJanelaAtiva(id)).toBe(true);
+
+      toastRenderizado().dispatchEvent(new FocusEvent('focusout'));
+      vi.advanceTimersByTime(4999);
+      expect(naJanelaAtiva(id)).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(naJanelaAtiva(id)).toBe(false);
     });
   });
 });
