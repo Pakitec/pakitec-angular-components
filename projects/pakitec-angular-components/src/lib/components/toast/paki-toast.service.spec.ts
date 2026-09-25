@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 
 import { PakiToastType } from './paki-toast.models';
-import { PakiToastService } from './paki-toast.service';
+import { PAKI_TOAST_LEAVE_DURATION_MS, PakiToastService } from './paki-toast.service';
 
 /**
  * Testes do PakiToastService escritos antes da implementacao (TDD).
@@ -53,27 +53,36 @@ describe('PakiToastService', () => {
   });
 
   describe('AC-003: autodismiss pelas duracoes padrao', () => {
-    it('success sai da fila apos 5 s', () => {
-      service.success('Ok', 'Salvo');
+    it('success entra em fase leaving apos 5 s e sai da fila apos a transicao', () => {
+      const id = service.success('Ok', 'Salvo');
       vi.advanceTimersByTime(4999);
       expect(service.toasts()).toHaveLength(1);
+      expect(service.toasts()[0]?.leaving).toBe(false);
       vi.advanceTimersByTime(1);
+      expect(service.toasts().find((t) => t.id === id)?.leaving).toBe(true);
+      vi.advanceTimersByTime(PAKI_TOAST_LEAVE_DURATION_MS);
       expect(service.toasts()).toHaveLength(0);
     });
 
-    it('warning sai da fila apos 7 s', () => {
-      service.warning('Atencao', 'Estoque baixo');
+    it('warning entra em fase leaving apos 7 s e sai da fila apos a transicao', () => {
+      const id = service.warning('Atencao', 'Estoque baixo');
       vi.advanceTimersByTime(6999);
       expect(service.toasts()).toHaveLength(1);
+      expect(service.toasts()[0]?.leaving).toBe(false);
       vi.advanceTimersByTime(1);
+      expect(service.toasts().find((t) => t.id === id)?.leaving).toBe(true);
+      vi.advanceTimersByTime(PAKI_TOAST_LEAVE_DURATION_MS);
       expect(service.toasts()).toHaveLength(0);
     });
 
-    it('info sai da fila apos 7 s', () => {
-      service.info('Informacao', 'Nova versao');
+    it('info entra em fase leaving apos 7 s e sai da fila apos a transicao', () => {
+      const id = service.info('Informacao', 'Nova versao');
       vi.advanceTimersByTime(6999);
       expect(service.toasts()).toHaveLength(1);
+      expect(service.toasts()[0]?.leaving).toBe(false);
       vi.advanceTimersByTime(1);
+      expect(service.toasts().find((t) => t.id === id)?.leaving).toBe(true);
+      vi.advanceTimersByTime(PAKI_TOAST_LEAVE_DURATION_MS);
       expect(service.toasts()).toHaveLength(0);
     });
 
@@ -81,8 +90,10 @@ describe('PakiToastService', () => {
       const id = service.success('Ok', 'Rapido', { duration: 1000 });
       expect(service.toasts()[0]?.duration).toBe(1000);
       vi.advanceTimersByTime(999);
-      expect(service.toasts().some((t) => t.id === id)).toBe(true);
+      expect(service.toasts().some((t) => t.id === id && !t.leaving)).toBe(true);
       vi.advanceTimersByTime(1);
+      expect(service.toasts().find((t) => t.id === id)?.leaving).toBe(true);
+      vi.advanceTimersByTime(PAKI_TOAST_LEAVE_DURATION_MS);
       expect(service.toasts().some((t) => t.id === id)).toBe(false);
     });
   });

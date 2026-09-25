@@ -1,5 +1,12 @@
 <div class="paki-toast-stack" [class]="positionClass()">
   @for (toast of service.toasts(); track toast.id) {
-    <paki-toast [data]="toast" (closed)="close(toast.id)" />
+    <paki-toast
+      [data]="toast"
+      (closed)="close(toast.id)"
+      (mouseenter)="pause(toast.id)"
+      (mouseleave)="resume(toast.id)"
+      (focusin)="pause(toast.id)"
+      (focusout)="resume(toast.id)"
+    />
   }
 </div>

@@ -6,8 +6,9 @@ import { PakiToastService } from './paki-toast.service';
 
 /**
  * Container que renderiza a fila de toasts do {@link PakiToastService} num
- * canto fixo da tela. O consumidor deve montar uma unica instancia no shell
- * da aplicacao (FR-010); o aviso sobre instancias duplicadas chega na
+ * canto fixo da tela. Pausa o autodismiss de cada toast em hover ou foco e
+ * retoma ao sair (AC-007). O consumidor deve montar uma unica instancia no
+ * shell da aplicacao (FR-010); o aviso sobre instancias duplicadas chega na
  * TASK-017.
  */
 @Component({
@@ -32,5 +33,15 @@ export class PakiToastContainer {
   /** Fecha o toast que emitiu `closed`, removendo-o da fila do servico. */
   protected close(id: number): void {
     this.service.dismiss(id);
+  }
+
+  /** Pausa o autodismiss do toast enquanto o cursor ou o foco estao sobre ele. */
+  protected pause(id: number): void {
+    this.service.pauseAutodismiss(id);
+  }
+
+  /** Retoma o autodismiss do toast quando o cursor ou o foco saem. */
+  protected resume(id: number): void {
+    this.service.resumeAutodismiss(id);
   }
 }

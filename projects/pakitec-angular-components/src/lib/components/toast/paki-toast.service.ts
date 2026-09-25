@@ -8,6 +8,13 @@ import {
 } from './paki-toast.models';
 
 /**
+ * Duracao da transicao de saida do toast, em milissegundos.
+ * O toast permanece na fila durante este tempo apos entrar em fase `leaving`,
+ * liberando a vaga da janela visivel imediatamente (risco R-I).
+ */
+export const PAKI_TOAST_LEAVE_DURATION_MS = 300;
+
+/**
  * Registro interno do timer de autodismiss de um toast. Guarda o handle do
  * `setTimeout` ativo, o instante de inicio e o tempo restante em milissegundos.
  *
@@ -32,8 +39,8 @@ export interface PakiToastTimer {
  *
  * E um singleton (`providedIn: 'root'`): uma unica instancia atende toda a
  * aplicacao, entao o consumidor nao precisa registrar o servico em cada
- * modulo. Esta versao (TASK-006) entrega a fila, as duracoes e o autodismiss;
- * o limite de tres toasts (FIFO) e a pausa chegam na TASK-009.
+ * modulo. Esta versao (TASK-009) entrega fila, duracoes, autodismiss, limite
+ * de tres toasts (FIFO) com retencao de erros e pausa do autodismiss.
  */
 @Injectable({ providedIn: 'root' })
 export class PakiToastService {
@@ -49,7 +56,7 @@ export class PakiToastService {
 
   /**
    * Timers de autodismiss ativos, indexados pelo id do toast.
-   * Toasts com duracao `0` nao entram neste mapa.
+   * Toasts com duracao `0` ou em fase `leaving` nao entram neste mapa.
    */
   private readonly timers = new Map<number, PakiToastTimer>();
 
@@ -68,7 +75,8 @@ export class PakiToastService {
   /**
    * Cria um toast de erro. O padrao do tipo e sem autodismiss
    * ({@link PAKI_TOAST_DEFAULT_DURATIONS}): o toast so sai por fechamento
-   * manual.
+   * manual. Erros nunca sao descartados automaticamente pelo empilhamento
+   * (FR-007).
    * @param title Titulo exibido em destaque.
    * @param description Descricao exibida abaixo do titulo.
    * @param config Configuracao opcional de duracao e posicao.
@@ -120,8 +128,44 @@ export class PakiToastService {
   }
 
   /**
+   * Pausa o autodismiss de um toast ativo. Calcula o tempo restante com base
+   * no instante de inicio e cancela o timer. A retomada acontece em
+   * {@link resumeAutodismiss}.
+   *
+   * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
+   * @param id Id do toast cujo timer sera pausado.
+   */
+  pauseAutodismiss(id: number): void {
+    const timer = this.timers.get(id);
+    if (!timer) return;
+    clearTimeout(timer.handle);
+    const elapsed = Date.now() - timer.startedAt;
+    timer.remainingMs = Math.max(0, timer.remainingMs - elapsed);
+  }
+
+  /**
+   * Retoma o autodismiss de um toast pausado. Reagenda o timer com o tempo
+   * restante calculado na pausa. Se o tempo restante chegou a zero, marca o
+   * toast como `leaving` imediatamente.
+   *
+   * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
+   * @param id Id do toast cujo timer sera retomado.
+   */
+  resumeAutodismiss(id: number): void {
+    const timer = this.timers.get(id);
+    if (!timer) return;
+    if (timer.remainingMs <= 0) {
+      this.timers.delete(id);
+      this.markLeaving(id);
+      return;
+    }
+    timer.handle = setTimeout(() => this.markLeaving(id), timer.remainingMs);
+    timer.startedAt = Date.now();
+  }
+
+  /**
    * Registro do timer de autodismiss do toast, ou `undefined` quando o toast
-   * nao tem timer ativo (duracao `0` ou toast ja removido).
+   * nao tem timer ativo (duracao `0`, em fase `leaving` ou toast ja removido).
    *
    * Expoe o estado necessario para a pausa da TASK-009, que cancela o handle,
    * recalcula `remainingMs` e reagenda o timer atualizando o registro.
@@ -137,8 +181,8 @@ export class PakiToastService {
   /**
    * Ponto unico de criacao de toast. Resolve a duracao (padrao do tipo, com
    * override por `config.duration`; `0` significa sem autodismiss), gera o id
-   * no contador interno, insere o toast na fila e agenda o autodismiss quando
-   * a duracao resolvida e maior que zero.
+   * no contador interno, insere o toast na fila, agenda o autodismiss quando
+   * a duracao resolvida e maior que zero e aplica o limite de janela.
    * @returns Id do toast criado.
    */
   protected show(
@@ -160,19 +204,52 @@ export class PakiToastService {
     if (duration > 0) {
       this.scheduleAutodismiss(toast.id, duration);
     }
+    this.enforceStackLimit();
     return toast.id;
+  }
+
+  /**
+   * Aplica o limite de tres toasts visiveis (FR-006). Quando a insercao
+   * ultrapassa o limite, marca como `leaving` o toast nao critico mais antigo
+   * (AC-005). Toasts do tipo `error` nunca sao descartados automaticamente
+   * (AC-006): se todos os visiveis forem erros, a fila cresce alem de 3.
+   */
+  private enforceStackLimit(): void {
+    const active = this.toasts().filter((toast) => !toast.leaving);
+    if (active.length <= 3) return;
+    const oldest = active.find((toast) => toast.type !== 'error');
+    if (oldest) {
+      this.markLeaving(oldest.id);
+    }
+  }
+
+  /**
+   * Marca o toast como `leaving` e agenda a remocao final apos a transicao de
+   * saida. Libera a vaga na janela de toasts visiveis na entrada da fase
+   * (risco R-I). Fechamento manual usa {@link dismiss}, que remove imediatamente.
+   * @param id Id do toast que comeca a sair.
+   */
+  private markLeaving(id: number): void {
+    this.cancelTimer(id);
+    const toast = this.toasts().find((t) => t.id === id);
+    if (!toast || toast.leaving) return;
+    this.toasts.update((current) =>
+      current.map((t) => (t.id === id ? { ...t, leaving: true } : t)),
+    );
+    setTimeout(() => this.dismiss(id), PAKI_TOAST_LEAVE_DURATION_MS);
   }
 
   /**
    * Agenda o autodismiss do toast com `setTimeout` e registra o timer no mapa
    * interno. `startedAt` e `remainingMs` servem de base para a pausa da
-   * TASK-009.
-   * @param id Id do toast removido quando o timer dispara.
+   * TASK-009. Quando o timer dispara, o toast entra em fase `leaving` em vez
+   * de sair da fila imediatamente.
+   * @param id Id do toast que comeca a sair quando o timer dispara.
    * @param durationMs Tempo de espera em milissegundos; deve ser maior que zero.
    */
   private scheduleAutodismiss(id: number, durationMs: number): void {
     this.timers.set(id, {
-      handle: setTimeout(() => this.dismiss(id), durationMs),
+      handle: setTimeout(() => this.markLeaving(id), durationMs),
       startedAt: Date.now(),
       remainingMs: durationMs,
     });
