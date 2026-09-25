@@ -3,12 +3,12 @@
   "runId": "scr1110-plan-20260924",
   "issueKey": "SCRUM-1110",
   "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
-  "phase": "BUILD",
-  "lastStablePhase": "READY_TO_BUILD",
-  "status": "blocked",
+  "phase": "BUILD_COMPLETED",
+  "lastStablePhase": "BUILD_COMPLETED",
+  "status": "completed",
   "planRevision": 1,
   "attempts": 2,
-  "updatedAt": "2026-09-25T23:33:19+00:00",
+  "updatedAt": "2026-09-25T23:50:38+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -394,6 +394,55 @@
       "issueKey": "SCRUM-1110",
       "commentId": "14020",
       "recordedAt": "2026-09-25T23:33:32.990Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-fix-c2",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14021",
+      "recordedAt": "2026-09-25T23:34:49.386Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-started-c2",
+      "eventType": "QA_STARTED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14022",
+      "recordedAt": "2026-09-25T23:40:04.559Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-progress-c2",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14023",
+      "recordedAt": null
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-passed-c2",
+      "eventType": "QA_PASSED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14024",
+      "recordedAt": "2026-09-25T23:47:13.014Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/code-review-started",
+      "eventType": "CODE_REVIEW_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14025",
+      "recordedAt": "2026-09-25T23:47:46Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/code-review-completed",
+      "eventType": "CODE_REVIEW_COMPLETED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14026",
+      "recordedAt": "2026-09-25T23:49:19Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/completed",
+      "eventType": "BUILD_COMPLETED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14027",
+      "recordedAt": "2026-09-25T23:50:38.218Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -614,18 +663,46 @@
   },
   "qa": {
     "issueKey": "SCRUM-1135",
-    "status": "failed",
-    "attempts": 1,
-    "startedAt": "2026-09-25T23:29:47+00:00",
-    "finishedAt": "2026-09-25T23:33:19+00:00",
-    "observation": "FAIL ciclo 1/3: H-1 AC-007/FR-005 pausa acumulada (mouseenter+focusin desconta elapsed 2x; retoma no primeiro mouseleave/focusout) em paki-toast.service.ts:138-163 e paki-toast-container.html:12-15; M-1 .paki-toast__card.leaving nunca casa (paki-toast.scss:17,24); L-1..L-5. Visual QA PASS (24/24, dedupe). Ciclo de correcao nao executado: regra do comando proibe corrigir defeito de producao que impede AC aprovado.",
+    "status": "passed",
+    "attempts": 2,
+    "startedAt": "2026-09-25T23:39:58+00:00",
+    "observation": "PASS ciclo 2/3 (HEAD d8cd985): H-1 e M-1 corrigidos; AC-001..016 OK; 134/134 testes, build e build-storybook PASS; visual 11 AC PASS (24/24, dedupe). Low L-1..L-7 pendentes.",
     "report": "docs/sdd/specs/SCRUM-1110/qa.md",
     "findings": {
       "critical": 0,
-      "high": 1,
-      "medium": 1,
-      "low": 5
-    }
+      "high": 0,
+      "medium": 0,
+      "low": 7
+    },
+    "previousAttempts": [
+      {
+        "status": "failed",
+        "startedAt": "2026-09-25T23:29:47+00:00",
+        "finishedAt": "2026-09-25T23:33:19+00:00",
+        "observation": "FAIL ciclo 1/3: H-1 AC-007/FR-005 pausa acumulada (mouseenter+focusin desconta elapsed 2x; retoma no primeiro mouseleave/focusout) em paki-toast.service.ts:138-163 e paki-toast-container.html:12-15; M-1 .paki-toast__card.leaving nunca casa (paki-toast.scss:17,24); L-1..L-5. Visual QA PASS (24/24, dedupe). Ciclo de correcao nao executado: regra do comando proibe corrigir defeito de producao que impede AC aprovado.",
+        "report": "docs/sdd/specs/SCRUM-1110/qa.md",
+        "findings": {
+          "critical": 0,
+          "high": 1,
+          "medium": 1,
+          "low": 5
+        }
+      }
+    ],
+    "cycle": "2/3",
+    "fixStartedAt": "2026-09-25T23:34:43+00:00",
+    "fixCycles": [
+      {
+        "cycle": "2/3",
+        "startedAt": "2026-09-25T23:34:43+00:00",
+        "finishedAt": "2026-09-25T23:39:58+00:00",
+        "owner": "sdd-implementer",
+        "commit": "d8cd985",
+        "observation": "H-1: Sets hovered/focused por toast no container, pausa so na transicao e retoma quando ambos falsos (focusout interno ignorado); pause/resume idempotentes no servico. M-1: :host(.leaving) .paki-toast__card (inclusive reduced-motion). 134/134 testes, build e build-storybook PASS. Agente rodou em worktree isolado; commit integrado por fast-forward e worktree removido."
+      }
+    ],
+    "finishedAt": "2026-09-25T23:47:20+00:00",
+    "reportCommit": "0f2275b"
   },
   "hashes": {
     "issue": "9711307e5dd2",
@@ -715,12 +792,19 @@
       "commentId": "14013",
       "publishedAt": "2026-09-25T23:27:15+00:00",
       "items": 24
-    }
+    },
+    "verifications": [
+      {
+        "cycle": "2/3",
+        "at": "2026-09-25T23:43:58+00:00",
+        "verdict": "PASS",
+        "observation": "11 AC claro/escuro PASS apos d8cd985; nenhuma recaptura (visual inalterado); validate 24/24 accepted; publish dedupe 24/24 (anexos 10211-10234, comentario 14013); console sem erros. Nota: fechamento manual remove em ~52ms sem fase leaving."
+      }
+    ]
   },
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-25T01:10:21+00:00",
   "workingBranch": "feat/scrum-1110-toast-error-states",
-  "buildFinishedAt": "2026-09-25T23:33:19+00:00",
   "resumeNotes": [
     {
       "at": "2026-09-25T18:01:23+00:00",
@@ -741,19 +825,45 @@
     {
       "at": "2026-09-25T23:21:33+00:00",
       "note": "Retomada autorizada apos bloqueio da TASK-020 r2 (comment 14008). Correcoes: 4fb2487 (token --color-error-field; AC-015 escuro 7.03:1) e ec3bdef (SCRUM-1132, stories do PakiInput). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"AC-015 tema escuro: contraste do texto de erro inline 4.02:1 abaixo de 4.5:1; exige token de erro mais claro no tema escuro (producao, fora do escopo da TASK-020). Stories do PakiInput com erros de console (arg value colide com signal; error undefined no playground).\", \"resolvable\": \"Autorizar ajuste do token de erro do tema escuro e correcao das stories do input; retomar a partir da TASK-020 (capturas e manifesto ja regerados; recapturar AC-008/009/011/012/015).\"}"
+    },
+    {
+      "at": "2026-09-25T23:34:43+00:00",
+      "note": "Retomada autorizada pelo usuario para corrigir H-1 e M-1 (QA ciclo 1/3, comments 14019/14020). buildBlocked arquivado: {\"reason\": \"QA_FAILED_PRODUCTION_DEFECT\", \"stage\": \"QA ciclo 1/3 (SCRUM-1135)\", \"detail\": \"H-1: PakiToastService.pauseAutodismiss nao tem guarda de pausa nem atualiza startedAt; container pausa em mouseenter e focusin e retoma no primeiro mouseleave ou focusout. mouseenter+focusin desconta o tempo 2x e o toast fecha com foco dentro (viola FR-005/AC-007). M-1: seletor .paki-toast__card.leaving nunca casa (classe no host), sem animacao de saida.\", \"resolvable\": \"Autorizar correcao de H-1 (estado hover/foco por toast; pausar so na transicao; retomar quando ambos falsos; teste combinado) e M-1 (:host(.leaving) .paki-toast__card, inclusive reduced-motion); retomar pelo QA ciclo 2/3.\"}"
     }
   ],
   "visualPreflight": {
     "available": true,
     "version": "1.62.0-alpha-1783623505000",
-    "observedAt": "2026-09-25T23:33:19+00:00",
+    "observedAt": "2026-09-25T23:43:58+00:00",
     "toolsCount": 61,
-    "source": "handshake initialize/tools/list em localhost:8931 (mcr.microsoft.com/playwright/mcp:v0.0.78)"
+    "source": "handshake initialize/tools/list em 127.0.0.1:8931 (mcr.microsoft.com/playwright/mcp:v0.0.78), QA ciclo 2/3"
   },
-  "buildBlocked": {
-    "reason": "QA_FAILED_PRODUCTION_DEFECT",
-    "stage": "QA ciclo 1/3 (SCRUM-1135)",
-    "detail": "H-1: PakiToastService.pauseAutodismiss nao tem guarda de pausa nem atualiza startedAt; container pausa em mouseenter e focusin e retoma no primeiro mouseleave ou focusout. mouseenter+focusin desconta o tempo 2x e o toast fecha com foco dentro (viola FR-005/AC-007). M-1: seletor .paki-toast__card.leaving nunca casa (classe no host), sem animacao de saida.",
-    "resolvable": "Autorizar correcao de H-1 (estado hover/foco por toast; pausar so na transicao; retomar quando ambos falsos; teste combinado) e M-1 (:host(.leaving) .paki-toast__card, inclusive reduced-motion); retomar pelo QA ciclo 2/3."
-  }
+  "codeReview": {
+    "status": "REVIEWED",
+    "startedAt": "2026-09-25T23:47:46+00:00",
+    "finishedAt": "2026-09-25T23:49:19+00:00",
+    "report": "docs/sdd/specs/SCRUM-1110/code-review.md",
+    "findings": {
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 3,
+      "info": 3
+    },
+    "observation": "Consultivo. CR-M1 enforceStackLimit descarta o toast nao-erro recem-chegado quando ha 3 erros visiveis (decisao de produto). CR-L1 saida sempre para a direita; CR-L2 duration sem limite maximo; CR-L3 erro/hint dentro do label."
+  },
+  "buildFinishedAt": "2026-09-25T23:49:46+00:00",
+  "pendingIssues": [
+    "L-1 PakiToastConfig.position ignorado",
+    "L-2 falta teste prefers-reduced-motion",
+    "L-3 error().length com null",
+    "L-4 instanceCount nunca decrementa",
+    "L-5 ids de suporte do PakiInput mudaram (changelog)",
+    "L-6 fechamento manual sem animacao (conforme AC-002)",
+    "L-7 mouseleave so apos movimento do cursor",
+    "CR-M1 3 erros visiveis descartam toast nao-erro recem-chegado (decisao de produto)",
+    "CR-L1 saida sempre para a direita",
+    "CR-L2 duration sem limite maximo",
+    "CR-L3 erro/hint dentro do label"
+  ]
 }
