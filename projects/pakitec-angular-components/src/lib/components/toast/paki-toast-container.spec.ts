@@ -4,8 +4,9 @@ import { vi } from 'vitest';
 
 import { PakiInput } from '../input/paki-input';
 import { PakiSelect } from '../select/paki-select.component';
-import { PakiToastContainer } from './paki-toast-container';
-import { PakiToastService } from './paki-toast.service';
+import { PakiToast, PakiToastContainer, PakiToastService } from '../index';
+import { PakiToastContainer as DirectPakiToastContainer } from './paki-toast-container';
+import { PakiToastService as DirectPakiToastService } from './paki-toast.service';
 
 /**
  * Testes do PakiToastContainer com o PakiToastService real (TDD). A montagem
@@ -199,5 +200,57 @@ describe('AC-012/AC-013: feedback combinado em falha de salvamento (TASK-014)', 
 
     expect(toasts.length).toBe(1);
     expect(inlineErrors.length).toBe(0);
+  });
+});
+
+describe('PakiToastContainer: acessibilidade, posição e publicação (TASK-016)', () => {
+  let service: PakiToastService;
+  let fixture: ComponentFixture<PakiToastContainer>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [DirectPakiToastContainer] }).compileComponents();
+    service = TestBed.inject(DirectPakiToastService);
+    fixture = TestBed.createComponent(DirectPakiToastContainer);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    service.dismissAll();
+  });
+
+  it('container usa região live polite para anúncio (FR-009, NFR-003)', () => {
+    const stack = fixture.nativeElement.querySelector('.paki-toast-stack') as HTMLElement;
+    expect(stack.getAttribute('aria-live')).toBe('polite');
+  });
+
+  it('classe de posição segue o input padrão top-right (FR-008)', () => {
+    const stack = fixture.nativeElement.querySelector('.paki-toast-stack') as HTMLElement;
+    expect(stack.classList.contains('paki-toast-stack--top-right')).toBe(true);
+  });
+
+  it('classe de posição reflete as quatro opções (FR-008)', () => {
+    const positions = ['top-left', 'bottom-right', 'bottom-left'] as const;
+    for (const position of positions) {
+      fixture.componentRef.setInput('position', position);
+      fixture.detectChanges();
+      const stack = fixture.nativeElement.querySelector('.paki-toast-stack') as HTMLElement;
+      expect(stack.classList.contains(`paki-toast-stack--${position}`)).toBe(true);
+    }
+  });
+
+  it('avisa sobre instância duplicada do container em dev mode (FR-010)', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    try {
+      TestBed.createComponent(DirectPakiToastContainer);
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('paki-toast-container'));
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('símbolos do toast são exportáveis pelo barrel (FR-011, AC-016)', () => {
+    expect(PakiToast).toBeDefined();
+    expect(PakiToastContainer).toBeDefined();
+    expect(PakiToastService).toBeDefined();
   });
 });

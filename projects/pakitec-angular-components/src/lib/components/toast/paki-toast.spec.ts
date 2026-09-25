@@ -57,4 +57,24 @@ describe('PakiToast', () => {
       expect(onClosed).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('US-005: acessibilidade e movimento (TASK-016)', () => {
+    it('toast do tipo error anuncia alerta com role="alert" (FR-009, NFR-003)', () => {
+      const region = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
+      expect(region).not.toBeNull();
+    });
+
+    it('toast do tipo success nao anuncia alerta (FR-009)', () => {
+      const successFixture = setup({
+        id: 2,
+        type: 'success',
+        title: 'Salvo',
+        description: 'Registro atualizado.',
+        duration: 5000,
+        leaving: false,
+      });
+      const region = successFixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
+      expect(region).toBeNull();
+    });
+  });
 });
