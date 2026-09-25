@@ -8,7 +8,7 @@
   "status": "in_progress",
   "planRevision": 1,
   "attempts": 1,
-  "updatedAt": "2026-09-25T18:37:57-03:00",
+  "updatedAt": "2026-09-25T22:55:00+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -223,6 +223,44 @@
       "issueKey": "SCRUM-1121",
       "commentId": "13963",
       "recordedAt": "2026-09-25T19:04:52.116Z"
+    },
+    {
+      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1123",
+      "recordedAt": "2026-09-25T21:54:01.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1123",
+      "recordedAt": "2026-09-25T21:54:01.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1124",
+      "recordedAt": "2026-09-25T21:55:21.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1124",
+      "recordedAt": "2026-09-25T22:20:00.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/started",
+      "eventType": "PHASE_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13944",
+      "recordedAt": "2026-09-25T01:10:35.149Z"
+    },
+    {
+      "eventKey": "SCRUM-1132/scr1110-plan-20260924/r1/task-019-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1132",
+      "commentId": "14000",
+      "recordedAt": "2026-09-25T22:54:06.185Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -320,91 +358,91 @@
     },
     "TASK-009": {
       "issueKey": "SCRUM-1122",
-      "status": "in_progress",
+      "status": "completed",
       "owner": "sdd-implementer",
       "startedAt": "2026-09-25T19:04:48+00:00",
-      "finishedAt": null,
-      "observation": null
+      "finishedAt": "2026-09-25T18:46:39-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 0b604a8; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-010": {
       "issueKey": "SCRUM-1123",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T21:54:01+00:00",
+      "finishedAt": "2026-09-25T21:54:01+00:00",
+      "observation": "Suite de erro do PakiInput com 5 testes (AC-008/010/011); commit f0a8a795."
     },
     "TASK-011": {
       "issueKey": "SCRUM-1124",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T21:55:21+00:00",
+      "finishedAt": "2026-09-25T22:20:00+00:00",
+      "observation": "API de erro acessivel implementada; commit e19d6a2."
     },
     "TASK-012": {
       "issueKey": "SCRUM-1125",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:15:51-03:00",
+      "finishedAt": "2026-09-25T19:15:51-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit d25a1d9; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-013": {
       "issueKey": "SCRUM-1126",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:17:31-03:00",
+      "finishedAt": "2026-09-25T19:17:31-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit d846c39; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-014": {
       "issueKey": "SCRUM-1127",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:19:15-03:00",
+      "finishedAt": "2026-09-25T19:19:15-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit f768231; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-015": {
       "issueKey": "SCRUM-1128",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:20:22-03:00",
+      "finishedAt": "2026-09-25T19:20:22-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 74facb0; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-016": {
       "issueKey": "SCRUM-1129",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:23:49-03:00",
+      "finishedAt": "2026-09-25T19:23:49-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 3c5e81c; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-017": {
       "issueKey": "SCRUM-1130",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:25:42-03:00",
+      "finishedAt": "2026-09-25T19:25:42-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit fd51e2f; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-018": {
       "issueKey": "SCRUM-1131",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:25:42-03:00",
+      "finishedAt": "2026-09-25T19:25:42-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: barrel publico ja exporta toast (index.ts); entregue junto fd51e2f; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-019": {
       "issueKey": "SCRUM-1132",
-      "status": "pending",
+      "status": "completed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T19:28:01-03:00",
+      "finishedAt": "2026-09-25T19:28:01-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit cca23a2; suite 129/129 verde e build PASS no HEAD cca23a2."
     },
     "TASK-020": {
       "issueKey": "SCRUM-1133",
@@ -502,6 +540,10 @@
     {
       "at": "2026-09-25T18:05:00+00:00",
       "note": "Retomada autorizada pelo usuario apos renovacao de cota. buildBlocked arquivado: {\"reason\": \"MODEL_RATE_LIMIT_429\", \"stage\": \"TASK-008\", \"detail\": \"Orquestrador e implementer terminaram duas vezes seguidas com API 429 (session usage limit, kimi-k3:cloud). Retry unico do protocolo esgotado. TASK-001..TASK-007 concluidas e commitadas (HEAD 31de542, 103/103 testes verdes); TASK-008 sem alteracoes parciais.\", \"resolvable\": \"Quando a cota renovar, executar /sdd-build SCRUM-1110 novamente: a retomada e idempotente a partir da TASK-008 (SCRUM-1121).\"}"
+    },
+    {
+      "at": "2026-09-25T22:55:00+00:00",
+      "note": "Retomada apos falha do agente anterior. Estado reconciliado com git (HEAD cca23a2) e Jira: TASK-001..019 concluidas; 129/129 testes e build PASS. Proximo: TASK-020 (evidencia visual), TASK-021, QA. Worktrees residuais em .claude/worktrees nao consolidados (superados pelos commits da branch)."
     }
   ]
 }
