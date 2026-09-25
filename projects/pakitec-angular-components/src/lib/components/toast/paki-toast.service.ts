@@ -8,14 +8,32 @@ import {
 } from './paki-toast.models';
 
 /**
- * Servico central do PakiToast. Mantem a fila de toasts visiveis e expoe um
- * metodo por tipo de feedback (`success`, `error`, `warning`, `info`).
+ * Registro interno do timer de autodismiss de um toast. Guarda o handle do
+ * `setTimeout` ativo, o instante de inicio e o tempo restante em milissegundos.
+ *
+ * A pausa ao passar o mouse (TASK-009) le este registro para cancelar o timer
+ * e depois o reagenda com o `remainingMs` atualizado:
+ * `remainingMs - (Date.now() - startedAt)`.
+ *
+ * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
+ */
+export interface PakiToastTimer {
+  /** Handle do `setTimeout` ativo, usado para cancelar ou reagendar. */
+  handle: ReturnType<typeof setTimeout>;
+  /** Marca de tempo (`Date.now()`) do inicio do timer atual. */
+  startedAt: number;
+  /** Milissegundos restantes ate o autodismiss. */
+  remainingMs: number;
+}
+
+/**
+ * Servico central do PakiToast. Mantem a fila de toasts visiveis num signal e
+ * expoe um metodo por tipo de feedback (`success`, `error`, `warning`, `info`).
  *
  * E um singleton (`providedIn: 'root'`): uma unica instancia atende toda a
  * aplicacao, entao o consumidor nao precisa registrar o servico em cada
- * modulo. Esta primeira versao (TASK-003) entrega apenas o contrato: os
- * metodos retornam ids, mas nao enfileiram nem programam o autodismiss.
- * A fila, as duracoes e o empilhamento chegam nas TASK-006 e TASK-009.
+ * modulo. Esta versao (TASK-006) entrega a fila, as duracoes e o autodismiss;
+ * o limite de tres toasts (FIFO) e a pausa chegam na TASK-009.
  */
 @Injectable({ providedIn: 'root' })
 export class PakiToastService {
@@ -28,6 +46,12 @@ export class PakiToastService {
 
   /** Contador interno que gera ids unicos e crescentes para cada toast. */
   private nextId = 0;
+
+  /**
+   * Timers de autodismiss ativos, indexados pelo id do toast.
+   * Toasts com duracao `0` nao entram neste mapa.
+   */
+  private readonly timers = new Map<number, PakiToastTimer>();
 
   /**
    * Cria um toast de sucesso.
@@ -77,30 +101,92 @@ export class PakiToastService {
   }
 
   /**
-   * Remove um toast da fila pelo id.
-   * @param _id Id retornado pelos metodos de criacao.
+   * Remove um toast da fila pelo id e cancela o timer de autodismiss dele,
+   * quando existir. Ids desconhecidos sao ignorados sem erro.
+   * @param id Id retornado pelos metodos de criacao.
    */
-  dismiss(_id: number): void {
-    // Stub da TASK-003: a remocao real chega na TASK-006.
+  dismiss(id: number): void {
+    this.cancelTimer(id);
+    this.toasts.update((current) => current.filter((toast) => toast.id !== id));
   }
 
-  /** Remove todos os toasts da fila de uma vez. */
+  /** Remove todos os toasts da fila de uma vez e cancela todos os timers. */
   dismissAll(): void {
-    // Stub da TASK-003: a remocao real chega na TASK-006.
+    for (const timer of this.timers.values()) {
+      clearTimeout(timer.handle);
+    }
+    this.timers.clear();
+    this.toasts.set([]);
   }
 
   /**
-   * Ponto unico de criacao de toast. Este stub devolve apenas o proximo id;
-   * a TASK-006 resolve a duracao padrao do tipo, aplica `config.duration` e
-   * insere o {@link PakiToastData} na fila.
+   * Registro do timer de autodismiss do toast, ou `undefined` quando o toast
+   * nao tem timer ativo (duracao `0` ou toast ja removido).
+   *
+   * Expoe o estado necessario para a pausa da TASK-009, que cancela o handle,
+   * recalcula `remainingMs` e reagenda o timer atualizando o registro.
+   *
+   * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
+   * @param id Id do toast retornado pelos metodos de criacao.
+   * @returns O registro mutavel do timer, atualizado em pausa e retomada.
+   */
+  autodismissTimer(id: number): PakiToastTimer | undefined {
+    return this.timers.get(id);
+  }
+
+  /**
+   * Ponto unico de criacao de toast. Resolve a duracao (padrao do tipo, com
+   * override por `config.duration`; `0` significa sem autodismiss), gera o id
+   * no contador interno, insere o toast na fila e agenda o autodismiss quando
+   * a duracao resolvida e maior que zero.
+   * @returns Id do toast criado.
    */
   protected show(
-    _type: PakiToastType,
-    _title: string,
-    _description: string,
-    _config?: PakiToastConfig,
+    type: PakiToastType,
+    title: string,
+    description: string,
+    config?: PakiToastConfig,
   ): number {
-    void PAKI_TOAST_DEFAULT_DURATIONS;
-    return ++this.nextId;
+    const duration = config?.duration ?? PAKI_TOAST_DEFAULT_DURATIONS[type];
+    const toast: PakiToastData = {
+      id: ++this.nextId,
+      type,
+      title,
+      description,
+      duration,
+      leaving: false,
+    };
+    this.toasts.update((current) => [...current, toast]);
+    if (duration > 0) {
+      this.scheduleAutodismiss(toast.id, duration);
+    }
+    return toast.id;
+  }
+
+  /**
+   * Agenda o autodismiss do toast com `setTimeout` e registra o timer no mapa
+   * interno. `startedAt` e `remainingMs` servem de base para a pausa da
+   * TASK-009.
+   * @param id Id do toast removido quando o timer dispara.
+   * @param durationMs Tempo de espera em milissegundos; deve ser maior que zero.
+   */
+  private scheduleAutodismiss(id: number, durationMs: number): void {
+    this.timers.set(id, {
+      handle: setTimeout(() => this.dismiss(id), durationMs),
+      startedAt: Date.now(),
+      remainingMs: durationMs,
+    });
+  }
+
+  /**
+   * Cancela o timer de autodismiss do toast e remove o registro do mapa.
+   * @param id Id do toast; sem efeito quando nao ha timer ativo.
+   */
+  private cancelTimer(id: number): void {
+    const timer = this.timers.get(id);
+    if (timer) {
+      clearTimeout(timer.handle);
+      this.timers.delete(id);
+    }
   }
 }
