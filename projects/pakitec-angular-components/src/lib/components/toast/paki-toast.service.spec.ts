@@ -188,4 +188,47 @@ describe('PakiToastService', () => {
       expect(ativos().map((toast) => toast.id)).toEqual([dois, tres, quatro]);
     });
   });
+  describe('AC-007: pausa e retomada idempotentes (FR-005)', () => {
+    function naJanelaAtiva(id: number): boolean {
+      return service.toasts().some((toast) => toast.id === id && !toast.leaving);
+    }
+
+    it('pausa dupla nao desconta o tempo em dobro', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      vi.advanceTimersByTime(1000);
+      service.pauseAutodismiss(id);
+      vi.advanceTimersByTime(2000);
+      service.pauseAutodismiss(id);
+      expect(service.autodismissTimer(id)?.remainingMs).toBe(4000);
+
+      service.resumeAutodismiss(id);
+      vi.advanceTimersByTime(3999);
+      expect(naJanelaAtiva(id)).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
+
+    it('retomada dupla nao agenda dois timers', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      vi.advanceTimersByTime(1000);
+      service.pauseAutodismiss(id);
+      service.resumeAutodismiss(id);
+      const countAposPrimeira = vi.getTimerCount();
+      const handle = service.autodismissTimer(id)?.handle;
+      service.resumeAutodismiss(id);
+      expect(vi.getTimerCount()).toBe(countAposPrimeira);
+      expect(service.autodismissTimer(id)?.handle).toBe(handle);
+
+      vi.advanceTimersByTime(4000);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
+
+    it('retomada sem pausa previa e ignorada', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      vi.advanceTimersByTime(3000);
+      service.resumeAutodismiss(id);
+      vi.advanceTimersByTime(2000);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
+  });
 });

@@ -14,14 +14,14 @@
     opacity 0.25s ease-out;
 }
 
-.paki-toast__card.leaving {
+:host(.leaving) .paki-toast__card {
   transform: translateX(120%);
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .paki-toast__card,
-  .paki-toast__card.leaving {
+  :host(.leaving) .paki-toast__card {
     transition: none;
     transform: none;
     opacity: 1;

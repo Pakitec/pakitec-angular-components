@@ -61,6 +61,13 @@ export class PakiToastService {
   private readonly timers = new Map<number, PakiToastTimer>();
 
   /**
+   * Ids dos toasts com autodismiss pausado. Torna a pausa e a retomada
+   * idempotentes: o servico so desconta o tempo na primeira pausa e so
+   * reagenda o timer na primeira retomada.
+   */
+  private readonly paused = new Set<number>();
+
+  /**
    * Cria um toast de sucesso.
    * @param title Titulo exibido em destaque.
    * @param description Descricao exibida abaixo do titulo.
@@ -124,36 +131,46 @@ export class PakiToastService {
       clearTimeout(timer.handle);
     }
     this.timers.clear();
+    this.paused.clear();
     this.toasts.set([]);
   }
 
   /**
-   * Pausa o autodismiss de um toast ativo. Calcula o tempo restante com base
-   * no instante de inicio e cancela o timer. A retomada acontece em
-   * {@link resumeAutodismiss}.
+   * Pausa o autodismiss de um toast ativo. Cancela o timer e desconta do
+   * tempo restante o tempo decorrido desde o ultimo inicio. A retomada
+   * acontece em {@link resumeAutodismiss}.
+   *
+   * E idempotente: ignora a chamada quando o toast nao tem timer ou quando o
+   * timer ja esta pausado. Assim, duas pausas seguidas nao descontam o tempo
+   * em dobro (FR-005).
    *
    * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
    * @param id Id do toast cujo timer sera pausado.
    */
   pauseAutodismiss(id: number): void {
     const timer = this.timers.get(id);
-    if (!timer) return;
+    if (!timer || this.paused.has(id)) return;
     clearTimeout(timer.handle);
     const elapsed = Date.now() - timer.startedAt;
     timer.remainingMs = Math.max(0, timer.remainingMs - elapsed);
+    this.paused.add(id);
   }
 
   /**
    * Retoma o autodismiss de um toast pausado. Reagenda o timer com o tempo
-   * restante calculado na pausa. Se o tempo restante chegou a zero, marca o
-   * toast como `leaving` imediatamente.
+   * restante calculado na pausa e atualiza `startedAt`. Se o tempo restante
+   * chegou a zero, marca o toast como `leaving` imediatamente.
+   *
+   * E idempotente: ignora a chamada quando o toast nao esta pausado. Assim,
+   * duas retomadas seguidas nao agendam dois timers.
    *
    * @internal Uso restrito ao componente PakiToast; nao faz parte da API publica.
    * @param id Id do toast cujo timer sera retomado.
    */
   resumeAutodismiss(id: number): void {
     const timer = this.timers.get(id);
-    if (!timer) return;
+    if (!timer || !this.paused.has(id)) return;
+    this.paused.delete(id);
     if (timer.remainingMs <= 0) {
       this.timers.delete(id);
       this.markLeaving(id);
@@ -260,6 +277,7 @@ export class PakiToastService {
    * @param id Id do toast; sem efeito quando nao ha timer ativo.
    */
   private cancelTimer(id: number): void {
+    this.paused.delete(id);
     const timer = this.timers.get(id);
     if (timer) {
       clearTimeout(timer.handle);

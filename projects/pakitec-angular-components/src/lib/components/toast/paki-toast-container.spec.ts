@@ -138,6 +138,45 @@ describe('PakiToastContainer', () => {
       vi.advanceTimersByTime(1);
       expect(naJanelaAtiva(id)).toBe(false);
     });
+
+    it('hover e foco combinados: retoma so quando os dois saem, com o restante correto', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      fixture.detectChanges();
+      vi.advanceTimersByTime(1000);
+
+      toastRenderizado().dispatchEvent(new MouseEvent('mouseenter'));
+      vi.advanceTimersByTime(500);
+      toastRenderizado().dispatchEvent(new FocusEvent('focusin'));
+      vi.advanceTimersByTime(500);
+      toastRenderizado().dispatchEvent(new MouseEvent('mouseleave'));
+      vi.advanceTimersByTime(20000);
+      expect(naJanelaAtiva(id)).toBe(true);
+
+      // Restante: 5000 - 1000 decorridos antes da primeira pausa = 4000.
+      toastRenderizado().dispatchEvent(new FocusEvent('focusout'));
+      vi.advanceTimersByTime(3999);
+      expect(naJanelaAtiva(id)).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
+
+    it('focusout para um elemento interno do mesmo toast nao retoma o timer', () => {
+      const id = service.success('Salvo', 'Registro atualizado');
+      fixture.detectChanges();
+      const host = toastRenderizado();
+      const closeButton = host.querySelector('.paki-toast__close') as HTMLButtonElement;
+
+      host.dispatchEvent(new FocusEvent('focusin'));
+      host.dispatchEvent(new FocusEvent('focusout', { relatedTarget: closeButton }));
+      vi.advanceTimersByTime(20000);
+      expect(naJanelaAtiva(id)).toBe(true);
+
+      host.dispatchEvent(new FocusEvent('focusout'));
+      vi.advanceTimersByTime(4999);
+      expect(naJanelaAtiva(id)).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(naJanelaAtiva(id)).toBe(false);
+    });
   });
 });
 

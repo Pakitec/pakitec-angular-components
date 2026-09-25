@@ -9,10 +9,10 @@
       [data]="toast"
       [class.leaving]="toast.leaving"
       (closed)="close(toast.id)"
-      (mouseenter)="pause(toast.id)"
-      (mouseleave)="resume(toast.id)"
-      (focusin)="pause(toast.id)"
-      (focusout)="resume(toast.id)"
+      (mouseenter)="onMouseEnter(toast.id)"
+      (mouseleave)="onMouseLeave(toast.id)"
+      (focusin)="onFocusIn(toast.id)"
+      (focusout)="onFocusOut(toast.id, $event)"
     />
   }
 </div>
