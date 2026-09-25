@@ -8,7 +8,7 @@
   "status": "blocked",
   "planRevision": 1,
   "attempts": 1,
-  "updatedAt": "2026-09-25T23:02:00+00:00",
+  "updatedAt": "2026-09-25T23:19:10+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -282,6 +282,41 @@
       "issueKey": "SCRUM-1110",
       "commentId": "14003",
       "recordedAt": "2026-09-25T23:01:17.813Z"
+    },
+    {
+      "eventKey": "SCRUM-1132/scr1110-plan-20260924/r1/task-019-rework-ng0203",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1132",
+      "commentId": "14004",
+      "recordedAt": "2026-09-25T23:11:38.609Z"
+    },
+    {
+      "eventKey": "SCRUM-1126/scr1110-plan-20260924/r1/task-013-rework-ac009",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1126",
+      "commentId": "14005",
+      "recordedAt": "2026-09-25T23:11:41.618Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-started-r2",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14006",
+      "recordedAt": "2026-09-25T23:11:59.889Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-failed-r2",
+      "eventType": "TASK_FAILED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14007",
+      "recordedAt": "2026-09-25T23:18:54.049Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-task-020-r2",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14008",
+      "recordedAt": "2026-09-25T23:19:01.567Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -415,7 +450,8 @@
       "owner": "sdd-implementer",
       "startedAt": "2026-09-25T19:17:31-03:00",
       "finishedAt": "2026-09-25T19:17:31-03:00",
-      "observation": "Reconciliado na retomada a partir do git/Jira: commit d846c39; suite 129/129 verde e build PASS no HEAD cca23a2."
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit d846c39; suite 129/129 verde e build PASS no HEAD cca23a2.",
+      "rework": "commit 3e53b8a (AC-009 token/tipografia)"
     },
     "TASK-014": {
       "issueKey": "SCRUM-1127",
@@ -463,15 +499,23 @@
       "owner": "sdd-implementer",
       "startedAt": "2026-09-25T19:28:01-03:00",
       "finishedAt": "2026-09-25T19:28:01-03:00",
-      "observation": "Reconciliado na retomada a partir do git/Jira: commit cca23a2; suite 129/129 verde e build PASS no HEAD cca23a2."
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit cca23a2; suite 129/129 verde e build PASS no HEAD cca23a2.",
+      "rework": "commit d54fa33 (NG0203/moduleMetadata)"
     },
     "TASK-020": {
       "issueKey": "SCRUM-1133",
       "status": "failed",
       "owner": "sdd-implementer",
-      "startedAt": "2026-09-25T22:54:49+00:00",
-      "finishedAt": "2026-09-25T23:00:56+00:00",
-      "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
+      "startedAt": "2026-09-25T23:11:52+00:00",
+      "finishedAt": "2026-09-25T23:18:48+00:00",
+      "observation": "FAIL r2: 24 capturas oficiais (11 AC, claro/escuro), validate 24/24 accepted; AC-015 dark FAIL: texto do erro inline 4.02:1 (--error-500 #dc2626 sobre rgb(11,13,18)) < 4.5:1 (R-G). Publish retido. Stories do PakiInput invalid-* e playground com erros de console (AC-008 capturado via save-failure-combined).",
+      "previousAttempt": {
+        "status": "failed",
+        "startedAt": "2026-09-25T22:54:49+00:00",
+        "finishedAt": "2026-09-25T23:00:56+00:00",
+        "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
+      },
+      "attempts": 2
     },
     "TASK-021": {
       "issueKey": "SCRUM-1134",
@@ -552,7 +596,7 @@
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-25T01:10:21+00:00",
   "workingBranch": "feat/scrum-1110-toast-error-states",
-  "buildFinishedAt": "2026-09-25T23:00:56+00:00",
+  "buildFinishedAt": "2026-09-25T23:18:48+00:00",
   "resumeNotes": [
     {
       "at": "2026-09-25T18:01:23+00:00",
@@ -565,17 +609,22 @@
     {
       "at": "2026-09-25T22:55:00+00:00",
       "note": "Retomada apos falha do agente anterior. Estado reconciliado com git (HEAD cca23a2) e Jira: TASK-001..019 concluidas; 129/129 testes e build PASS. Proximo: TASK-020 (evidencia visual), TASK-021, QA. Worktrees residuais em .claude/worktrees nao consolidados (superados pelos commits da branch)."
+    },
+    {
+      "at": "2026-09-25T23:11:00+00:00",
+      "note": "Retomada autorizada apos bloqueio da TASK-020 (comment 14003). Correcoes: d54fa33 (SCRUM-1132, stories toast), 3e53b8a (SCRUM-1126, erro select), pakitec-cloud-mcp 3e03914 (criterios da spec + versao core Playwright). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"Stories do toast (TASK-019) falham com NG0203 e demos sem moduleMetadata; registro visual do servidor reconhece apenas AC-001; servidor de navegador reporta 1.62.0-alpha-1783623505000.\", \"resolvable\": \"Autorizar correcao das stories, alinhar registro de criterios e ligar navegador v0.0.78+; retomar a partir da TASK-020.\"}"
     }
   ],
-  "buildBlocked": {
-    "reason": "VISUAL_EVIDENCE_FAILED",
-    "stage": "TASK-020",
-    "detail": "Stories do toast (TASK-019) falham com NG0203 e demos sem moduleMetadata; registro visual do servidor reconhece apenas AC-001; servidor de navegador reporta 1.62.0-alpha-1783623505000.",
-    "resolvable": "Autorizar correcao das stories, alinhar registro de criterios e ligar navegador v0.0.78+; retomar a partir da TASK-020."
-  },
   "visualPreflight": {
     "available": true,
     "version": "1.62.0-alpha-1783623505000",
-    "observedAt": "2026-09-25T23:00:00+00:00"
+    "observedAt": "2026-09-25T23:17:00+00:00",
+    "source": "serverInfo.version do handshake do servidor playwright (imagem mcr.microsoft.com/playwright/mcp:v0.0.78)"
+  },
+  "buildBlocked": {
+    "reason": "VISUAL_EVIDENCE_FAILED",
+    "stage": "TASK-020",
+    "detail": "AC-015 tema escuro: contraste do texto de erro inline 4.02:1 abaixo de 4.5:1; exige token de erro mais claro no tema escuro (producao, fora do escopo da TASK-020). Stories do PakiInput com erros de console (arg value colide com signal; error undefined no playground).",
+    "resolvable": "Autorizar ajuste do token de erro do tema escuro e correcao das stories do input; retomar a partir da TASK-020 (capturas e manifesto ja regerados; recapturar AC-008/009/011/012/015)."
   }
 }
