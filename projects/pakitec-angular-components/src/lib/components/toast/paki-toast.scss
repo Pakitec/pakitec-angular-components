@@ -9,6 +9,14 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+// Icone do tipo. Herda a cor do texto do tipo (mesma variante de token) e
+// nao encolhe quando a descricao e longa.
+.paki-toast__icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
 .paki-toast__content {
   flex: 1;
   display: flex;

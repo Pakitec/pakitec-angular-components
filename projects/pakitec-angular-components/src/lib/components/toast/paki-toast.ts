@@ -1,12 +1,22 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-import { PakiToastData } from './paki-toast.models';
+import { PakiToastData, PakiToastType } from './paki-toast.models';
 
 /**
- * Item individual de toast. Exibe titulo, descricao e botao de fechar e
- * emite `closed` para o container remover o toast da fila. Esta primeira
- * versao (TASK-003) cobre so o esqueleto; icone por tipo, tokens por tipo e
- * transicoes chegam nas TASK-007 e TASK-017.
+ * Glifo exibido no icone de cada tipo de toast. Sao caracteres de texto (nao
+ * emoji nem imagem): herdam a cor do texto do tipo e nao exigem fonte externa.
+ */
+const PAKI_TOAST_ICONS: Record<PakiToastType, string> = {
+  success: '✓',
+  error: '✕',
+  warning: '⚠',
+  info: 'ℹ',
+};
+
+/**
+ * Item individual de toast. Exibe icone do tipo, titulo, descricao e botao de
+ * fechar e emite `closed` para o container remover o toast da fila. As
+ * transicoes de entrada/saida chegam na TASK-017.
  */
 @Component({
   selector: 'paki-toast',
@@ -29,6 +39,13 @@ export class PakiToast {
    * estilo aplicar os tokens de feedback do tema em cada variante.
    */
   protected readonly typeClass = computed(() => `paki-toast--${this.data().type}`);
+
+  /**
+   * Glifo do icone conforme o tipo do toast. O span que o exibe tem
+   * `aria-hidden="true"`: o tipo ja esta no titulo e na descricao, entao o
+   * icone e apenas reforco visual.
+   */
+  protected readonly icon = computed(() => PAKI_TOAST_ICONS[this.data().type]);
 
   /** Emite o pedido de fechamento ao clicar no botao. */
   protected close(): void {
