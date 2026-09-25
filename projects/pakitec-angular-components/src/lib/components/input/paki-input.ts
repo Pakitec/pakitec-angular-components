@@ -11,6 +11,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PakiInput implements ControlValueAccessor {
+  /** Contador de instâncias para gerar ids únicos e estáveis. */
+  private static instanceCounter = 0;
+
   readonly label = input('');
   readonly type = input<'text' | 'email' | 'password' | 'search' | 'number' | 'currency'>('text');
   readonly placeholder = input('');
@@ -28,6 +31,24 @@ export class PakiInput implements ControlValueAccessor {
   protected readonly value = signal('');
   protected readonly disabled = signal(false);
   protected readonly passwordVisible = signal(false);
+
+  /** Id numérico único desta instância. */
+  private readonly instanceId = ++PakiInput.instanceCounter;
+  /** Id da mensagem de erro; usado em `aria-describedby` quando há erro. */
+  protected readonly errorId = `paki-input-error-${this.instanceId}`;
+  /** Id do hint; usado em `aria-describedby` quando não há erro. */
+  protected readonly hintId = `paki-input-hint-${this.instanceId}`;
+  /** Indica se existe mensagem de erro preenchida. */
+  protected readonly hasError = computed(() => Boolean(this.error()));
+  /** Regra única de invalidade: `invalid` explícito ou mensagem de erro não vazia. */
+  protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
+  /** Associação acessível: aponta para a mensagem de erro ou para o hint. */
+  protected readonly ariaDescribedBy = computed(() => {
+    if (this.hasError()) return this.errorId;
+    if (this.hint()) return this.hintId;
+    return null;
+  });
+
   private onChange: (value: string | number) => void = () => undefined;
   private onTouched: () => void = () => undefined;
   writeValue(value: string | number | null): void {

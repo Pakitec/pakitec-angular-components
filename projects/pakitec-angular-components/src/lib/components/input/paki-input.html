@@ -11,8 +11,8 @@
       [attr.maxlength]="effectiveMask() === 'cep' ? 9 : effectiveMask() === 'phone' ? 15 : effectiveMask() === 'cpf' ? 14 : effectiveMask() === 'cnpj' ? 18 : null"
       [attr.list]="list() || null"
       [disabled]="disabled()"
-      [attr.aria-invalid]="error() ? true : null"
-      [attr.aria-describedby]="error() || hint() ? 'support-' + label() : null"
+      [attr.aria-invalid]="isInvalid() ? true : null"
+      [attr.aria-describedby]="ariaDescribedBy()"
       (input)="update($event)"
       (blur)="touch()"
     />
@@ -39,8 +39,8 @@
     }
   </span>
   @if (error()) {
-    <small class="error" [id]="'support-' + label()">{{ error() }}</small>
+    <small class="error" [id]="errorId">{{ error() }}</small>
   } @else if (hint()) {
-    <small [id]="'support-' + label()">{{ hint() }}</small>
+    <small [id]="hintId">{{ hint() }}</small>
   }
 </label>
