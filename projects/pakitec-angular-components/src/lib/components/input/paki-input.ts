@@ -18,6 +18,8 @@ export class PakiInput implements ControlValueAccessor {
   readonly hint = input('');
   readonly list = input('');
   readonly error = input('');
+  /** Marca o campo como inválido mesmo sem mensagem de erro. */
+  readonly invalid = input(false);
   readonly mask = input<'cep' | 'phone' | 'cpf' | 'cnpj' | null>(null);
   protected readonly effectiveMask = computed(() => this.mask() ?? (this.label() === 'CPF' ? 'cpf' : this.label() === 'CNPJ' ? 'cnpj' : null));
   readonly blurred = output<void>();
