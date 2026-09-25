@@ -5,10 +5,10 @@
   "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
   "phase": "BUILD",
   "lastStablePhase": "READY_TO_BUILD",
-  "status": "in_progress",
+  "status": "blocked",
   "planRevision": 1,
   "attempts": 1,
-  "updatedAt": "2026-09-25T22:55:00+00:00",
+  "updatedAt": "2026-09-25T23:02:00+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -261,6 +261,27 @@
       "issueKey": "SCRUM-1132",
       "commentId": "14000",
       "recordedAt": "2026-09-25T22:54:06.185Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14001",
+      "recordedAt": "2026-09-25T22:54:55.517Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-failed",
+      "eventType": "TASK_FAILED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14002",
+      "recordedAt": "2026-09-25T23:01:09.162Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-task-020",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14003",
+      "recordedAt": "2026-09-25T23:01:17.813Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -446,11 +467,11 @@
     },
     "TASK-020": {
       "issueKey": "SCRUM-1133",
-      "status": "pending",
+      "status": "failed",
       "owner": "sdd-implementer",
-      "startedAt": null,
-      "finishedAt": null,
-      "observation": null
+      "startedAt": "2026-09-25T22:54:49+00:00",
+      "finishedAt": "2026-09-25T23:00:56+00:00",
+      "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
     },
     "TASK-021": {
       "issueKey": "SCRUM-1134",
@@ -531,7 +552,7 @@
   "buildConcurrency": "sequential",
   "buildStartedAt": "2026-09-25T01:10:21+00:00",
   "workingBranch": "feat/scrum-1110-toast-error-states",
-  "buildFinishedAt": null,
+  "buildFinishedAt": "2026-09-25T23:00:56+00:00",
   "resumeNotes": [
     {
       "at": "2026-09-25T18:01:23+00:00",
@@ -545,5 +566,16 @@
       "at": "2026-09-25T22:55:00+00:00",
       "note": "Retomada apos falha do agente anterior. Estado reconciliado com git (HEAD cca23a2) e Jira: TASK-001..019 concluidas; 129/129 testes e build PASS. Proximo: TASK-020 (evidencia visual), TASK-021, QA. Worktrees residuais em .claude/worktrees nao consolidados (superados pelos commits da branch)."
     }
-  ]
+  ],
+  "buildBlocked": {
+    "reason": "VISUAL_EVIDENCE_FAILED",
+    "stage": "TASK-020",
+    "detail": "Stories do toast (TASK-019) falham com NG0203 e demos sem moduleMetadata; registro visual do servidor reconhece apenas AC-001; servidor de navegador reporta 1.62.0-alpha-1783623505000.",
+    "resolvable": "Autorizar correcao das stories, alinhar registro de criterios e ligar navegador v0.0.78+; retomar a partir da TASK-020."
+  },
+  "visualPreflight": {
+    "available": true,
+    "version": "1.62.0-alpha-1783623505000",
+    "observedAt": "2026-09-25T23:00:00+00:00"
+  }
 }
