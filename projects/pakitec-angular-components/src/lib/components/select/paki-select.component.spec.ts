@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -47,6 +47,42 @@ class RemoteHost {
     );
     return of(filtered).pipe(delay(50));
   };
+}
+
+@Component({
+  imports: [PakiSelect, ReactiveFormsModule],
+  template: '<paki-select label="Espécie" [items]="items" error="Campo obrigatório" />',
+})
+class SelectErrorHost {
+  items = OPTIONS;
+}
+
+@Component({
+  imports: [PakiSelect, ReactiveFormsModule],
+  template: '<paki-select label="Espécie" [items]="items" [invalid]="true" />',
+})
+class SelectInvalidNoErrorHost {
+  items = OPTIONS;
+}
+
+@Component({
+  imports: [PakiSelect, ReactiveFormsModule],
+  template: `
+    <paki-select label="Espécie" [items]="items" error="Erro primeiro" />
+    <paki-select label="Espécie" [items]="items" error="Erro segundo" />
+  `,
+})
+class TwoSelectsSameLabelHost {
+  items = OPTIONS;
+}
+
+@Component({
+  imports: [PakiSelect, ReactiveFormsModule],
+  template: '<paki-select label="Espécie" [items]="items" [error]="errorMessage()" />',
+})
+class SelectDynamicErrorHost {
+  items = OPTIONS;
+  errorMessage = signal('Erro inicial');
 }
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -291,5 +327,80 @@ describe('PakiSelect', () => {
     fixture.detectChanges();
     const input = fixture.nativeElement.querySelector('input');
     expect(input.value).toBe('Gato');
+  });
+
+  describe('estado de erro (TASK-012)', () => {
+    it('error não vazio marca inválido, mostra borda e mensagem (AC-009)', async () => {
+      await TestBed.configureTestingModule({ imports: [SelectErrorHost] }).compileComponents();
+      const fixture = TestBed.createComponent(SelectErrorHost);
+      fixture.detectChanges();
+
+      const input = fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
+      const message = fixture.nativeElement.querySelector('small.error') as HTMLElement;
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(message).toBeTruthy();
+      expect(message.textContent).toBe('Campo obrigatório');
+      expect(input.getAttribute('aria-describedby')).toBe(message.id);
+    });
+
+    it('invalid = true sem error mostra somente a borda, sem slot residual', async () => {
+      await TestBed.configureTestingModule({ imports: [SelectInvalidNoErrorHost] }).compileComponents();
+      const fixture = TestBed.createComponent(SelectInvalidNoErrorHost);
+      fixture.detectChanges();
+
+      const input = fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(fixture.nativeElement.querySelector('small')).toBeNull();
+    });
+
+    it('aria-invalid e aria-describedby apontam para o id real da mensagem (AC-010)', async () => {
+      await TestBed.configureTestingModule({ imports: [SelectErrorHost] }).compileComponents();
+      const fixture = TestBed.createComponent(SelectErrorHost);
+      fixture.detectChanges();
+
+      const input = fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
+      const message = fixture.nativeElement.querySelector('small.error') as HTMLElement;
+
+      expect(message.id).toBeTruthy();
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(input.getAttribute('aria-describedby')).toBe(message.id);
+    });
+
+    it('ids de duas instâncias com o mesmo label são distintos', async () => {
+      await TestBed.configureTestingModule({ imports: [TwoSelectsSameLabelHost] }).compileComponents();
+      const fixture = TestBed.createComponent(TwoSelectsSameLabelHost);
+      fixture.detectChanges();
+
+      const inputs = fixture.nativeElement.querySelectorAll('input[role="combobox"]');
+      const messages = fixture.nativeElement.querySelectorAll('small.error');
+
+      expect(messages.length).toBe(2);
+      expect(messages[0].id).not.toBe(messages[1].id);
+      expect(inputs[0].getAttribute('aria-describedby')).toBe(messages[0].id);
+      expect(inputs[1].getAttribute('aria-describedby')).toBe(messages[1].id);
+    });
+
+    it('mensagem de texto acompanha o estado (AC-011)', async () => {
+      await TestBed.configureTestingModule({ imports: [SelectDynamicErrorHost] }).compileComponents();
+      const fixture = TestBed.createComponent(SelectDynamicErrorHost);
+      fixture.detectChanges();
+
+      const input = fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
+      const getMessage = () => fixture.nativeElement.querySelector('small.error') as HTMLElement | null;
+
+      expect(getMessage()?.textContent).toBe('Erro inicial');
+      expect(input.getAttribute('aria-describedby')).toBe(getMessage()?.id ?? '');
+
+      fixture.componentInstance.errorMessage.set('Erro atualizado');
+      fixture.detectChanges();
+      expect(getMessage()?.textContent).toBe('Erro atualizado');
+
+      fixture.componentInstance.errorMessage.set('');
+      fixture.detectChanges();
+      expect(getMessage()).toBeNull();
+      expect(input.getAttribute('aria-describedby')).toBeNull();
+    });
   });
 });

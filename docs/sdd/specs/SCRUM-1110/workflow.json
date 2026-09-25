@@ -223,30 +223,6 @@
       "issueKey": "SCRUM-1121",
       "commentId": "13963",
       "recordedAt": "2026-09-25T19:04:52.116Z"
-    },
-    {
-      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-started",
-      "eventType": "TASK_STARTED",
-      "issueKey": "SCRUM-1123",
-      "recordedAt": "2026-09-25T21:54:01.000Z"
-    },
-    {
-      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-completed",
-      "eventType": "TASK_COMPLETED",
-      "issueKey": "SCRUM-1123",
-      "recordedAt": "2026-09-25T21:54:01.000Z"
-    },
-    {
-      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-started",
-      "eventType": "TASK_STARTED",
-      "issueKey": "SCRUM-1124",
-      "recordedAt": "2026-09-25T21:55:21.000Z"
-    },
-    {
-      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-completed",
-      "eventType": "TASK_COMPLETED",
-      "issueKey": "SCRUM-1124",
-      "recordedAt": "2026-09-25T22:20:00.000Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -352,19 +328,19 @@
     },
     "TASK-010": {
       "issueKey": "SCRUM-1123",
-      "status": "completed",
+      "status": "pending",
       "owner": "sdd-implementer",
-      "startedAt": "2026-09-25T21:54:01+00:00",
-      "finishedAt": "2026-09-25T21:54:01+00:00",
-      "observation": "Suite de erro do PakiInput com 5 testes (AC-008/010/011); commit f0a8a795."
+      "startedAt": null,
+      "finishedAt": null,
+      "observation": null
     },
     "TASK-011": {
       "issueKey": "SCRUM-1124",
-      "status": "completed",
+      "status": "pending",
       "owner": "sdd-implementer",
-      "startedAt": "2026-09-25T21:55:21+00:00",
-      "finishedAt": "2026-09-25T22:20:00+00:00",
-      "observation": "API de erro acessivel implementada; testes TDD e suite pre-existente verdes; build PASS; commit d2fcaf5 corrigido para manter os testes."
+      "startedAt": null,
+      "finishedAt": null,
+      "observation": null
     },
     "TASK-012": {
       "issueKey": "SCRUM-1125",

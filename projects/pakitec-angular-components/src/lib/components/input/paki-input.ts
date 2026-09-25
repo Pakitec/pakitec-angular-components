@@ -20,17 +20,11 @@ export class PakiInput implements ControlValueAccessor {
   readonly autocomplete = input('off');
   readonly hint = input('');
   readonly list = input('');
+  /** Mensagem de erro inline. Quando preenchida, marca o campo como inválido. */
   readonly error = input('');
   /** Marca o campo como inválido mesmo sem mensagem de erro. */
   readonly invalid = input(false);
   readonly mask = input<'cep' | 'phone' | 'cpf' | 'cnpj' | null>(null);
-  protected readonly effectiveMask = computed(() => this.mask() ?? (this.label() === 'CPF' ? 'cpf' : this.label() === 'CNPJ' ? 'cnpj' : null));
-  readonly blurred = output<void>();
-  /** Exibe o controle de mostrar/ocultar em campos de senha. */
-  readonly showPasswordToggle = input(true);
-  protected readonly value = signal('');
-  protected readonly disabled = signal(false);
-  protected readonly passwordVisible = signal(false);
 
   /** Id numérico único desta instância. */
   private readonly instanceId = ++PakiInput.instanceCounter;
@@ -39,7 +33,7 @@ export class PakiInput implements ControlValueAccessor {
   /** Id do hint; usado em `aria-describedby` quando não há erro. */
   protected readonly hintId = `paki-input-hint-${this.instanceId}`;
   /** Indica se existe mensagem de erro preenchida. */
-  protected readonly hasError = computed(() => Boolean(this.error()));
+  protected readonly hasError = computed(() => this.error().length > 0);
   /** Regra única de invalidade: `invalid` explícito ou mensagem de erro não vazia. */
   protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
   /** Associação acessível: aponta para a mensagem de erro ou para o hint. */
@@ -48,6 +42,13 @@ export class PakiInput implements ControlValueAccessor {
     if (this.hint()) return this.hintId;
     return null;
   });
+  protected readonly effectiveMask = computed(() => this.mask() ?? (this.label() === 'CPF' ? 'cpf' : this.label() === 'CNPJ' ? 'cnpj' : null));
+  readonly blurred = output<void>();
+  /** Exibe o controle de mostrar/ocultar em campos de senha. */
+  readonly showPasswordToggle = input(true);
+  protected readonly value = signal('');
+  protected readonly disabled = signal(false);
+  protected readonly passwordVisible = signal(false);
 
   private onChange: (value: string | number) => void = () => undefined;
   private onTouched: () => void = () => undefined;

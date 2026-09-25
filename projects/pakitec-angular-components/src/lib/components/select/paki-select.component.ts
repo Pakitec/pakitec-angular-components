@@ -69,6 +69,10 @@ export class PakiSelect implements ControlValueAccessor {
   readonly options = input<PakiOption[]>([]);
   readonly searchFn = input<PakiSearchFn | undefined>(undefined);
   readonly noResultsMessage = input('Nenhum resultado');
+  /** Mensagem de erro inline. Quando preenchida, marca o campo como inválido. */
+  readonly error = input('');
+  /** Marca o campo como inválido mesmo sem mensagem de erro. */
+  readonly invalid = input(false);
 
   protected readonly value = signal<string>('');
   protected readonly disabled = signal(false);
