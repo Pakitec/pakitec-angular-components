@@ -241,7 +241,8 @@ describe('PakiToastContainer: acessibilidade, posição e publicação (TASK-016
   it('avisa sobre instância duplicada do container em dev mode (FR-010)', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     try {
-      TestBed.createComponent(DirectPakiToastContainer);
+      const secondFixture = TestBed.createComponent(DirectPakiToastContainer);
+      secondFixture.detectChanges();
       expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('paki-toast-container'));
     } finally {
       warnSpy.mockRestore();

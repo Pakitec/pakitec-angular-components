@@ -1,4 +1,8 @@
-<div class="paki-toast__card" [class]="typeClass()">
+<div
+  class="paki-toast__card"
+  [class]="typeClass()"
+  [attr.role]="data().type === 'error' ? 'alert' : null"
+>
   <span class="paki-toast__icon" aria-hidden="true">{{ icon() }}</span>
   <div class="paki-toast__content">
     <strong class="paki-toast__title">{{ data().title }}</strong>

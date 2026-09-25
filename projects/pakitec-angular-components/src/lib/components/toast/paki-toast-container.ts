@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, isDevMode, OnInit } from '@angular/core';
 
 import { PakiToast } from './paki-toast';
 import { PakiToastPosition } from './paki-toast.models';
@@ -18,7 +18,10 @@ import { PakiToastService } from './paki-toast.service';
   styleUrl: './paki-toast-container.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PakiToastContainer {
+export class PakiToastContainer implements OnInit {
+  /** Contador de instâncias montadas para detectar containers duplicados (FR-010). */
+  private static instanceCount = 0;
+
   protected readonly service = inject(PakiToastService);
 
   /** Canto da tela onde a pilha fica fixada. Padrao: `top-right` (FR-008). */
@@ -43,5 +46,14 @@ export class PakiToastContainer {
   /** Retoma o autodismiss do toast quando o cursor ou o foco saem. */
   protected resume(id: number): void {
     this.service.resumeAutodismiss(id);
+  }
+
+  ngOnInit(): void {
+    PakiToastContainer.instanceCount++;
+    if (isDevMode() && PakiToastContainer.instanceCount > 1) {
+      console.warn(
+        'paki-toast-container: mais de uma instância detectada. Mantenha apenas um container por aplicação para evitar toasts duplicados.',
+      );
+    }
   }
 }

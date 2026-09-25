@@ -7,6 +7,25 @@
   padding: 12px 16px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(0);
+  opacity: 1;
+  transition:
+    transform 0.25s ease-out,
+    opacity 0.25s ease-out;
+}
+
+.paki-toast__card.leaving {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paki-toast__card,
+  .paki-toast__card.leaving {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 // Icone do tipo. Herda a cor do texto do tipo (mesma variante de token) e
