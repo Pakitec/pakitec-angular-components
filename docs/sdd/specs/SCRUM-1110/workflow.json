@@ -8,7 +8,7 @@
   "status": "in_progress",
   "planRevision": 1,
   "attempts": 1,
-  "updatedAt": "2026-09-24T22:09:30.000-03:00",
+  "updatedAt": "2026-09-25T01:12:47+00:00",
   "jira": {
     "profileId": "pakitec",
     "projectKey": "SCRUM"
@@ -97,6 +97,20 @@
       "issueKey": "SCRUM-1110",
       "commentId": "13943",
       "recordedAt": "2026-09-25T01:09:32.496Z"
+    },
+    {
+      "eventKey": "SCRUM-1114/scr1110-plan-20260924/r1/task-001-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1114",
+      "commentId": "13945",
+      "recordedAt": "2026-09-25T01:11:27.545Z"
+    },
+    {
+      "eventKey": "SCRUM-1114/scr1110-plan-20260924/r1/task-001-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1114",
+      "commentId": "13946",
+      "recordedAt": "2026-09-25T01:12:51.065Z"
     }
   ],
   "pendingJiraEvents": [],
@@ -125,7 +139,7 @@
     }
   },
   "subtasks": {
-    "TASK-001": { "issueKey": "SCRUM-1114", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
+    "TASK-001": { "issueKey": "SCRUM-1114", "status": "completed", "owner": "sdd-implementer", "startedAt": "2026-09-25T01:11:14+00:00", "finishedAt": "2026-09-25T01:12:47+00:00", "observation": "Tokens --color-info-bg/--color-info-text nos dois temas; npm run build PASS." },
     "TASK-002": { "issueKey": "SCRUM-1115", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
     "TASK-003": { "issueKey": "SCRUM-1116", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
     "TASK-004": { "issueKey": "SCRUM-1117", "status": "pending", "owner": "sdd-implementer", "startedAt": null, "finishedAt": null, "observation": null },
