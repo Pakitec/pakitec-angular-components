@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { moduleMetadata } from '@storybook/angular-vite';
-import { Component, OnInit, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, OnInit, inject, input, signal, viewChild } from '@angular/core';
 
 import { PakiInput } from '../public-api';
 import { PakiSelect } from '../public-api';
@@ -132,9 +132,39 @@ class SaveFailureDemo {
   }
 }
 
+/**
+ * Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para
+ * ficar visível e clicável, e volta ao lugar original quando o diálogo fecha.
+ */
+@Component({
+  selector: 'paki-toast-dialog-demo',
+  imports: [PakiToastContainer],
+  template: `
+    <button type="button" (click)="open()">Abrir diálogo modal</button>
+    <paki-toast-container />
+    <dialog #dialog style="width: min(520px, 90vw)">
+      <p>Formulário dentro de um diálogo modal.</p>
+      <button type="button" (click)="fail()">Salvar (falha)</button>
+      <button type="button" (click)="dialog.close()">Fechar diálogo</button>
+    </dialog>
+  `,
+})
+class ToastDialogDemo {
+  readonly toast = inject(PakiToastService);
+  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+
+  open(): void {
+    this.dialog().nativeElement.showModal();
+  }
+
+  fail(): void {
+    this.toast.error('Horário indisponível', 'O profissional já possui compromisso nesse período.');
+  }
+}
+
 const meta: Meta = {
   title: 'Componentes/Toast',
-  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],
+  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],
 };
 export default meta;
 type Story = StoryObj;
@@ -173,4 +203,9 @@ export const Positions: Story = {
 /** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */
 export const SaveFailureCombined: Story = {
   render: () => ({ template: '<paki-save-failure-demo />' }),
+};
+
+/** Toast sobre diálogo modal: visível e clicável acima da top layer. */
+export const OverModalDialog: Story = {
+  render: () => ({ template: '<paki-toast-dialog-demo />' }),
 };

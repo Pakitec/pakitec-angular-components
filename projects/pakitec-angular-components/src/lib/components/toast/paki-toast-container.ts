@@ -1,8 +1,11 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   isDevMode,
@@ -116,12 +119,91 @@ export class PakiToastContainer implements OnInit {
     }
   }
 
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
+  /** Onde o container nasceu; é para lá que ele volta quando nenhum diálogo modal está aberto. */
+  private homeParent: Node | null = null;
+  private homeNextSibling: Node | null = null;
+  /** Diálogos modais abertos, na ordem em que abriram (o último fica por cima). */
+  private readonly modalStack: HTMLDialogElement[] = [];
+
+  /**
+   * Um `<dialog>` aberto com `showModal()` fica na top layer do navegador: nenhum
+   * z-index o ultrapassa e todo o resto da página fica inerte. Para os toasts
+   * continuarem visíveis e clicáveis, o container passa a morar dentro do diálogo
+   * modal aberto mais recente e volta ao lugar original quando ele fecha.
+   */
+  private followModalDialogs(): void {
+    const view = this.document.defaultView;
+    if (!view || typeof view.MutationObserver === 'undefined') return;
+    this.homeParent = this.host.parentNode;
+    this.homeNextSibling = this.host.nextSibling;
+    for (const dialog of Array.from(this.document.querySelectorAll('dialog'))) {
+      if (isModalOpen(dialog)) this.modalStack.push(dialog);
+    }
+    const observer = new view.MutationObserver((records) => {
+      for (const record of records) {
+        const target = record.target as Element;
+        if (record.type === 'attributes' && target.tagName === 'DIALOG') {
+          const dialog = target as HTMLDialogElement;
+          const index = this.modalStack.indexOf(dialog);
+          if (index >= 0) this.modalStack.splice(index, 1);
+          if (isModalOpen(dialog)) this.modalStack.push(dialog);
+        }
+      }
+      // Diálogos removidos do DOM saem da pilha.
+      for (let i = this.modalStack.length - 1; i >= 0; i--) {
+        if (!this.modalStack[i].isConnected || !isModalOpen(this.modalStack[i])) this.modalStack.splice(i, 1);
+      }
+      this.relocate();
+    });
+    observer.observe(this.document.documentElement, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['open'],
+    });
+    this.relocate();
+    this.destroyRef.onDestroy(() => {
+      observer.disconnect();
+      this.modalStack.length = 0;
+      this.relocate();
+    });
+  }
+
+  private relocate(): void {
+    const dialog = this.modalStack.at(-1);
+    if (dialog) {
+      if (this.host.parentNode !== dialog) dialog.appendChild(this.host);
+      return;
+    }
+    const home = this.homeParent;
+    if (!home || this.host.parentNode === home) return;
+    if (!home.isConnected && this.host.isConnected) return;
+    const next = this.homeNextSibling && this.homeNextSibling.parentNode === home ? this.homeNextSibling : null;
+    home.insertBefore(this.host, next);
+  }
+
   ngOnInit(): void {
+    this.followModalDialogs();
     PakiToastContainer.instanceCount++;
     if (isDevMode() && PakiToastContainer.instanceCount > 1) {
       console.warn(
         'paki-toast-container: mais de uma instância detectada. Mantenha apenas um container por aplicação para evitar toasts duplicados.',
       );
     }
+  }
+}
+
+/** `true` para um `<dialog>` aberto como modal (`showModal()`). */
+function isModalOpen(dialog: HTMLDialogElement): boolean {
+  if (!dialog.open) return false;
+  // Ambientes sem diálogo modal (ex.: jsdom): qualquer diálogo aberto conta como modal.
+  if (typeof dialog.showModal !== 'function') return true;
+  try {
+    return dialog.matches(':modal');
+  } catch {
+    return true;
   }
 }

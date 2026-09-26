@@ -7849,7 +7849,7 @@
         },
         {
             "name": "PakiToastContainer",
-            "id": "component-PakiToastContainer-edc51a7b2e7284755a35c189afa717aa340237240184a66f3dd94e25b10950858acb425cf86c0bdad8bcc3fb82c24048bc61be4b33d9bc21722bb558c9470952",
+            "id": "component-PakiToastContainer-8cf299b542c414f2acee03d5a043e9b388d364724bb63c1b4ec7937fd9f898a6f83c0c038cace574c0170878d527f9e38360dd6327d0db5f5cd895be03331ce8",
             "file": "projects/pakitec-angular-components/src/lib/components/toast/paki-toast-container.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -7879,7 +7879,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Canto da tela onde a pilha fica fixada. Padrao: <code>top-right</code> (FR-008).</p>\n",
-                    "line": 37,
+                    "line": 40,
                     "rawdescription": "\nCanto da tela onde a pilha fica fixada. Padrao: `top-right` (FR-008).",
                     "modifierKind": [
                         148
@@ -7890,6 +7890,40 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "destroyRef",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(DestroyRef)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 124,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "document",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(DOCUMENT)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 123,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
                     "name": "focused",
                     "coverageIgnore": false,
                     "defaultValue": "new Set<number>()",
@@ -7899,8 +7933,57 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Ids dos toasts com o foco do teclado dentro deles.</p>\n",
-                    "line": 57,
+                    "line": 60,
                     "rawdescription": "\nIds dos toasts com o foco do teclado dentro deles.",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "homeNextSibling",
+                    "coverageIgnore": false,
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Node | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 127,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "homeParent",
+                    "coverageIgnore": false,
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Node | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Onde o container nasceu; é para lá que ele volta quando nenhum diálogo modal está aberto.</p>\n",
+                    "line": 126,
+                    "rawdescription": "\nOnde o container nasceu; é para lá que ele volta quando nenhum diálogo modal está aberto.",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "host",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject<ElementRef<HTMLElement>>(ElementRef).nativeElement",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 122,
+                    "rawdescription": "\n",
                     "modifierKind": [
                         123,
                         148
@@ -7916,7 +7999,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Ids dos toasts com o cursor sobre eles. Junto com {@link focused}, decide\nquando pausar e quando retomar o autodismiss (FR-005).</p>\n",
-                    "line": 54,
+                    "line": 57,
                     "rawdescription": "\n\nIds dos toasts com o cursor sobre eles. Junto com {@link focused}, decide\nquando pausar e quando retomar o autodismiss (FR-005).\n",
                     "modifierKind": [
                         123,
@@ -7933,11 +8016,28 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Contador de instâncias montadas para detectar containers duplicados (FR-010).</p>\n",
-                    "line": 32,
+                    "line": 35,
                     "rawdescription": "\nContador de instâncias montadas para detectar containers duplicados (FR-010).",
                     "modifierKind": [
                         123,
                         126
+                    ]
+                },
+                {
+                    "name": "modalStack",
+                    "coverageIgnore": false,
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "HTMLDialogElement[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "<p>Diálogos modais abertos, na ordem em que abriram (o último fica por cima).</p>\n",
+                    "line": 129,
+                    "rawdescription": "\nDiálogos modais abertos, na ordem em que abriram (o último fica por cima).",
+                    "modifierKind": [
+                        123,
+                        148
                     ]
                 },
                 {
@@ -7950,7 +8050,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "<p>Classe CSS da posicao aplicada na pilha. Derivada do input; a TASK-017\ncomplementa o estilo de cada posicao.</p>\n",
-                    "line": 43,
+                    "line": 46,
                     "rawdescription": "\n\nClasse CSS da posicao aplicada na pilha. Derivada do input; a TASK-017\ncomplementa o estilo de cada posicao.\n",
                     "modifierKind": [
                         124,
@@ -7967,7 +8067,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 34,
+                    "line": 37,
                     "rawdescription": "\n",
                     "modifierKind": [
                         124,
@@ -7992,7 +8092,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 46,
+                    "line": 49,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\nFecha o toast que emitiu `closed`, removendo-o da fila do servico.",
@@ -8015,13 +8115,29 @@
                     ]
                 },
                 {
+                    "name": "followModalDialogs",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 137,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nUm `<dialog>` aberto com `showModal()` fica na top layer do navegador: nenhum\nz-index o ultrapassa e todo o resto da página fica inerte. Para os toasts\ncontinuarem visíveis e clicáveis, o container passa a morar dentro do diálogo\nmodal aberto mais recente e volta ao lugar original quando ele fecha.\n",
+                    "description": "<p>Um <code>&lt;dialog&gt;</code> aberto com <code>showModal()</code> fica na top layer do navegador: nenhum\nz-index o ultrapassa e todo o resto da página fica inerte. Para os toasts\ncontinuarem visíveis e clicáveis, o container passa a morar dentro do diálogo\nmodal aberto mais recente e volta ao lugar original quando ele fecha.</p>\n",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "ngOnInit",
                     "coverageIgnore": false,
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 119,
+                    "line": 188,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n",
@@ -8043,7 +8159,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 86,
+                    "line": 89,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\nRegistra o foco dentro do toast e pausa o autodismiss.",
@@ -8089,7 +8205,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 101,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nRegistra a saida do foco; retoma so se o cursor tambem saiu. O foco que\npassa para outro elemento do mesmo toast (`relatedTarget` dentro do host)\nnao conta como saida.\n",
@@ -8100,8 +8216,8 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 3077,
-                                "end": 3079,
+                                "pos": 3149,
+                                "end": 3151,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -8114,8 +8230,8 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "pos": 3071,
-                                "end": 3076,
+                                "pos": 3143,
+                                "end": 3148,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -8126,8 +8242,8 @@
                         },
                         {
                             "name": {
-                                "pos": 3123,
-                                "end": 3128,
+                                "pos": 3195,
+                                "end": 3200,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -8140,8 +8256,8 @@
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
-                                "pos": 3117,
-                                "end": 3122,
+                                "pos": 3189,
+                                "end": 3194,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16842752,
@@ -8168,7 +8284,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 77,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\nRegistra o cursor sobre o toast e pausa o autodismiss.",
@@ -8206,7 +8322,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 83,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\nRegistra a saida do cursor; retoma so se o foco tambem saiu.",
@@ -8229,6 +8345,22 @@
                     ]
                 },
                 {
+                    "name": "relocate",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 175,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "updatePause",
                     "coverageIgnore": false,
                     "args": [
@@ -8244,7 +8376,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 111,
+                    "line": 114,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nPausa o autodismiss enquanto houver hover ou foco no toast e retoma\nquando os dois saem. O servico ignora pausas e retomadas repetidas, entao\nso a transicao entre \"nenhum\" e \"algum\" muda o timer.\n",
@@ -8281,7 +8413,7 @@
             "description": "<p>Container que renderiza a fila de toasts do {@link PakiToastService} num\ncanto fixo da tela. Pausa o autodismiss de cada toast em hover ou foco e\nretoma so quando hover e foco saem (AC-007). O consumidor deve montar uma\nunica instancia no shell da aplicacao (FR-010); o aviso sobre instancias\nduplicadas chega na TASK-017.</p>\n",
             "rawdescription": "\n\nContainer que renderiza a fila de toasts do {@link PakiToastService} num\ncanto fixo da tela. Pausa o autodismiss de cada toast em hover ou foco e\nretoma so quando hover e foco saem (AC-007). O consumidor deve montar uma\nunica instancia no shell da aplicacao (FR-010); o aviso sobre instancias\nduplicadas chega na TASK-017.\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  effect,\n  inject,\n  input,\n  isDevMode,\n  OnInit,\n} from '@angular/core';\n\nimport { PakiToast } from './paki-toast';\nimport { PakiToastPosition } from './paki-toast.models';\nimport { PakiToastService } from './paki-toast.service';\n\n/**\n * Container que renderiza a fila de toasts do {@link PakiToastService} num\n * canto fixo da tela. Pausa o autodismiss de cada toast em hover ou foco e\n * retoma so quando hover e foco saem (AC-007). O consumidor deve montar uma\n * unica instancia no shell da aplicacao (FR-010); o aviso sobre instancias\n * duplicadas chega na TASK-017.\n */\n@Component({\n  selector: 'paki-toast-container',\n  imports: [PakiToast],\n  templateUrl: './paki-toast-container.html',\n  styleUrl: './paki-toast-container.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiToastContainer implements OnInit {\n  /** Contador de instâncias montadas para detectar containers duplicados (FR-010). */\n  private static instanceCount = 0;\n\n  protected readonly service = inject(PakiToastService);\n\n  /** Canto da tela onde a pilha fica fixada. Padrao: `top-right` (FR-008). */\n  readonly position = input<PakiToastPosition>('top-right');\n\n  /**\n   * Classe CSS da posicao aplicada na pilha. Derivada do input; a TASK-017\n   * complementa o estilo de cada posicao.\n   */\n  protected readonly positionClass = computed(() => `paki-toast-stack--${this.position()}`);\n\n  /** Fecha o toast que emitiu `closed`, removendo-o da fila do servico. */\n  protected close(id: number): void {\n    this.service.dismiss(id);\n  }\n\n  /**\n   * Ids dos toasts com o cursor sobre eles. Junto com {@link focused}, decide\n   * quando pausar e quando retomar o autodismiss (FR-005).\n   */\n  private readonly hovered = new Set<number>();\n\n  /** Ids dos toasts com o foco do teclado dentro deles. */\n  private readonly focused = new Set<number>();\n\n  constructor() {\n    // Remove o estado de hover e foco dos toasts que sairam da fila. Sem esta\n    // limpeza, os conjuntos cresceriam a cada toast removido com o cursor ou\n    // o foco sobre ele.\n    effect(() => {\n      const ids = new Set(this.service.toasts().map((toast) => toast.id));\n      for (const set of [this.hovered, this.focused]) {\n        for (const id of set) {\n          if (!ids.has(id)) set.delete(id);\n        }\n      }\n    });\n  }\n\n  /** Registra o cursor sobre o toast e pausa o autodismiss. */\n  protected onMouseEnter(id: number): void {\n    this.hovered.add(id);\n    this.updatePause(id);\n  }\n\n  /** Registra a saida do cursor; retoma so se o foco tambem saiu. */\n  protected onMouseLeave(id: number): void {\n    this.hovered.delete(id);\n    this.updatePause(id);\n  }\n\n  /** Registra o foco dentro do toast e pausa o autodismiss. */\n  protected onFocusIn(id: number): void {\n    this.focused.add(id);\n    this.updatePause(id);\n  }\n\n  /**\n   * Registra a saida do foco; retoma so se o cursor tambem saiu. O foco que\n   * passa para outro elemento do mesmo toast (`relatedTarget` dentro do host)\n   * nao conta como saida.\n   * @param id Id do toast que perdeu o foco.\n   * @param event Evento `focusout` emitido pelo host `<paki-toast>`.\n   */\n  protected onFocusOut(id: number, event: FocusEvent): void {\n    const host = event.currentTarget as Node | null;\n    const next = event.relatedTarget as Node | null;\n    if (host && next && host.contains(next)) return;\n    this.focused.delete(id);\n    this.updatePause(id);\n  }\n\n  /**\n   * Pausa o autodismiss enquanto houver hover ou foco no toast e retoma\n   * quando os dois saem. O servico ignora pausas e retomadas repetidas, entao\n   * so a transicao entre \"nenhum\" e \"algum\" muda o timer.\n   */\n  private updatePause(id: number): void {\n    if (this.hovered.has(id) || this.focused.has(id)) {\n      this.service.pauseAutodismiss(id);\n    } else {\n      this.service.resumeAutodismiss(id);\n    }\n  }\n\n  ngOnInit(): void {\n    PakiToastContainer.instanceCount++;\n    if (isDevMode() && PakiToastContainer.instanceCount > 1) {\n      console.warn(\n        'paki-toast-container: mais de uma instância detectada. Mantenha apenas um container por aplicação para evitar toasts duplicados.',\n      );\n    }\n  }\n}\n",
+            "sourceCode": "import { DOCUMENT } from '@angular/common';\nimport {\n  ChangeDetectionStrategy,\n  Component,\n  computed,\n  DestroyRef,\n  effect,\n  ElementRef,\n  inject,\n  input,\n  isDevMode,\n  OnInit,\n} from '@angular/core';\n\nimport { PakiToast } from './paki-toast';\nimport { PakiToastPosition } from './paki-toast.models';\nimport { PakiToastService } from './paki-toast.service';\n\n/**\n * Container que renderiza a fila de toasts do {@link PakiToastService} num\n * canto fixo da tela. Pausa o autodismiss de cada toast em hover ou foco e\n * retoma so quando hover e foco saem (AC-007). O consumidor deve montar uma\n * unica instancia no shell da aplicacao (FR-010); o aviso sobre instancias\n * duplicadas chega na TASK-017.\n */\n@Component({\n  selector: 'paki-toast-container',\n  imports: [PakiToast],\n  templateUrl: './paki-toast-container.html',\n  styleUrl: './paki-toast-container.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PakiToastContainer implements OnInit {\n  /** Contador de instâncias montadas para detectar containers duplicados (FR-010). */\n  private static instanceCount = 0;\n\n  protected readonly service = inject(PakiToastService);\n\n  /** Canto da tela onde a pilha fica fixada. Padrao: `top-right` (FR-008). */\n  readonly position = input<PakiToastPosition>('top-right');\n\n  /**\n   * Classe CSS da posicao aplicada na pilha. Derivada do input; a TASK-017\n   * complementa o estilo de cada posicao.\n   */\n  protected readonly positionClass = computed(() => `paki-toast-stack--${this.position()}`);\n\n  /** Fecha o toast que emitiu `closed`, removendo-o da fila do servico. */\n  protected close(id: number): void {\n    this.service.dismiss(id);\n  }\n\n  /**\n   * Ids dos toasts com o cursor sobre eles. Junto com {@link focused}, decide\n   * quando pausar e quando retomar o autodismiss (FR-005).\n   */\n  private readonly hovered = new Set<number>();\n\n  /** Ids dos toasts com o foco do teclado dentro deles. */\n  private readonly focused = new Set<number>();\n\n  constructor() {\n    // Remove o estado de hover e foco dos toasts que sairam da fila. Sem esta\n    // limpeza, os conjuntos cresceriam a cada toast removido com o cursor ou\n    // o foco sobre ele.\n    effect(() => {\n      const ids = new Set(this.service.toasts().map((toast) => toast.id));\n      for (const set of [this.hovered, this.focused]) {\n        for (const id of set) {\n          if (!ids.has(id)) set.delete(id);\n        }\n      }\n    });\n  }\n\n  /** Registra o cursor sobre o toast e pausa o autodismiss. */\n  protected onMouseEnter(id: number): void {\n    this.hovered.add(id);\n    this.updatePause(id);\n  }\n\n  /** Registra a saida do cursor; retoma so se o foco tambem saiu. */\n  protected onMouseLeave(id: number): void {\n    this.hovered.delete(id);\n    this.updatePause(id);\n  }\n\n  /** Registra o foco dentro do toast e pausa o autodismiss. */\n  protected onFocusIn(id: number): void {\n    this.focused.add(id);\n    this.updatePause(id);\n  }\n\n  /**\n   * Registra a saida do foco; retoma so se o cursor tambem saiu. O foco que\n   * passa para outro elemento do mesmo toast (`relatedTarget` dentro do host)\n   * nao conta como saida.\n   * @param id Id do toast que perdeu o foco.\n   * @param event Evento `focusout` emitido pelo host `<paki-toast>`.\n   */\n  protected onFocusOut(id: number, event: FocusEvent): void {\n    const host = event.currentTarget as Node | null;\n    const next = event.relatedTarget as Node | null;\n    if (host && next && host.contains(next)) return;\n    this.focused.delete(id);\n    this.updatePause(id);\n  }\n\n  /**\n   * Pausa o autodismiss enquanto houver hover ou foco no toast e retoma\n   * quando os dois saem. O servico ignora pausas e retomadas repetidas, entao\n   * so a transicao entre \"nenhum\" e \"algum\" muda o timer.\n   */\n  private updatePause(id: number): void {\n    if (this.hovered.has(id) || this.focused.has(id)) {\n      this.service.pauseAutodismiss(id);\n    } else {\n      this.service.resumeAutodismiss(id);\n    }\n  }\n\n  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;\n  private readonly document = inject(DOCUMENT);\n  private readonly destroyRef = inject(DestroyRef);\n  /** Onde o container nasceu; é para lá que ele volta quando nenhum diálogo modal está aberto. */\n  private homeParent: Node | null = null;\n  private homeNextSibling: Node | null = null;\n  /** Diálogos modais abertos, na ordem em que abriram (o último fica por cima). */\n  private readonly modalStack: HTMLDialogElement[] = [];\n\n  /**\n   * Um `<dialog>` aberto com `showModal()` fica na top layer do navegador: nenhum\n   * z-index o ultrapassa e todo o resto da página fica inerte. Para os toasts\n   * continuarem visíveis e clicáveis, o container passa a morar dentro do diálogo\n   * modal aberto mais recente e volta ao lugar original quando ele fecha.\n   */\n  private followModalDialogs(): void {\n    const view = this.document.defaultView;\n    if (!view || typeof view.MutationObserver === 'undefined') return;\n    this.homeParent = this.host.parentNode;\n    this.homeNextSibling = this.host.nextSibling;\n    for (const dialog of Array.from(this.document.querySelectorAll('dialog'))) {\n      if (isModalOpen(dialog)) this.modalStack.push(dialog);\n    }\n    const observer = new view.MutationObserver((records) => {\n      for (const record of records) {\n        const target = record.target as Element;\n        if (record.type === 'attributes' && target.tagName === 'DIALOG') {\n          const dialog = target as HTMLDialogElement;\n          const index = this.modalStack.indexOf(dialog);\n          if (index >= 0) this.modalStack.splice(index, 1);\n          if (isModalOpen(dialog)) this.modalStack.push(dialog);\n        }\n      }\n      // Diálogos removidos do DOM saem da pilha.\n      for (let i = this.modalStack.length - 1; i >= 0; i--) {\n        if (!this.modalStack[i].isConnected || !isModalOpen(this.modalStack[i])) this.modalStack.splice(i, 1);\n      }\n      this.relocate();\n    });\n    observer.observe(this.document.documentElement, {\n      subtree: true,\n      childList: true,\n      attributes: true,\n      attributeFilter: ['open'],\n    });\n    this.relocate();\n    this.destroyRef.onDestroy(() => {\n      observer.disconnect();\n      this.modalStack.length = 0;\n      this.relocate();\n    });\n  }\n\n  private relocate(): void {\n    const dialog = this.modalStack.at(-1);\n    if (dialog) {\n      if (this.host.parentNode !== dialog) dialog.appendChild(this.host);\n      return;\n    }\n    const home = this.homeParent;\n    if (!home || this.host.parentNode === home) return;\n    if (!home.isConnected && this.host.isConnected) return;\n    const next = this.homeNextSibling && this.homeNextSibling.parentNode === home ? this.homeNextSibling : null;\n    home.insertBefore(this.host, next);\n  }\n\n  ngOnInit(): void {\n    this.followModalDialogs();\n    PakiToastContainer.instanceCount++;\n    if (isDevMode() && PakiToastContainer.instanceCount > 1) {\n      console.warn(\n        'paki-toast-container: mais de uma instância detectada. Mantenha apenas um container por aplicação para evitar toasts duplicados.',\n      );\n    }\n  }\n}\n\n/** `true` para um `<dialog>` aberto como modal (`showModal()`). */\nfunction isModalOpen(dialog: HTMLDialogElement): boolean {\n  if (!dialog.open) return false;\n  // Ambientes sem diálogo modal (ex.: jsdom): qualquer diálogo aberto conta como modal.\n  if (typeof dialog.showModal !== 'function') return true;\n  try {\n    return dialog.matches(':modal');\n  } catch {\n    return true;\n  }\n}\n",
             "styleUrl": "./paki-toast-container.scss",
             "assetsDirs": [],
             "styleUrlsData": [
@@ -8293,8 +8425,8 @@
             "stylesData": "",
             "jsdoctags": [
                 {
-                    "pos": 295,
-                    "end": 640,
+                    "pos": 367,
+                    "end": 712,
                     "kind": 321,
                     "id": 0,
                     "flags": 16777216,
@@ -8302,8 +8434,8 @@
                     "transformFlags": 0,
                     "comment": [
                         {
-                            "pos": 295,
-                            "end": 346,
+                            "pos": 367,
+                            "end": 418,
                             "kind": 322,
                             "id": 0,
                             "flags": 16777216,
@@ -8312,16 +8444,16 @@
                             "text": "Container que renderiza a fila de toasts do "
                         },
                         {
-                            "pos": 346,
-                            "end": 370,
+                            "pos": 418,
+                            "end": 442,
                             "kind": 325,
                             "id": 0,
                             "flags": 16777216,
                             "modifierFlagsCache": 0,
                             "transformFlags": 0,
                             "name": {
-                                "pos": 353,
-                                "end": 369,
+                                "pos": 425,
+                                "end": 441,
                                 "kind": 80,
                                 "id": 0,
                                 "flags": 16777216,
@@ -8331,8 +8463,8 @@
                             "text": ""
                         },
                         {
-                            "pos": 370,
-                            "end": 638,
+                            "pos": 442,
+                            "end": 710,
                             "kind": 322,
                             "id": 0,
                             "flags": 16777216,
@@ -8349,7 +8481,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 57,
+                "line": 60,
                 "rawdescription": "\n"
             },
             "extends": [],
@@ -8366,6 +8498,11 @@
                         "name": "ToastDemo",
                         "type": "component",
                         "description": "Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`). O `inject()` fica no componente porque `render()` da story ro..."
+                    },
+                    {
+                        "name": "ToastDialogDemo",
+                        "type": "component",
+                        "description": "Toast sobre ` ` modal: o container entra no diálogo aberto (top layer) para ficar visível e clicável, e volta ao lugar original quando o..."
                     },
                     {
                         "name": "ToastPlayground",
@@ -8388,7 +8525,7 @@
         },
         {
             "name": "SaveFailureDemo",
-            "id": "component-SaveFailureDemo-ea5eca62aef0244b0d329b77fc709fc9ed436b9dd95e68bb02d6fdb92c8a2d0d6983a034a4e1ce46f10fe82153f377cac4c0be74fc0c43f5288ec0854ed548a2",
+            "id": "component-SaveFailureDemo-b70c444dc196fd66c6160b2155069b135ae2eac14fd52332ab3d0c5eef153d4b3140006f9222c54fb02fe05b0bf203942b68c26d21b9f5587da729c4d6a9466d",
             "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -8514,7 +8651,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, OnInit, inject, input, signal } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, ElementRef, OnInit, inject, input, signal, viewChild } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\n/**\n * Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\n * ficar visível e clicável, e volta ao lugar original quando o diálogo fecha.\n */\n@Component({\n  selector: 'paki-toast-dialog-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"open()\">Abrir diálogo modal</button>\n    <paki-toast-container />\n    <dialog #dialog style=\"width: min(520px, 90vw)\">\n      <p>Formulário dentro de um diálogo modal.</p>\n      <button type=\"button\" (click)=\"fail()\">Salvar (falha)</button>\n      <button type=\"button\" (click)=\"dialog.close()\">Fechar diálogo</button>\n    </dialog>\n  `,\n})\nclass ToastDialogDemo {\n  readonly toast = inject(PakiToastService);\n  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');\n\n  open(): void {\n    this.dialog().nativeElement.showModal();\n  }\n\n  fail(): void {\n    this.toast.error('Horário indisponível', 'O profissional já possui compromisso nesse período.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n\n/** Toast sobre diálogo modal: visível e clicável acima da top layer. */\nexport const OverModalDialog: Story = {\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -8817,7 +8954,7 @@
         },
         {
             "name": "ToastDemo",
-            "id": "component-ToastDemo-ea5eca62aef0244b0d329b77fc709fc9ed436b9dd95e68bb02d6fdb92c8a2d0d6983a034a4e1ce46f10fe82153f377cac4c0be74fc0c43f5288ec0854ed548a2",
+            "id": "component-ToastDemo-b70c444dc196fd66c6160b2155069b135ae2eac14fd52332ab3d0c5eef153d4b3140006f9222c54fb02fe05b0bf203942b68c26d21b9f5587da729c4d6a9466d",
             "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -8947,14 +9084,14 @@
             "description": "<p>Dispara um cenario de toast pelo botao ou ao abrir a story (<code>autoTrigger</code>).</p>\n<p>O <code>inject()</code> fica no componente porque <code>render()</code> da story roda fora de um\ncontexto de injecao (erro NG0203).</p>\n",
             "rawdescription": "\n\nDispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n\nO `inject()` fica no componente porque `render()` da story roda fora de um\ncontexto de injecao (erro NG0203).\n",
             "type": "component",
-            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, OnInit, inject, input, signal } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, ElementRef, OnInit, inject, input, signal, viewChild } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\n/**\n * Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\n * ficar visível e clicável, e volta ao lugar original quando o diálogo fecha.\n */\n@Component({\n  selector: 'paki-toast-dialog-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"open()\">Abrir diálogo modal</button>\n    <paki-toast-container />\n    <dialog #dialog style=\"width: min(520px, 90vw)\">\n      <p>Formulário dentro de um diálogo modal.</p>\n      <button type=\"button\" (click)=\"fail()\">Salvar (falha)</button>\n      <button type=\"button\" (click)=\"dialog.close()\">Fechar diálogo</button>\n    </dialog>\n  `,\n})\nclass ToastDialogDemo {\n  readonly toast = inject(PakiToastService);\n  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');\n\n  open(): void {\n    this.dialog().nativeElement.showModal();\n  }\n\n  fail(): void {\n    this.toast.error('Horário indisponível', 'O profissional já possui compromisso nesse período.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n\n/** Toast sobre diálogo modal: visível e clicável acima da top layer. */\nexport const OverModalDialog: Story = {\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "jsdoctags": [
                 {
-                    "pos": 546,
-                    "end": 751,
+                    "pos": 569,
+                    "end": 774,
                     "kind": 321,
                     "id": 0,
                     "flags": 16777216,
@@ -8983,8 +9120,133 @@
             }
         },
         {
+            "name": "ToastDialogDemo",
+            "id": "component-ToastDialogDemo-b70c444dc196fd66c6160b2155069b135ae2eac14fd52332ab3d0c5eef153d4b3140006f9222c54fb02fe05b0bf203942b68c26d21b9f5587da729c4d6a9466d",
+            "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "paki-toast-dialog-demo",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<button type=\"button\" (click)=\"open()\">Abrir diálogo modal</button>\n<paki-toast-container />\n<dialog #dialog style=\"width: min(520px, 90vw)\">\n  <p>Formulário dentro de um diálogo modal.</p>\n  <button type=\"button\" (click)=\"fail()\">Salvar (falha)</button>\n  <button type=\"button\" (click)=\"dialog.close()\">Fechar diálogo</button>\n</dialog>\n",
+            "templateUrl": [],
+            "templateVariables": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "dialog",
+                    "coverageIgnore": false,
+                    "defaultValue": "viewChild.required<ElementRef<HTMLDialogElement>>('dialog')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 154,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "toast",
+                    "coverageIgnore": false,
+                    "defaultValue": "inject(PakiToastService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 153,
+                    "rawdescription": "\n",
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "fail",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 160,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": ""
+                },
+                {
+                    "name": "open",
+                    "coverageIgnore": false,
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 156,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n",
+                    "description": ""
+                }
+            ],
+            "coverageIgnore": false,
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "PakiToastContainer"
+                }
+            ],
+            "description": "<p>Toast sobre <code>&lt;dialog&gt;</code> modal: o container entra no diálogo aberto (top layer) para\nficar visível e clicável, e volta ao lugar original quando o diálogo fecha.</p>\n",
+            "rawdescription": "\n\nToast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\nficar visível e clicável, e volta ao lugar original quando o diálogo fecha.\n",
+            "type": "component",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, ElementRef, OnInit, inject, input, signal, viewChild } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\n/**\n * Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\n * ficar visível e clicável, e volta ao lugar original quando o diálogo fecha.\n */\n@Component({\n  selector: 'paki-toast-dialog-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"open()\">Abrir diálogo modal</button>\n    <paki-toast-container />\n    <dialog #dialog style=\"width: min(520px, 90vw)\">\n      <p>Formulário dentro de um diálogo modal.</p>\n      <button type=\"button\" (click)=\"fail()\">Salvar (falha)</button>\n      <button type=\"button\" (click)=\"dialog.close()\">Fechar diálogo</button>\n    </dialog>\n  `,\n})\nclass ToastDialogDemo {\n  readonly toast = inject(PakiToastService);\n  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');\n\n  open(): void {\n    this.dialog().nativeElement.showModal();\n  }\n\n  fail(): void {\n    this.toast.error('Horário indisponível', 'O profissional já possui compromisso nesse período.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n\n/** Toast sobre diálogo modal: visível e clicável acima da top layer. */\nexport const OverModalDialog: Story = {\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n};\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "jsdoctags": [
+                {
+                    "pos": 4906,
+                    "end": 5078,
+                    "kind": 321,
+                    "id": 0,
+                    "flags": 16777216,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "comment": "Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\nficar visível e clicável, e volta ao lugar original quando o diálogo fecha."
+                }
+            ],
+            "extends": [],
+            "relationships": {
+                "incoming": [],
+                "outgoing": [
+                    {
+                        "name": "PakiToastContainer",
+                        "type": "component",
+                        "description": "Container que renderiza a fila de toasts do {@link PakiToastService} num canto fixo da tela. Pausa o autodismiss de cada toast em hover o..."
+                    }
+                ]
+            }
+        },
+        {
             "name": "ToastPlayground",
-            "id": "component-ToastPlayground-ea5eca62aef0244b0d329b77fc709fc9ed436b9dd95e68bb02d6fdb92c8a2d0d6983a034a4e1ce46f10fe82153f377cac4c0be74fc0c43f5288ec0854ed548a2",
+            "id": "component-ToastPlayground-b70c444dc196fd66c6160b2155069b135ae2eac14fd52332ab3d0c5eef153d4b3140006f9222c54fb02fe05b0bf203942b68c26d21b9f5587da729c4d6a9466d",
             "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -9065,7 +9327,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, OnInit, inject, input, signal } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n",
+            "sourceCode": "import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { moduleMetadata } from '@storybook/angular-vite';\nimport { Component, ElementRef, OnInit, inject, input, signal, viewChild } from '@angular/core';\n\nimport { PakiInput } from '../public-api';\nimport { PakiSelect } from '../public-api';\nimport { PakiToastContainer } from '../public-api';\nimport { PakiToastService, PakiToastPosition } from '../public-api';\n\n/** Cenarios de disparo usados pelas stories do toast. */\ntype ToastScenario = 'success' | 'error' | 'dismissible' | 'custom' | 'stacking';\n\n/**\n * Dispara um cenario de toast pelo botao ou ao abrir a story (`autoTrigger`).\n *\n * O `inject()` fica no componente porque `render()` da story roda fora de um\n * contexto de injecao (erro NG0203).\n */\n@Component({\n  selector: 'paki-toast-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"trigger()\">{{ label() }}</button>\n    <paki-toast-container />\n  `,\n})\nclass ToastDemo implements OnInit {\n  readonly toast = inject(PakiToastService);\n  readonly scenario = input<ToastScenario>('success');\n  readonly label = input('Disparar');\n  readonly autoTrigger = input(false);\n\n  ngOnInit(): void {\n    if (this.autoTrigger()) this.trigger();\n  }\n\n  trigger(): void {\n    switch (this.scenario()) {\n      case 'success':\n        this.toast.success('Sucesso', 'Operação concluída.');\n        break;\n      case 'error':\n        this.toast.error('Erro', 'Falha persistente.');\n        break;\n      case 'dismissible':\n        this.toast.info('Info', 'Feche manualmente.', { duration: 30000 });\n        break;\n      case 'custom':\n        this.toast.success('Rápido', 'Fecha em 1 segundo.', { duration: 1000 });\n        break;\n      case 'stacking':\n        this.toast.success('1', 'Primeiro');\n        this.toast.warning('2', 'Segundo');\n        this.toast.error('3', 'Erro permanece.');\n        this.toast.info('4', 'Quarto entra.');\n        break;\n    }\n  }\n}\n\n@Component({\n  selector: 'paki-toast-playground',\n  imports: [PakiToastContainer],\n  template: `\n    <div style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px\">\n      <label>\n        Posição\n        <select (change)=\"position.set($any($event.target).value)\">\n          <option value=\"top-right\" [selected]=\"position() === 'top-right'\">top-right</option>\n          <option value=\"top-left\" [selected]=\"position() === 'top-left'\">top-left</option>\n          <option value=\"bottom-right\" [selected]=\"position() === 'bottom-right'\">bottom-right</option>\n          <option value=\"bottom-left\" [selected]=\"position() === 'bottom-left'\">bottom-left</option>\n        </select>\n      </label>\n      <button type=\"button\" (click)=\"toast.success('Sucesso', 'Operação concluída.')\">Success</button>\n      <button type=\"button\" (click)=\"toast.error('Erro', 'Falha ao processar.')\">Error</button>\n      <button type=\"button\" (click)=\"toast.warning('Atenção', 'Verifique os dados.')\">Warning</button>\n      <button type=\"button\" (click)=\"toast.info('Info', 'Nova atualização disponível.')\">Info</button>\n      <button type=\"button\" (click)=\"toast.success('Rápido', 'Fecha em 1s.', { duration: 1000 })\">1 segundo</button>\n      <button type=\"button\" (click)=\"stack()\">Empilhar 4</button>\n    </div>\n    <paki-toast-container [position]=\"position()\" />\n  `,\n})\nclass ToastPlayground {\n  readonly toast = inject(PakiToastService);\n  readonly position = signal<PakiToastPosition>('top-right');\n\n  stack(): void {\n    this.toast.success('Primeiro', 'Toast 1');\n    this.toast.warning('Segundo', 'Toast 2');\n    this.toast.error('Terceiro', 'Toast de erro permanece.');\n    this.toast.info('Quarto', 'Toast 4 entra após descarte.');\n  }\n}\n\n@Component({\n  selector: 'paki-save-failure-demo',\n  imports: [PakiInput, PakiSelect, PakiToastContainer],\n  template: `\n    <div style=\"display:grid;gap:16px;max-width:360px\">\n      <paki-input label=\"Nome\" [error]=\"nameError()\" />\n      <paki-select label=\"Espécie\" [items]=\"items\" [error]=\"speciesError()\" />\n      <button type=\"button\" (click)=\"simulateFailure()\">Salvar</button>\n      <button type=\"button\" (click)=\"simulateGenericFailure()\">Salvar (erro genérico)</button>\n    </div>\n    <paki-toast-container />\n  `,\n})\nclass SaveFailureDemo {\n  readonly toast = inject(PakiToastService);\n\n  readonly items = [\n    { value: '1', label: 'Cachorro' },\n    { value: '2', label: 'Gato' },\n    { value: '3', label: 'Pássaro' },\n  ];\n\n  nameError = signal('');\n  speciesError = signal('');\n\n  simulateFailure(): void {\n    this.nameError.set('Nome é obrigatório.');\n    this.speciesError.set('Espécie é obrigatória.');\n    this.toast.error('Não foi possível salvar', 'Verifique os campos informados.');\n  }\n\n  simulateGenericFailure(): void {\n    this.nameError.set('');\n    this.speciesError.set('');\n    this.toast.error('Não foi possível salvar', 'Tente novamente mais tarde.');\n  }\n}\n\n/**\n * Toast sobre `<dialog>` modal: o container entra no diálogo aberto (top layer) para\n * ficar visível e clicável, e volta ao lugar original quando o diálogo fecha.\n */\n@Component({\n  selector: 'paki-toast-dialog-demo',\n  imports: [PakiToastContainer],\n  template: `\n    <button type=\"button\" (click)=\"open()\">Abrir diálogo modal</button>\n    <paki-toast-container />\n    <dialog #dialog style=\"width: min(520px, 90vw)\">\n      <p>Formulário dentro de um diálogo modal.</p>\n      <button type=\"button\" (click)=\"fail()\">Salvar (falha)</button>\n      <button type=\"button\" (click)=\"dialog.close()\">Fechar diálogo</button>\n    </dialog>\n  `,\n})\nclass ToastDialogDemo {\n  readonly toast = inject(PakiToastService);\n  private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');\n\n  open(): void {\n    this.dialog().nativeElement.showModal();\n  }\n\n  fail(): void {\n    this.toast.error('Horário indisponível', 'O profissional já possui compromisso nesse período.');\n  }\n}\n\nconst meta: Meta = {\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n};\nexport default meta;\ntype Story = StoryObj;\n\n/** Monta a story de um cenario; `autoTrigger` exibe o toast ao abrir a story. */\nfunction scenarioStory(scenario: ToastScenario, label: string): Story {\n  return {\n    args: { autoTrigger: false },\n    render: (args) => ({\n      props: { ...args, scenario, label },\n      template: '<paki-toast-demo [scenario]=\"scenario\" [label]=\"label\" [autoTrigger]=\"autoTrigger\" />',\n    }),\n  };\n}\n\n/** Success: exibe título, descrição e fecha após 5 segundos (AC-001). */\nexport const Success: Story = scenarioStory('success', 'Disparar success');\n\n/** Error: permanece na tela até fechamento manual (AC-004). */\nexport const ErrorPersistent: Story = scenarioStory('error', 'Disparar error');\n\n/** Fechamento manual de qualquer toast (AC-002). */\nexport const Dismissible: Story = scenarioStory('dismissible', 'Disparar info');\n\n/** Duração personalizada sobrescreve o padrão (AC-003). */\nexport const CustomDuration: Story = scenarioStory('custom', '1 segundo');\n\n/** Empilhamento: no máximo 3 visíveis, FIFO, erro retido (AC-005, AC-006). */\nexport const Stacking: Story = scenarioStory('stacking', 'Empilhar 4 toasts');\n\n/** Playground com as 4 posições (FR-008). */\nexport const Positions: Story = {\n  render: () => ({ template: '<paki-toast-playground />' }),\n};\n\n/** Cenário central da issue: falha de salvamento mostra toast e erros inline (AC-012). */\nexport const SaveFailureCombined: Story = {\n  render: () => ({ template: '<paki-save-failure-demo />' }),\n};\n\n/** Toast sobre diálogo modal: visível e clicável acima da top layer. */\nexport const OverModalDialog: Story = {\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n};\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -9615,7 +9877,20 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta",
-                "defaultValue": "{\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],\n}"
+                "defaultValue": "{\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n}"
+            },
+            {
+                "name": "OverModalDialog",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n}",
+                "rawdescription": "Toast sobre diálogo modal: visível e clicável acima da top layer.",
+                "description": "<p>Toast sobre diálogo modal: visível e clicável acima da top layer.</p>\n"
             },
             {
                 "name": "PAKI_TOAST_DEFAULT_DURATIONS",
@@ -10149,6 +10424,38 @@
                     {
                         "name": "term",
                         "type": "string",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "isModalOpen",
+                "file": "projects/pakitec-angular-components/src/lib/components/toast/paki-toast-container.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "coverageIgnore": false,
+                "deprecated": false,
+                "deprecationMessage": "",
+                "rawdescription": "`true` para um `<dialog>` aberto como modal (`showModal()`).",
+                "description": "<p><code>true</code> para um <code>&lt;dialog&gt;</code> aberto como modal (<code>showModal()</code>).</p>\n",
+                "displayName": "isModalOpen",
+                "args": [
+                    {
+                        "name": "dialog",
+                        "type": "HTMLDialogElement",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "returnType": "boolean",
+                "jsdoctags": [
+                    {
+                        "name": "dialog",
+                        "type": "HTMLDialogElement",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -11174,7 +11481,20 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta",
-                    "defaultValue": "{\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo] })],\n}"
+                    "defaultValue": "{\n  title: 'Componentes/Toast',\n  decorators: [moduleMetadata({ imports: [ToastDemo, ToastPlayground, SaveFailureDemo, ToastDialogDemo] })],\n}"
+                },
+                {
+                    "name": "OverModalDialog",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({ template: '<paki-toast-dialog-demo />' }),\n}",
+                    "rawdescription": "Toast sobre diálogo modal: visível e clicável acima da top layer.",
+                    "description": "<p>Toast sobre diálogo modal: visível e clicável acima da top layer.</p>\n"
                 },
                 {
                     "name": "Positions",
@@ -12192,6 +12512,40 @@
                     ]
                 }
             ],
+            "projects/pakitec-angular-components/src/lib/components/toast/paki-toast-container.ts": [
+                {
+                    "name": "isModalOpen",
+                    "file": "projects/pakitec-angular-components/src/lib/components/toast/paki-toast-container.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "coverageIgnore": false,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "`true` para um `<dialog>` aberto como modal (`showModal()`).",
+                    "description": "<p><code>true</code> para um <code>&lt;dialog&gt;</code> aberto como modal (<code>showModal()</code>).</p>\n",
+                    "displayName": "isModalOpen",
+                    "args": [
+                        {
+                            "name": "dialog",
+                            "type": "HTMLDialogElement",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "returnType": "boolean",
+                    "jsdoctags": [
+                        {
+                            "name": "dialog",
+                            "type": "HTMLDialogElement",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "projects/pakitec-angular-components/src/stories/toast.stories.ts": [
                 {
                     "name": "scenarioStory",
@@ -13118,8 +13472,18 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "PakiToastContainer",
-                "coveragePercent": 80,
-                "coverageCount": "12/15",
+                "coveragePercent": 65,
+                "coverageCount": "15/23",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/lib/components/toast/paki-toast-container.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "isModalOpen",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
                 "status": "very-good"
             },
             {
@@ -14002,6 +14366,15 @@
                 "filePath": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
                 "type": "component",
                 "linktype": "component",
+                "name": "ToastDialogDemo",
+                "coveragePercent": 20,
+                "coverageCount": "1/5",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
+                "type": "component",
+                "linktype": "component",
                 "name": "ToastPlayground",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
@@ -14056,6 +14429,16 @@
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "OverModalDialog",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
             },
             {
                 "filePath": "projects/pakitec-angular-components/src/stories/toast.stories.ts",
