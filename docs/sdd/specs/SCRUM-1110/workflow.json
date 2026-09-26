@@ -1,0 +1,869 @@
+{
+  "schemaVersion": 2,
+  "runId": "scr1110-plan-20260924",
+  "issueKey": "SCRUM-1110",
+  "workspacePath": "/Volumes/External HD/Projetos/pakitec/pakitec-angular-components",
+  "phase": "BUILD_COMPLETED",
+  "lastStablePhase": "BUILD_COMPLETED",
+  "status": "completed",
+  "planRevision": 1,
+  "attempts": 2,
+  "updatedAt": "2026-09-25T23:50:38+00:00",
+  "jira": {
+    "profileId": "pakitec",
+    "projectKey": "SCRUM"
+  },
+  "executionContext": {
+    "phase": "build"
+  },
+  "refinement": {
+    "verdict": "PASS",
+    "issueHash": "9711307e5dd2",
+    "checkedAt": "2026-09-24T20:23:00.000-03:00",
+    "warnings": [
+      "customfield_10077 (historia do usuario) permanece com template vazio por limitacao do customFieldMap; conteudo equivalente (ator/problema/resultado) registrado na descricao.",
+      "Estados loading/offline e requisitos de performance/observabilidade nao se aplicam a biblioteca de UI; registrar como nao aplicavel na spec."
+    ]
+  },
+  "assets": {
+    "manifestPath": "assets/manifest.json",
+    "items": []
+  },
+  "eventLedger": [
+    {
+      "eventKey": "SCRUM-1110/plan/9711307e5dd2/started",
+      "eventType": "PLAN_STARTED",
+      "commentId": "13934",
+      "recordedAt": "2026-09-24T23:19:36.357Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/plan/9711307e5dd2/blocked",
+      "eventType": "PLAN_BLOCKED",
+      "commentId": "13935",
+      "recordedAt": "2026-09-24T23:20:54.284Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/phase-started",
+      "eventType": "PHASE_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13936",
+      "recordedAt": "2026-09-25T00:52:41.438Z"
+    },
+    {
+      "eventKey": "SCRUM-1111/scr1110-plan-20260924/r1/spec-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1111",
+      "commentId": "13937",
+      "recordedAt": "2026-09-25T00:53:02.664Z"
+    },
+    {
+      "eventKey": "SCRUM-1111/scr1110-plan-20260924/r1/spec-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1111",
+      "commentId": "13938",
+      "recordedAt": "2026-09-25T00:55:40.755Z"
+    },
+    {
+      "eventKey": "SCRUM-1112/scr1110-plan-20260924/r1/research-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1112",
+      "commentId": "13939",
+      "recordedAt": "2026-09-25T00:56:02.187Z"
+    },
+    {
+      "eventKey": "SCRUM-1112/scr1110-plan-20260924/r1/research-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1112",
+      "commentId": "13940",
+      "recordedAt": "2026-09-25T00:59:05.652Z"
+    },
+    {
+      "eventKey": "SCRUM-1113/scr1110-plan-20260924/r1/plan-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1113",
+      "commentId": "13941",
+      "recordedAt": "2026-09-25T00:59:16.135Z"
+    },
+    {
+      "eventKey": "SCRUM-1113/scr1110-plan-20260924/r1/plan-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1113",
+      "commentId": "13942",
+      "recordedAt": "2026-09-25T01:04:42.780Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/ready-to-build",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13943",
+      "recordedAt": "2026-09-25T01:09:32.496Z"
+    },
+    {
+      "eventKey": "SCRUM-1114/scr1110-plan-20260924/r1/task-001-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1114",
+      "commentId": "13945",
+      "recordedAt": "2026-09-25T01:11:27.545Z"
+    },
+    {
+      "eventKey": "SCRUM-1114/scr1110-plan-20260924/r1/task-001-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1114",
+      "commentId": "13946",
+      "recordedAt": "2026-09-25T01:12:51.065Z"
+    },
+    {
+      "eventKey": "SCRUM-1115/scr1110-plan-20260924/r1/task-002-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1115",
+      "commentId": "13947",
+      "recordedAt": "2026-09-25T01:13:17.004Z"
+    },
+    {
+      "eventKey": "SCRUM-1115/scr1110-plan-20260924/r1/task-002-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1115",
+      "commentId": "13948",
+      "recordedAt": "2026-09-25T01:14:44.796Z"
+    },
+    {
+      "eventKey": "SCRUM-1116/scr1110-plan-20260924/r1/task-003-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1116",
+      "commentId": "13949",
+      "recordedAt": "2026-09-25T01:15:14.164Z"
+    },
+    {
+      "eventKey": "SCRUM-1116/scr1110-plan-20260924/r1/task-003-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1116",
+      "commentId": "13950",
+      "recordedAt": "2026-09-25T06:31:11.564Z"
+    },
+    {
+      "eventKey": "SCRUM-1117/scr1110-plan-20260924/r1/task-004-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1117",
+      "commentId": "13951",
+      "recordedAt": "2026-09-25T06:31:34.747Z"
+    },
+    {
+      "eventKey": "SCRUM-1117/scr1110-plan-20260924/r1/task-004-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1117",
+      "commentId": "13952",
+      "recordedAt": "2026-09-25T06:34:50.047Z"
+    },
+    {
+      "eventKey": "SCRUM-1118/scr1110-plan-20260924/r1/task-005-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1118",
+      "commentId": "13953",
+      "recordedAt": "2026-09-25T06:35:27.436Z"
+    },
+    {
+      "eventKey": "SCRUM-1118/scr1110-plan-20260924/r1/task-005-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1118",
+      "commentId": "13954",
+      "recordedAt": "2026-09-25T06:37:46.786Z"
+    },
+    {
+      "eventKey": "SCRUM-1119/scr1110-plan-20260924/r1/task-006-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1119",
+      "commentId": "13955",
+      "recordedAt": "2026-09-25T06:38:07.979Z"
+    },
+    {
+      "eventKey": "SCRUM-1119/scr1110-plan-20260924/r1/task-006-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1119",
+      "commentId": "13956",
+      "recordedAt": "2026-09-25T06:41:28.051Z"
+    },
+    {
+      "eventKey": "SCRUM-1120/scr1110-plan-20260924/r1/task-007-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1120",
+      "commentId": "13957",
+      "recordedAt": "2026-09-25T06:41:45.578Z"
+    },
+    {
+      "eventKey": "SCRUM-1120/scr1110-plan-20260924/r1/task-007-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1120",
+      "commentId": "13958",
+      "recordedAt": "2026-09-25T06:44:29.547Z"
+    },
+    {
+      "eventKey": "SCRUM-1121/scr1110-plan-20260924/r1/task-008-blocked",
+      "eventType": "TASK_BLOCKED",
+      "issueKey": "SCRUM-1121",
+      "commentId": "13960",
+      "recordedAt": "2026-09-25T18:01:32.692Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-429",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13961",
+      "recordedAt": "2026-09-25T18:02:23.109Z"
+    },
+    {
+      "eventKey": "SCRUM-1121/scr1110-plan-20260924/r1/task-008-started-resume",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1121",
+      "commentId": "13962",
+      "recordedAt": "2026-09-25T18:59:52.121Z"
+    },
+    {
+      "eventKey": "SCRUM-1121/scr1110-plan-20260924/r1/task-008-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1121",
+      "commentId": "13963",
+      "recordedAt": "2026-09-25T19:04:52.116Z"
+    },
+    {
+      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1123",
+      "recordedAt": "2026-09-25T21:54:01.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1123/scr1110-plan-20260924/r1/task-010-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1123",
+      "recordedAt": "2026-09-25T21:54:01.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1124",
+      "recordedAt": "2026-09-25T21:55:21.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1124",
+      "recordedAt": "2026-09-25T22:20:00.000Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/started",
+      "eventType": "PHASE_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "13944",
+      "recordedAt": "2026-09-25T01:10:35.149Z"
+    },
+    {
+      "eventKey": "SCRUM-1132/scr1110-plan-20260924/r1/task-019-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1132",
+      "commentId": "14000",
+      "recordedAt": "2026-09-25T22:54:06.185Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14001",
+      "recordedAt": "2026-09-25T22:54:55.517Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-failed",
+      "eventType": "TASK_FAILED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14002",
+      "recordedAt": "2026-09-25T23:01:09.162Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-task-020",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14003",
+      "recordedAt": "2026-09-25T23:01:17.813Z"
+    },
+    {
+      "eventKey": "SCRUM-1132/scr1110-plan-20260924/r1/task-019-rework-ng0203",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1132",
+      "commentId": "14004",
+      "recordedAt": "2026-09-25T23:11:38.609Z"
+    },
+    {
+      "eventKey": "SCRUM-1126/scr1110-plan-20260924/r1/task-013-rework-ac009",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1126",
+      "commentId": "14005",
+      "recordedAt": "2026-09-25T23:11:41.618Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-started-r2",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14006",
+      "recordedAt": "2026-09-25T23:11:59.889Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-failed-r2",
+      "eventType": "TASK_FAILED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14007",
+      "recordedAt": "2026-09-25T23:18:54.049Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-task-020-r2",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14008",
+      "recordedAt": "2026-09-25T23:19:01.567Z"
+    },
+    {
+      "eventKey": "SCRUM-1132/scr1110-plan-20260924/r1/task-019-rework-input-stories",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1132",
+      "commentId": "14009",
+      "recordedAt": "2026-09-25T23:21:40.657Z"
+    },
+    {
+      "eventKey": "SCRUM-1124/scr1110-plan-20260924/r1/task-011-rework-error-token",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1124",
+      "commentId": "14010",
+      "recordedAt": "2026-09-25T23:21:43.878Z"
+    },
+    {
+      "eventKey": "SCRUM-1126/scr1110-plan-20260924/r1/task-013-rework-error-token",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1126",
+      "commentId": "14011",
+      "recordedAt": "2026-09-25T23:21:46.205Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-started-r3",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14012",
+      "recordedAt": "2026-09-25T23:22:25.115Z"
+    },
+    {
+      "eventKey": "SCRUM-1133/scr1110-plan-20260924/r1/task-020-completed-r3",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1133",
+      "commentId": "14014",
+      "recordedAt": "2026-09-25T23:27:31.769Z"
+    },
+    {
+      "eventKey": "SCRUM-1134/scr1110-plan-20260924/r1/task-021-started",
+      "eventType": "TASK_STARTED",
+      "issueKey": "SCRUM-1134",
+      "commentId": "14015",
+      "recordedAt": "2026-09-25T23:27:44.518Z"
+    },
+    {
+      "eventKey": "SCRUM-1134/scr1110-plan-20260924/r1/task-021-completed",
+      "eventType": "TASK_COMPLETED",
+      "issueKey": "SCRUM-1134",
+      "commentId": "14016",
+      "recordedAt": "2026-09-25T23:29:40.007Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-started-c1",
+      "eventType": "QA_STARTED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14017",
+      "recordedAt": "2026-09-25T23:29:52.855Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-progress-c1 (sdd-qa-reviewer)",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14018",
+      "recordedAt": null
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-failed-c1",
+      "eventType": "QA_FAILED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14019",
+      "recordedAt": "2026-09-25T23:33:25.502Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/blocked-qa-c1",
+      "eventType": "BUILD_BLOCKED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14020",
+      "recordedAt": "2026-09-25T23:33:32.990Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-fix-c2",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14021",
+      "recordedAt": "2026-09-25T23:34:49.386Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-started-c2",
+      "eventType": "QA_STARTED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14022",
+      "recordedAt": "2026-09-25T23:40:04.559Z"
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-progress-c2",
+      "eventType": "TASK_PROGRESS",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14023",
+      "recordedAt": null
+    },
+    {
+      "eventKey": "SCRUM-1135/scr1110-plan-20260924/r1/qa-passed-c2",
+      "eventType": "QA_PASSED",
+      "issueKey": "SCRUM-1135",
+      "commentId": "14024",
+      "recordedAt": "2026-09-25T23:47:13.014Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/code-review-started",
+      "eventType": "CODE_REVIEW_STARTED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14025",
+      "recordedAt": "2026-09-25T23:47:46Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/code-review-completed",
+      "eventType": "CODE_REVIEW_COMPLETED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14026",
+      "recordedAt": "2026-09-25T23:49:19Z"
+    },
+    {
+      "eventKey": "SCRUM-1110/scr1110-plan-20260924/r1/build/completed",
+      "eventType": "BUILD_COMPLETED",
+      "issueKey": "SCRUM-1110",
+      "commentId": "14027",
+      "recordedAt": "2026-09-25T23:50:38.218Z"
+    }
+  ],
+  "pendingJiraEvents": [],
+  "phaseSubtasks": {
+    "spec": {
+      "issueKey": "SCRUM-1111",
+      "title": "[SDD][SPEC] Specification",
+      "owner": "sdd-spec-writer",
+      "artifact": "docs/sdd/specs/SCRUM-1110/spec.md"
+    },
+    "research": {
+      "issueKey": "SCRUM-1112",
+      "title": "[SDD][RESEARCH] Technical Research",
+      "owner": "sdd-researcher",
+      "artifact": "docs/sdd/specs/SCRUM-1110/research.md"
+    },
+    "plan": {
+      "issueKey": "SCRUM-1113",
+      "title": "[SDD][PLAN] Technical Plan",
+      "owner": "sdd-planner",
+      "artifacts": [
+        "docs/sdd/specs/SCRUM-1110/plan.md",
+        "docs/sdd/specs/SCRUM-1110/tasks.md"
+      ],
+      "dependsOn": [
+        "SCRUM-1111",
+        "SCRUM-1112"
+      ]
+    }
+  },
+  "subtasks": {
+    "TASK-001": {
+      "issueKey": "SCRUM-1114",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T01:11:14+00:00",
+      "finishedAt": "2026-09-25T01:12:47+00:00",
+      "observation": "Tokens --color-info-bg/--color-info-text nos dois temas; npm run build PASS."
+    },
+    "TASK-002": {
+      "issueKey": "SCRUM-1115",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T01:13:13+00:00",
+      "finishedAt": "2026-09-25T01:14:40+00:00",
+      "observation": "Modelos do toast criados conforme spec; npm run build e tsc isolado PASS."
+    },
+    "TASK-003": {
+      "issueKey": "SCRUM-1116",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T01:15:10+00:00",
+      "finishedAt": "2026-09-25T06:31:11+00:00",
+      "observation": "Esqueleto compilavel do toast (service, container, item) em 7 arquivos; npm run build PASS; commit 7933104. Execucao in-place; worktree residual do agente removido sem alteracao nao consolidada."
+    },
+    "TASK-004": {
+      "issueKey": "SCRUM-1117",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T06:31:40+00:00",
+      "finishedAt": "2026-09-25T06:34:50+00:00",
+      "observation": "paki-toast.service.spec.ts com 12 testes (fake timers) cobrindo AC-001/003/004; 12 falhas esperadas TDD, 83 pre-existentes verdes; commit c6a70f1."
+    },
+    "TASK-005": {
+      "issueKey": "SCRUM-1118",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T06:35:30+00:00",
+      "finishedAt": "2026-09-25T06:37:32+00:00",
+      "observation": "Specs de item e container (AC-001/002); 4 novas falhas TDD esperadas pelo stub + 12 do servico; 87 verdes; commit 13e9b22."
+    },
+    "TASK-006": {
+      "issueKey": "SCRUM-1119",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T06:38:10+00:00",
+      "finishedAt": "2026-09-25T06:41:15+00:00",
+      "observation": "Servico implementado (fila signal, duracoes, autodismiss com mapa de timers, API @internal para pausa); 103/103 testes verdes; build PASS; commit 0181575."
+    },
+    "TASK-007": {
+      "issueKey": "SCRUM-1120",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T06:41:50+00:00",
+      "finishedAt": "2026-09-25T06:44:15+00:00",
+      "observation": "Item com icone por tipo e tokens de feedback; container/item do esqueleto ja cobriam o restante; 103/103 verdes; build PASS; commit 31de542."
+    },
+    "TASK-008": {
+      "issueKey": "SCRUM-1121",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T18:59:43+00:00",
+      "finishedAt": "2026-09-25T19:04:48+00:00",
+      "observation": "7 testes novos (AC-005/006/007, R-I); 110 testes: 104 verdes, 6 vermelhos TDD esperados aguardando TASK-009; 103 pre-existentes intactos; commit 2717da2."
+    },
+    "TASK-009": {
+      "issueKey": "SCRUM-1122",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:04:48+00:00",
+      "finishedAt": "2026-09-25T18:46:39-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 0b604a8; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-010": {
+      "issueKey": "SCRUM-1123",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T21:54:01+00:00",
+      "finishedAt": "2026-09-25T21:54:01+00:00",
+      "observation": "Suite de erro do PakiInput com 5 testes (AC-008/010/011); commit f0a8a795."
+    },
+    "TASK-011": {
+      "issueKey": "SCRUM-1124",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T21:55:21+00:00",
+      "finishedAt": "2026-09-25T22:20:00+00:00",
+      "observation": "API de erro acessivel implementada; commit e19d6a2."
+    },
+    "TASK-012": {
+      "issueKey": "SCRUM-1125",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:15:51-03:00",
+      "finishedAt": "2026-09-25T19:15:51-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit d25a1d9; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-013": {
+      "issueKey": "SCRUM-1126",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:17:31-03:00",
+      "finishedAt": "2026-09-25T19:17:31-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit d846c39; suite 129/129 verde e build PASS no HEAD cca23a2.",
+      "rework": "commit 3e53b8a (AC-009 token/tipografia)"
+    },
+    "TASK-014": {
+      "issueKey": "SCRUM-1127",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:19:15-03:00",
+      "finishedAt": "2026-09-25T19:19:15-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit f768231; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-015": {
+      "issueKey": "SCRUM-1128",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:20:22-03:00",
+      "finishedAt": "2026-09-25T19:20:22-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 74facb0; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-016": {
+      "issueKey": "SCRUM-1129",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:23:49-03:00",
+      "finishedAt": "2026-09-25T19:23:49-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit 3c5e81c; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-017": {
+      "issueKey": "SCRUM-1130",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:25:42-03:00",
+      "finishedAt": "2026-09-25T19:25:42-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit fd51e2f; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-018": {
+      "issueKey": "SCRUM-1131",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:25:42-03:00",
+      "finishedAt": "2026-09-25T19:25:42-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: barrel publico ja exporta toast (index.ts); entregue junto fd51e2f; suite 129/129 verde e build PASS no HEAD cca23a2."
+    },
+    "TASK-019": {
+      "issueKey": "SCRUM-1132",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T19:28:01-03:00",
+      "finishedAt": "2026-09-25T19:28:01-03:00",
+      "observation": "Reconciliado na retomada a partir do git/Jira: commit cca23a2; suite 129/129 verde e build PASS no HEAD cca23a2.",
+      "rework": "commit d54fa33 (NG0203/moduleMetadata)"
+    },
+    "TASK-020": {
+      "issueKey": "SCRUM-1133",
+      "status": "completed",
+      "owner": "sdd-visual-qa",
+      "startedAt": "2026-09-25T23:22:19+00:00",
+      "finishedAt": "2026-09-25T23:27:15+00:00",
+      "observation": "PASS r3: 24 capturas oficiais (11 AC, claro/escuro) 24/24 pass; recapturados AC-008/009/011/012/015, demais reaproveitados com hash conferido; AC-015 contraste erro inline claro 4.54:1 (sobre #f7f8fa), escuro 7.03:1; validate 24/24 accepted; publish anexos 10211-10234, comentario 14013; console sem erros.",
+      "attempts": 3,
+      "previousAttempts": [
+        {
+          "status": "failed",
+          "startedAt": "2026-09-25T22:54:49+00:00",
+          "finishedAt": "2026-09-25T23:00:56+00:00",
+          "observation": "FAIL: stories do toast quebradas (NG0203 inject em render; Positions/SaveFailureCombined sem moduleMetadata); registro visual do servidor so reconhece AC-001; navegador reporta Playwright 1.62.0-alpha (nao v0.0.78+). Manifesto com AC-001 status fail; capturas AC-008/009/011/015 em evidence/SCRUM-1110/local; nada publicado; commit cafa309."
+        },
+        {
+          "status": "failed",
+          "startedAt": "2026-09-25T23:11:52+00:00",
+          "finishedAt": "2026-09-25T23:18:48+00:00",
+          "observation": "FAIL r2: 24 capturas oficiais (11 AC, claro/escuro), validate 24/24 accepted; AC-015 dark FAIL: texto do erro inline 4.02:1 (--error-500 #dc2626 sobre rgb(11,13,18)) < 4.5:1 (R-G). Publish retido. Stories do PakiInput invalid-* e playground com erros de console (AC-008 capturado via save-failure-combined)."
+        }
+      ],
+      "commit": "2a7dce6"
+    },
+    "TASK-021": {
+      "issueKey": "SCRUM-1134",
+      "status": "completed",
+      "owner": "sdd-implementer",
+      "startedAt": "2026-09-25T23:27:40+00:00",
+      "finishedAt": "2026-09-25T23:29:32+00:00",
+      "observation": "PASS: npm run test 129/129 (19 arquivos), npm run build PASS, npm run build-storybook PASS (avisos nao bloqueantes: Compodoc 'Error during' por caminho com espaco, chunk >500kB); diff master...HEAD 57 arquivos, todos no escopo previsto; sem commit (nada a alterar)."
+    }
+  },
+  "qa": {
+    "issueKey": "SCRUM-1135",
+    "status": "passed",
+    "attempts": 2,
+    "startedAt": "2026-09-25T23:39:58+00:00",
+    "observation": "PASS ciclo 2/3 (HEAD d8cd985): H-1 e M-1 corrigidos; AC-001..016 OK; 134/134 testes, build e build-storybook PASS; visual 11 AC PASS (24/24, dedupe). Low L-1..L-7 pendentes.",
+    "report": "docs/sdd/specs/SCRUM-1110/qa.md",
+    "findings": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 7
+    },
+    "previousAttempts": [
+      {
+        "status": "failed",
+        "startedAt": "2026-09-25T23:29:47+00:00",
+        "finishedAt": "2026-09-25T23:33:19+00:00",
+        "observation": "FAIL ciclo 1/3: H-1 AC-007/FR-005 pausa acumulada (mouseenter+focusin desconta elapsed 2x; retoma no primeiro mouseleave/focusout) em paki-toast.service.ts:138-163 e paki-toast-container.html:12-15; M-1 .paki-toast__card.leaving nunca casa (paki-toast.scss:17,24); L-1..L-5. Visual QA PASS (24/24, dedupe). Ciclo de correcao nao executado: regra do comando proibe corrigir defeito de producao que impede AC aprovado.",
+        "report": "docs/sdd/specs/SCRUM-1110/qa.md",
+        "findings": {
+          "critical": 0,
+          "high": 1,
+          "medium": 1,
+          "low": 5
+        }
+      }
+    ],
+    "cycle": "2/3",
+    "fixStartedAt": "2026-09-25T23:34:43+00:00",
+    "fixCycles": [
+      {
+        "cycle": "2/3",
+        "startedAt": "2026-09-25T23:34:43+00:00",
+        "finishedAt": "2026-09-25T23:39:58+00:00",
+        "owner": "sdd-implementer",
+        "commit": "d8cd985",
+        "observation": "H-1: Sets hovered/focused por toast no container, pausa so na transicao e retoma quando ambos falsos (focusout interno ignorado); pause/resume idempotentes no servico. M-1: :host(.leaving) .paki-toast__card (inclusive reduced-motion). 134/134 testes, build e build-storybook PASS. Agente rodou em worktree isolado; commit integrado por fast-forward e worktree removido."
+      }
+    ],
+    "finishedAt": "2026-09-25T23:47:20+00:00",
+    "reportCommit": "0f2275b"
+  },
+  "hashes": {
+    "issue": "9711307e5dd2",
+    "issueSnapshot": "8703f849c2e5",
+    "assetsManifest": "f359b4bc0ab1",
+    "spec": "99b19ee4208e",
+    "checklist": "8b1f21c2e148",
+    "research": "1117015929f3",
+    "plan": "5aad93f4c8a8",
+    "tasks": "e0cd34777f3b"
+  },
+  "visualEvidence": {
+    "manifestPath": "evidence/SCRUM-1110/manifest.json",
+    "criteria": [
+      {
+        "criteriaId": "AC-001",
+        "journey": "Toast success com titulo e descricao"
+      },
+      {
+        "criteriaId": "AC-002",
+        "journey": "Fechamento manual do toast"
+      },
+      {
+        "criteriaId": "AC-004",
+        "journey": "Toast de erro persistente"
+      },
+      {
+        "criteriaId": "AC-005",
+        "journey": "Empilhamento com limite de 3 toasts visiveis (FIFO)"
+      },
+      {
+        "criteriaId": "AC-006",
+        "journey": "Toast de erro retido no empilhamento"
+      },
+      {
+        "criteriaId": "AC-008",
+        "journey": "Erro inline no PakiInput nos temas claro e escuro"
+      },
+      {
+        "criteriaId": "AC-009",
+        "journey": "Erro inline no PakiSelect nos temas claro e escuro"
+      },
+      {
+        "criteriaId": "AC-011",
+        "journey": "Estado invalido sem depender apenas de cor"
+      },
+      {
+        "criteriaId": "AC-012",
+        "journey": "Toast de erro e erro inline simultaneos"
+      },
+      {
+        "criteriaId": "AC-014",
+        "journey": "Toast sem animacao de movimento com prefers-reduced-motion"
+      },
+      {
+        "criteriaId": "AC-015",
+        "journey": "Tokens de tema claro e escuro aplicados"
+      }
+    ],
+    "published": {
+      "attachmentIds": [
+        "10211",
+        "10212",
+        "10213",
+        "10214",
+        "10215",
+        "10216",
+        "10217",
+        "10218",
+        "10219",
+        "10220",
+        "10221",
+        "10222",
+        "10223",
+        "10224",
+        "10225",
+        "10226",
+        "10227",
+        "10228",
+        "10229",
+        "10230",
+        "10231",
+        "10232",
+        "10233",
+        "10234"
+      ],
+      "commentId": "14013",
+      "publishedAt": "2026-09-25T23:27:15+00:00",
+      "items": 24
+    },
+    "verifications": [
+      {
+        "cycle": "2/3",
+        "at": "2026-09-25T23:43:58+00:00",
+        "verdict": "PASS",
+        "observation": "11 AC claro/escuro PASS apos d8cd985; nenhuma recaptura (visual inalterado); validate 24/24 accepted; publish dedupe 24/24 (anexos 10211-10234, comentario 14013); console sem erros. Nota: fechamento manual remove em ~52ms sem fase leaving."
+      }
+    ]
+  },
+  "buildConcurrency": "sequential",
+  "buildStartedAt": "2026-09-25T01:10:21+00:00",
+  "workingBranch": "feat/scrum-1110-toast-error-states",
+  "resumeNotes": [
+    {
+      "at": "2026-09-25T18:01:23+00:00",
+      "note": "BUILD_BLOCKED por rate limit 429 do provedor de modelo em TASK-008. Progresso preservado: TASK-001..007 done/commitadas (tokens info, modelos, esqueleto toast, specs TDD, servico com fila/autodismiss, item com icone). Retomar com /sdd-build SCRUM-1110; nao repetir tarefas concluidas; iniciar pela TASK-008 sem descartar o estado."
+    },
+    {
+      "at": "2026-09-25T18:05:00+00:00",
+      "note": "Retomada autorizada pelo usuario apos renovacao de cota. buildBlocked arquivado: {\"reason\": \"MODEL_RATE_LIMIT_429\", \"stage\": \"TASK-008\", \"detail\": \"Orquestrador e implementer terminaram duas vezes seguidas com API 429 (session usage limit, kimi-k3:cloud). Retry unico do protocolo esgotado. TASK-001..TASK-007 concluidas e commitadas (HEAD 31de542, 103/103 testes verdes); TASK-008 sem alteracoes parciais.\", \"resolvable\": \"Quando a cota renovar, executar /sdd-build SCRUM-1110 novamente: a retomada e idempotente a partir da TASK-008 (SCRUM-1121).\"}"
+    },
+    {
+      "at": "2026-09-25T22:55:00+00:00",
+      "note": "Retomada apos falha do agente anterior. Estado reconciliado com git (HEAD cca23a2) e Jira: TASK-001..019 concluidas; 129/129 testes e build PASS. Proximo: TASK-020 (evidencia visual), TASK-021, QA. Worktrees residuais em .claude/worktrees nao consolidados (superados pelos commits da branch)."
+    },
+    {
+      "at": "2026-09-25T23:11:00+00:00",
+      "note": "Retomada autorizada apos bloqueio da TASK-020 (comment 14003). Correcoes: d54fa33 (SCRUM-1132, stories toast), 3e53b8a (SCRUM-1126, erro select), pakitec-cloud-mcp 3e03914 (criterios da spec + versao core Playwright). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"Stories do toast (TASK-019) falham com NG0203 e demos sem moduleMetadata; registro visual do servidor reconhece apenas AC-001; servidor de navegador reporta 1.62.0-alpha-1783623505000.\", \"resolvable\": \"Autorizar correcao das stories, alinhar registro de criterios e ligar navegador v0.0.78+; retomar a partir da TASK-020.\"}"
+    },
+    {
+      "at": "2026-09-25T23:21:33+00:00",
+      "note": "Retomada autorizada apos bloqueio da TASK-020 r2 (comment 14008). Correcoes: 4fb2487 (token --color-error-field; AC-015 escuro 7.03:1) e ec3bdef (SCRUM-1132, stories do PakiInput). buildBlocked arquivado: {\"reason\": \"VISUAL_EVIDENCE_FAILED\", \"stage\": \"TASK-020\", \"detail\": \"AC-015 tema escuro: contraste do texto de erro inline 4.02:1 abaixo de 4.5:1; exige token de erro mais claro no tema escuro (producao, fora do escopo da TASK-020). Stories do PakiInput com erros de console (arg value colide com signal; error undefined no playground).\", \"resolvable\": \"Autorizar ajuste do token de erro do tema escuro e correcao das stories do input; retomar a partir da TASK-020 (capturas e manifesto ja regerados; recapturar AC-008/009/011/012/015).\"}"
+    },
+    {
+      "at": "2026-09-25T23:34:43+00:00",
+      "note": "Retomada autorizada pelo usuario para corrigir H-1 e M-1 (QA ciclo 1/3, comments 14019/14020). buildBlocked arquivado: {\"reason\": \"QA_FAILED_PRODUCTION_DEFECT\", \"stage\": \"QA ciclo 1/3 (SCRUM-1135)\", \"detail\": \"H-1: PakiToastService.pauseAutodismiss nao tem guarda de pausa nem atualiza startedAt; container pausa em mouseenter e focusin e retoma no primeiro mouseleave ou focusout. mouseenter+focusin desconta o tempo 2x e o toast fecha com foco dentro (viola FR-005/AC-007). M-1: seletor .paki-toast__card.leaving nunca casa (classe no host), sem animacao de saida.\", \"resolvable\": \"Autorizar correcao de H-1 (estado hover/foco por toast; pausar so na transicao; retomar quando ambos falsos; teste combinado) e M-1 (:host(.leaving) .paki-toast__card, inclusive reduced-motion); retomar pelo QA ciclo 2/3.\"}"
+    }
+  ],
+  "visualPreflight": {
+    "available": true,
+    "version": "1.62.0-alpha-1783623505000",
+    "observedAt": "2026-09-25T23:43:58+00:00",
+    "toolsCount": 61,
+    "source": "handshake initialize/tools/list em 127.0.0.1:8931 (mcr.microsoft.com/playwright/mcp:v0.0.78), QA ciclo 2/3"
+  },
+  "codeReview": {
+    "status": "REVIEWED",
+    "startedAt": "2026-09-25T23:47:46+00:00",
+    "finishedAt": "2026-09-25T23:49:19+00:00",
+    "report": "docs/sdd/specs/SCRUM-1110/code-review.md",
+    "findings": {
+      "critical": 0,
+      "high": 0,
+      "medium": 1,
+      "low": 3,
+      "info": 3
+    },
+    "observation": "Consultivo. CR-M1 enforceStackLimit descarta o toast nao-erro recem-chegado quando ha 3 erros visiveis (decisao de produto). CR-L1 saida sempre para a direita; CR-L2 duration sem limite maximo; CR-L3 erro/hint dentro do label."
+  },
+  "buildFinishedAt": "2026-09-25T23:49:46+00:00",
+  "pendingIssues": [
+    "L-1 PakiToastConfig.position ignorado",
+    "L-2 falta teste prefers-reduced-motion",
+    "L-3 error().length com null",
+    "L-4 instanceCount nunca decrementa",
+    "L-5 ids de suporte do PakiInput mudaram (changelog)",
+    "L-6 fechamento manual sem animacao (conforme AC-002)",
+    "L-7 mouseleave so apos movimento do cursor",
+    "CR-M1 3 erros visiveis descartam toast nao-erro recem-chegado (decisao de produto)",
+    "CR-L1 saida sempre para a direita",
+    "CR-L2 duration sem limite maximo",
+    "CR-L3 erro/hint dentro do label"
+  ]
+}

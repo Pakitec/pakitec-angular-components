@@ -1,0 +1,269 @@
+{
+  "runner": "claude",
+  "evidence": [
+    {
+      "criteriaId": "AC-001",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-001-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 16564,
+      "sha256": "ec0a412c27a1ecb4298cda1c549303a5f30c8f58c44f7375caf6bfaadebdb183",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-001",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-001-desktop.png",
+      "mimeType": "image/png",
+      "size": 17123,
+      "sha256": "0d3e5379021c9b1a3d20f3ac3bdcffef869ca4790fc20477caabb6c189ca81b1",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-002",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-002-after-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 10518,
+      "sha256": "6912732eda827bd09ccfde132bfb33e74622d4d049b0ab29ee2fc1533f877d10",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-002",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-002-after-desktop.png",
+      "mimeType": "image/png",
+      "size": 10554,
+      "sha256": "5c5173f2c0bfbac07915e83a4812e2b7c40d173fac0837458afc79e9f597fb5f",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-002",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-002-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 13759,
+      "sha256": "835cd702a5dc75c72aae1d7ea1e992d889b9f01f22c690cd56f2ca5d129796bb",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-002",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-002-desktop.png",
+      "mimeType": "image/png",
+      "size": 14306,
+      "sha256": "6d0c4744c2c45c57d1fe0163e8d294dda4f2c9b3b8b1ecfb90f9a0a5986f9832",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-004",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-004-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 14554,
+      "sha256": "db4cf0e421e7c77570ad5921ffa8beb06b7a4ce72a9209a16c61683a9ae3d6b2",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-004",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-004-desktop.png",
+      "mimeType": "image/png",
+      "size": 15139,
+      "sha256": "9a71c1d7cdd287bba82f01d5f0b5e1d5e9ebe71481de15638ac7f2bc3c332e76",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-005",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-005-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 23202,
+      "sha256": "b57317ee6a90ca8ee8d16b8b0b34299cc77b2737babe776bbcd5b2dcac40c728",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-005",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-005-desktop.png",
+      "mimeType": "image/png",
+      "size": 24536,
+      "sha256": "f35c3606edfe612b313a433fbb4d8b28fcbeff0e4d1d5101a0790990dff09910",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-006",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-006-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 33954,
+      "sha256": "fc7ee94dddece07296a8bd4f77c521ae13ec5a2acab710ccaa760bbdaee5cbf4",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-006",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-006-desktop.png",
+      "mimeType": "image/png",
+      "size": 35006,
+      "sha256": "77ce04c854557fe3a48fd57a9dca8d88dc524a1c0bb8e6336aa410062cc804ce",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-008",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-008-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 8646,
+      "sha256": "2c94512b2b4cfef788a378ae4a9022372f1c1073a26c7d2fc7f89e244e8f87a4",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-008",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-008-desktop.png",
+      "mimeType": "image/png",
+      "size": 8543,
+      "sha256": "ed74adf19000c68ba8324b0fe1bfeef0f6d6b05a8b16da7252610def27579b27",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-009",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-009-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 9014,
+      "sha256": "f65df3b6941527d9153714fb7964c11f3d2f2f4996104dd0a05345571d9488ae",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-009",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-009-desktop.png",
+      "mimeType": "image/png",
+      "size": 8921,
+      "sha256": "4db9336778f08902611a406e3ce24587cf656abd6761771070fe1b3d05ce8689",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-011",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-011-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 9455,
+      "sha256": "dc87974124b311b54721c86a1f5b685b198a02b4ad4589cebdf3ebdcbb86d68a",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-011",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-011-desktop.png",
+      "mimeType": "image/png",
+      "size": 9350,
+      "sha256": "6f6a01997aa35c5ecb94b9851a2d5137eb48fcc81b64e96eec8bacfb9fa530c9",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-012",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-012-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 23384,
+      "sha256": "07a6d50e5b2b1d68ae446398b279a1d5f0ed738c2c2fe0cecd192e93bb0d8516",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-012",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-012-desktop.png",
+      "mimeType": "image/png",
+      "size": 23861,
+      "sha256": "607a9cc8b1fc84f653c0be2a53fc85c6532bf8e1ee270d3a526cb42e126bf605",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-014",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-014-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 22556,
+      "sha256": "19c4ddaf39678150441490b060a545e67a28fa38f7fc27b964f1e74caa08ebc4",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-014",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-014-desktop.png",
+      "mimeType": "image/png",
+      "size": 23124,
+      "sha256": "8b4d9bceed3a3c62d0fa2a80baf47d35084ed809607b5fd31099197f59a833b8",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-015",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-015-dark-desktop.png",
+      "mimeType": "image/png",
+      "size": 35290,
+      "sha256": "4483186ca433baa65bb2f458989b53badb235e77f3277a38090cae681200830b",
+      "containsSensitiveData": false
+    },
+    {
+      "criteriaId": "AC-015",
+      "kind": "official",
+      "status": "pass",
+      "viewport": "1280x720",
+      "file": "SCRUM-1110-AC-015-desktop.png",
+      "mimeType": "image/png",
+      "size": 35738,
+      "sha256": "47ca1161b0f337db56120145faa556fcb5643d03ed34933cf36af152440a0856",
+      "containsSensitiveData": false
+    }
+  ]
+}

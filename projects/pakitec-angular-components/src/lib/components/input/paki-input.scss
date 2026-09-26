@@ -35,7 +35,7 @@ input {
     outline: none;
   }
   &[aria-invalid='true'] {
-    border-color: var(--error-500);
+    border-color: var(--color-error-field);
   }
   &:disabled {
     cursor: not-allowed;
@@ -82,12 +82,14 @@ input {
 }
 small {
   color: var(--color-text-faint);
+  display: block;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0;
   line-height: 1.35;
+  margin: 0;
   text-transform: none;
 }
 .error {
-  color: var(--error-500);
+  color: var(--color-error-field);
 }

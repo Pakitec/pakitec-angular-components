@@ -11,14 +11,37 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PakiInput implements ControlValueAccessor {
+  /** Contador de instâncias para gerar ids únicos e estáveis. */
+  private static instanceCounter = 0;
+
   readonly label = input('');
   readonly type = input<'text' | 'email' | 'password' | 'search' | 'number' | 'currency'>('text');
   readonly placeholder = input('');
   readonly autocomplete = input('off');
   readonly hint = input('');
   readonly list = input('');
+  /** Mensagem de erro inline. Quando preenchida, marca o campo como inválido. */
   readonly error = input('');
+  /** Marca o campo como inválido mesmo sem mensagem de erro. */
+  readonly invalid = input(false);
   readonly mask = input<'cep' | 'phone' | 'cpf' | 'cnpj' | null>(null);
+
+  /** Id numérico único desta instância. */
+  private readonly instanceId = ++PakiInput.instanceCounter;
+  /** Id da mensagem de erro; usado em `aria-describedby` quando há erro. */
+  protected readonly errorId = `paki-input-error-${this.instanceId}`;
+  /** Id do hint; usado em `aria-describedby` quando não há erro. */
+  protected readonly hintId = `paki-input-hint-${this.instanceId}`;
+  /** Indica se existe mensagem de erro preenchida. */
+  protected readonly hasError = computed(() => this.error().length > 0);
+  /** Regra única de invalidade: `invalid` explícito ou mensagem de erro não vazia. */
+  protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
+  /** Associação acessível: aponta para a mensagem de erro ou para o hint. */
+  protected readonly ariaDescribedBy = computed(() => {
+    if (this.hasError()) return this.errorId;
+    if (this.hint()) return this.hintId;
+    return null;
+  });
   protected readonly effectiveMask = computed(() => this.mask() ?? (this.label() === 'CPF' ? 'cpf' : this.label() === 'CNPJ' ? 'cnpj' : null));
   readonly blurred = output<void>();
   /** Exibe o controle de mostrar/ocultar em campos de senha. */
@@ -26,6 +49,7 @@ export class PakiInput implements ControlValueAccessor {
   protected readonly value = signal('');
   protected readonly disabled = signal(false);
   protected readonly passwordVisible = signal(false);
+
   private onChange: (value: string | number) => void = () => undefined;
   private onTouched: () => void = () => undefined;
   writeValue(value: string | number | null): void {

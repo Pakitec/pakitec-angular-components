@@ -62,6 +62,9 @@ function toObservable<T>(value: T | Observable<T>): Observable<T> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PakiSelect implements ControlValueAccessor {
+  /** Contador de instâncias para gerar ids únicos e estáveis. */
+  private static instanceCounter = 0;
+
   readonly label = input('');
   readonly placeholder = input('Selecione');
   readonly items = input<PakiOption[]>([]);
@@ -69,6 +72,29 @@ export class PakiSelect implements ControlValueAccessor {
   readonly options = input<PakiOption[]>([]);
   readonly searchFn = input<PakiSearchFn | undefined>(undefined);
   readonly noResultsMessage = input('Nenhum resultado');
+  /** Texto auxiliar exibido abaixo do campo quando não há erro. */
+  readonly hint = input('');
+  /** Mensagem de erro inline. Quando preenchida, marca o campo como inválido. */
+  readonly error = input('');
+  /** Marca o campo como inválido mesmo sem mensagem de erro. */
+  readonly invalid = input(false);
+
+  /** Id numérico único desta instância. */
+  private readonly instanceId = ++PakiSelect.instanceCounter;
+  /** Id da mensagem de erro; usado em `aria-describedby` quando há erro. */
+  protected readonly errorId = `paki-select-error-${this.instanceId}`;
+  /** Id do hint; usado em `aria-describedby` quando não há erro. */
+  protected readonly hintId = `paki-select-hint-${this.instanceId}`;
+  /** Indica se existe mensagem de erro preenchida. */
+  protected readonly hasError = computed(() => this.error().length > 0);
+  /** Regra única de invalidade: `invalid` explícito ou mensagem de erro não vazia. */
+  protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
+  /** Associação acessível: aponta para a mensagem de erro ou para o hint. */
+  protected readonly ariaDescribedBy = computed(() => {
+    if (this.hasError()) return this.errorId;
+    if (this.hint()) return this.hintId;
+    return null;
+  });
 
   protected readonly value = signal<string>('');
   protected readonly disabled = signal(false);

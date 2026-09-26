@@ -7,6 +7,24 @@ export default meta;
 type Story = StoryObj<PakiSelect>;
 export const Playground: Story = { render: (args) => ({ props: { ...args, selected: '' }, template: '<div style="width:360px"><paki-select [label]="label" [placeholder]="placeholder" [items]="items" [(ngModel)]="selected" /></div>' }) };
 
+/** Select inválido com mensagem de erro (AC-009, AC-011). */
+export const InvalidWithMessage: Story = {
+  args: { error: 'Campo obrigatório.', selected: '' },
+  render: (args) => ({
+    props: { ...args },
+    template: '<div style="width:360px"><paki-select [label]="label" [placeholder]="placeholder" [items]="items" [error]="error" [(ngModel)]="selected" /></div>',
+  }),
+};
+
+/** Select marcado como inválido sem mensagem de erro. */
+export const InvalidNoMessage: Story = {
+  args: { invalid: true, selected: '' },
+  render: (args) => ({
+    props: { ...args },
+    template: '<div style="width:360px"><paki-select [label]="label" [placeholder]="placeholder" [items]="items" [invalid]="invalid" [(ngModel)]="selected" /></div>',
+  }),
+};
+
 const BREEDS = ['Akita', 'American Bully', 'Basset Hound', 'Beagle', 'Bernese Mountain Dog', 'Border Collie', 'Boston Terrier', 'Boxer', 'Bulldog Francês', 'Chihuahua', 'Dachshund', 'Golden Retriever', 'Labrador Retriever', 'Lhasa Apso', 'Maltês', 'Pastor Alemão', 'Pinscher', 'Poodle', 'Shih-Tzu', 'Spitz Alemão', 'Vira-lata (SRD)', 'Yorkshire Terrier'].map((label) => ({ label, value: label }));
 
 /**
