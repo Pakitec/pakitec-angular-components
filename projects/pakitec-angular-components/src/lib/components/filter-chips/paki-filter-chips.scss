@@ -1,0 +1,36 @@
+.paki-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.paki-filter-chips__chip {
+  align-items: center;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px;
+}
+.paki-filter-chips__chip:hover {
+  border-color: var(--color-accent);
+}
+.paki-filter-chips__chip--selected {
+  background: var(--color-accent-tint);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+.paki-filter-chips__count {
+  background: var(--neutral-100);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+}

@@ -1,0 +1,17 @@
+<dialog
+  #dialog
+  class="paki-dialog"
+  [attr.aria-label]="heading()"
+  (close)="onNativeClose()"
+  (cancel)="onCancel($event)"
+  (click)="onBackdropClick($event)"
+>
+  <header class="paki-dialog__header">
+    <h2>{{ heading() }}</h2>
+    @if (!persistent()) {
+      <button type="button" class="paki-dialog__close" [attr.aria-label]="closeLabel()" (click)="close()">×</button>
+    }
+  </header>
+  <div class="paki-dialog__body"><ng-content /></div>
+  <footer class="paki-dialog__actions"><ng-content select="[pakiDialogActions]" /></footer>
+</dialog>

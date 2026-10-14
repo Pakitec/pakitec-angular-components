@@ -1,0 +1,55 @@
+<table class="paki-table" [attr.aria-busy]="loading() ? 'true' : null">
+  <caption class="paki-table__caption">{{ label() }}</caption>
+  <thead>
+    <tr>
+      @for (column of columns(); track column.key) {
+        <th scope="col" [class.paki-table__end]="column.align === 'end'" [attr.aria-sort]="ariaSort(column)">
+          @if (column.sortable) {
+            <button type="button" class="paki-table__sort" (click)="toggleSort(column)">
+              {{ column.header }} <span aria-hidden="true">{{ indicator(column) }}</span>
+            </button>
+          } @else {
+            {{ column.header }}
+          }
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @if (loading()) {
+      @for (row of skeletonRows; track row) {
+        <tr class="paki-table__row paki-table__row--loading">
+          @for (column of columns(); track column.key) {
+            <td [attr.data-label]="column.header"><span class="paki-table__skeleton"></span></td>
+          }
+        </tr>
+      }
+    } @else if (!rows().length) {
+      <tr>
+        <td class="paki-table__empty" [attr.colspan]="columns().length">
+          <paki-placeholder [title]="emptyTitle()" [description]="emptyDescription()"><ng-content select="[pakiTableEmpty]" /></paki-placeholder>
+        </td>
+      </tr>
+    } @else {
+      @for (row of rows(); track rowKey()(row, $index); let index = $index) {
+        <tr
+          class="paki-table__row"
+          [class.paki-table__row--selectable]="selectable()"
+          [attr.tabindex]="selectable() ? 0 : null"
+          (click)="selectable() && rowSelect.emit(row)"
+          (keydown.enter)="selectable() && rowSelect.emit(row)"
+        >
+          @for (column of columns(); track column.key) {
+            <td [class.paki-table__end]="column.align === 'end'" [attr.data-label]="column.header">
+              @if (cellTemplates().get(column.key); as template) {
+                <ng-container [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: row, index }" />
+              } @else {
+                {{ text(column, row) }}
+              }
+            </td>
+          }
+        </tr>
+      }
+    }
+  </tbody>
+</table>

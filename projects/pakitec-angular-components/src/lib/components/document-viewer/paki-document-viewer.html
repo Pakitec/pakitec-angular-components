@@ -1,0 +1,16 @@
+<div class="paki-document-viewer">
+  @if (loading()) {
+    <p class="paki-document-viewer__state" role="status">Carregando documento…</p>
+  } @else if (failed() || !safeUrl()) {
+    <p class="paki-document-viewer__state" role="alert">Não foi possível abrir o documento. Atualize a página e tente novamente.</p>
+  } @else if (kind() === 'pdf') {
+    <iframe class="paki-document-viewer__frame" [src]="frameUrl()" [title]="'Documento: ' + fileName()" sandbox="allow-same-origin" referrerpolicy="no-referrer" (error)="onError()"></iframe>
+  } @else if (kind() === 'image') {
+    <img class="paki-document-viewer__image" [src]="safeUrl()" [alt]="'Documento: ' + fileName()" referrerpolicy="no-referrer" (error)="onError()" />
+  } @else {
+    <p class="paki-document-viewer__state" role="status">Este formato não pode ser exibido aqui. Baixe o arquivo para abrir.</p>
+  }
+  @if (safeUrl() && !loading()) {
+    <a class="paki-document-viewer__open" [href]="safeUrl()" target="_blank" rel="noopener noreferrer">Abrir original em nova aba</a>
+  }
+</div>

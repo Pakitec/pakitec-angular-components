@@ -37,6 +37,11 @@ O toolbar do Storybook permite alternar entre os temas claro e escuro.
 ## Componentes
 
 - Badge
+- Chart (linha e barras, SVG)
+- Data table (ordenação, carregando, vazio; vira cartões em telas estreitas)
+- Dialog
+- Document viewer (PDF e imagem)
+- Filter chips
 - Button
 - Card
 - Combobox
@@ -44,7 +49,9 @@ O toolbar do Storybook permite alternar entre os temas claro e escuro.
 - Input
 - Module tabs
 - Page header
+- Period picker
 - Pagination
 - Select
 - Switch
 - Textarea
+- Timeline

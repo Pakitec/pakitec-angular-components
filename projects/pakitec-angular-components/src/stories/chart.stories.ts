@@ -1,0 +1,12 @@
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { PakiChart } from '../public-api';
+const months = ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out'];
+const energia = { name: 'Energia', points: months.map((label, i) => ({ label, value: [210, 198, 240, 260, null, 312][i] ?? null })) };
+const agua = { name: 'Água', points: months.map((label, i) => ({ label, value: [80, 82, 79, 95, 90, 88][i] ?? null })) };
+const brl = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+const meta: Meta<PakiChart> = { title: 'Componentes/Chart', component: PakiChart, args: { series: [energia], type: 'line', label: 'Despesas por mês, em reais', valueFormat: brl } };
+export default meta;
+type Story = StoryObj<PakiChart>;
+export const Linha: Story = {};
+export const Barras: Story = { args: { type: 'bar', series: [energia, agua] } };
+export const SemDados: Story = { args: { series: [{ name: 'Gás', points: [{ label: 'Out', value: null }] }] } };

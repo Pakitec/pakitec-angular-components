@@ -1,0 +1,23 @@
+<div class="paki-period-picker">
+  <label class="paki-period-picker__field">
+    <span>{{ label() }}</span>
+    <select [value]="selectedPreset()" (change)="selectPreset($any($event.target).value)">
+      @for (preset of presets; track preset.value) {
+        <option [value]="preset.value" [selected]="preset.value === selectedPreset()">{{ preset.label }}</option>
+      }
+    </select>
+  </label>
+  @if (customMode()) {
+    <label class="paki-period-picker__field">
+      <span>De</span>
+      <input type="date" [value]="customStart()" [attr.aria-invalid]="error() ? 'true' : null" (change)="setCustom('start', $any($event.target).value)" />
+    </label>
+    <label class="paki-period-picker__field">
+      <span>Até</span>
+      <input type="date" [value]="customEnd()" [attr.aria-invalid]="error() ? 'true' : null" (change)="setCustom('end', $any($event.target).value)" />
+    </label>
+  }
+</div>
+@if (error()) {
+  <p class="paki-period-picker__error" role="alert">{{ error() }}</p>
+}

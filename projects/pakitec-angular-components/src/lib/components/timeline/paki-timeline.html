@@ -1,0 +1,23 @@
+@if (items().length) {
+  <ol class="paki-timeline" [attr.aria-label]="label()">
+    @for (item of items(); track item.id) {
+      <li class="paki-timeline__item" [class]="'paki-timeline__item paki-timeline__item--' + (item.tone ?? 'neutral')">
+        <span class="paki-timeline__dot" aria-hidden="true"></span>
+        <div class="paki-timeline__content">
+          <strong>{{ item.title }}</strong>
+          @if (item.description) {
+            <p>{{ item.description }}</p>
+          }
+          <small>
+            <time [attr.datetime]="item.datetime">{{ item.time }}</time>
+            @if (item.author) {
+              · {{ item.author }}
+            }
+          </small>
+        </div>
+      </li>
+    }
+  </ol>
+} @else {
+  <p class="paki-timeline__empty">{{ emptyText() }}</p>
+}
