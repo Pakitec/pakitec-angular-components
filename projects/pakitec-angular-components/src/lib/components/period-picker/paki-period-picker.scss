@@ -1,0 +1,31 @@
+.paki-period-picker {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.paki-period-picker__field {
+  color: var(--color-text-secondary);
+  display: grid;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 4px;
+}
+select,
+input {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  min-height: 40px;
+  padding: 0 12px;
+}
+input[aria-invalid='true'] {
+  border-color: var(--color-error-field);
+}
+.paki-period-picker__error {
+  color: var(--color-error-field);
+  font-size: 12px;
+  margin: 6px 0 0;
+}

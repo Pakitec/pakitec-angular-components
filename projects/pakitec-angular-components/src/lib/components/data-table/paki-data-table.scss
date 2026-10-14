@@ -1,0 +1,122 @@
+:host {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  container-type: inline-size;
+  display: block;
+  overflow-x: auto;
+}
+.paki-table {
+  border-collapse: collapse;
+  font-size: 14px;
+  width: 100%;
+}
+.paki-table__caption {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+th {
+  background: var(--neutral-50);
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: var(--row-padding) 16px;
+  text-align: start;
+  white-space: nowrap;
+}
+td {
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  padding: var(--row-padding) 16px;
+}
+tr:last-child td {
+  border-bottom: 0;
+}
+.paki-table__end {
+  text-align: end;
+}
+.paki-table__sort {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 0;
+}
+.paki-table__row--selectable {
+  cursor: pointer;
+}
+.paki-table__row--selectable:hover td {
+  background: var(--color-accent-tint);
+}
+.paki-table__skeleton {
+  animation: paki-table-pulse 1.2s ease-in-out infinite;
+  background: var(--neutral-150);
+  border-radius: 4px;
+  display: block;
+  height: 14px;
+  width: 70%;
+}
+.paki-table__empty {
+  padding: 24px;
+}
+@keyframes paki-table-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paki-table__skeleton {
+    animation: none;
+  }
+}
+
+/* Contêiner estreito: cada linha vira um cartão com o nome da coluna ao lado do valor. */
+@container (max-width: 640px) {
+  thead {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+  }
+  .paki-table,
+  tbody,
+  .paki-table__row {
+    display: block;
+  }
+  .paki-table__row {
+    border-bottom: 1px solid var(--color-border-default);
+    padding: 8px 0;
+  }
+  td {
+    align-items: baseline;
+    border: 0;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 6px 16px;
+    text-align: end;
+  }
+  td[data-label]::before {
+    color: var(--color-text-secondary);
+    content: attr(data-label);
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: start;
+  }
+  td.paki-table__empty {
+    display: block;
+    text-align: start;
+  }
+  td.paki-table__empty::before {
+    content: none;
+  }
+}

@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+.paki-chart__svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.paki-chart__grid {
+  stroke: var(--color-border-subtle);
+  stroke-width: 1;
+}
+.paki-chart__tick {
+  fill: var(--color-text-secondary);
+  font-size: 11px;
+}
+.paki-chart__line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+.paki-chart__mark {
+  cursor: pointer;
+  stroke: var(--color-bg-surface);
+  stroke-width: 2;
+}
+.paki-chart__mark:hover,
+.paki-chart__mark:focus-visible {
+  stroke: var(--color-text-primary);
+}
+.paki-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 16px;
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.paki-chart__legend li {
+  align-items: center;
+  color: var(--color-text-secondary);
+  display: flex;
+  gap: 6px;
+}
+.paki-chart__swatch {
+  border-radius: 3px;
+  height: 10px;
+  width: 10px;
+}
+.paki-chart__table {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+.paki-chart__empty {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+}

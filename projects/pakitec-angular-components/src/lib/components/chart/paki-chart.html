@@ -1,0 +1,53 @@
+@if (hasData()) {
+  @if (series().length > 1) {
+    <ul class="paki-chart__legend">
+      @for (item of series(); track item.name; let i = $index) {
+        <li><span class="paki-chart__swatch" [style.background]="colors[i % colors.length]"></span>{{ item.name }}</li>
+      }
+    </ul>
+  }
+  <svg class="paki-chart__svg" [attr.viewBox]="'0 0 ' + width + ' ' + height()" role="group" [attr.aria-label]="label()">
+    @for (tick of axis().ticks; track tick.value) {
+      <line class="paki-chart__grid" [attr.x1]="margin.left" [attr.x2]="width - margin.right" [attr.y1]="tick.y" [attr.y2]="tick.y" />
+      <text class="paki-chart__tick" [attr.x]="margin.left - 8" [attr.y]="tick.y" text-anchor="end" dominant-baseline="middle">{{ tick.text }}</text>
+    }
+    @for (name of labels(); track $index; let i = $index) {
+      @if (i % labelStep() === 0) {
+        <text class="paki-chart__tick" [attr.x]="labelX(i)" [attr.y]="height() - 10" text-anchor="middle">{{ name }}</text>
+      }
+    }
+    @if (type() === 'line') {
+      @for (path of paths(); track path.name) {
+        <path class="paki-chart__line" [attr.d]="path.d" [attr.stroke]="path.color" />
+      }
+      @for (mark of marks(); track mark.series + mark.index) {
+        <circle class="paki-chart__mark" r="5" tabindex="0" role="button" [attr.aria-label]="mark.text"
+          [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.fill]="mark.color"
+          (click)="select(mark)" (keydown.enter)="select(mark)" (keydown.space)="select(mark); $event.preventDefault()">
+          <title>{{ mark.text }}</title>
+        </circle>
+      }
+    } @else {
+      @for (mark of marks(); track mark.series + mark.index) {
+        <rect class="paki-chart__mark" tabindex="0" role="button" rx="3" [attr.aria-label]="mark.text"
+          [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"
+          (click)="select(mark)" (keydown.enter)="select(mark)" (keydown.space)="select(mark); $event.preventDefault()">
+          <title>{{ mark.text }}</title>
+        </rect>
+      }
+    }
+  </svg>
+  <table class="paki-chart__table">
+    <caption>{{ label() }}</caption>
+    <thead>
+      <tr><th scope="col">Período</th>@for (item of series(); track item.name) { <th scope="col">{{ item.name }}</th> }</tr>
+    </thead>
+    <tbody>
+      @for (name of labels(); track $index; let i = $index) {
+        <tr><th scope="row">{{ name }}</th>@for (item of series(); track item.name) { <td>{{ cell(item.points[i]) }}</td> }</tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p class="paki-chart__empty" role="status">Sem dados para exibir neste período.</p>
+}

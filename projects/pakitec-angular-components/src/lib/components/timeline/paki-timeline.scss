@@ -1,0 +1,53 @@
+.paki-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.paki-timeline__item {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 20px;
+  position: relative;
+}
+.paki-timeline__item:not(:last-child)::before {
+  background: var(--color-border-default);
+  bottom: 0;
+  content: '';
+  left: 5px;
+  position: absolute;
+  top: 16px;
+  width: 2px;
+}
+.paki-timeline__dot {
+  background: var(--ink-400);
+  border-radius: 50%;
+  flex: none;
+  height: 12px;
+  margin-top: 4px;
+  width: 12px;
+}
+.paki-timeline__item--success .paki-timeline__dot { background: var(--success-500); }
+.paki-timeline__item--warning .paki-timeline__dot { background: var(--warning-500); }
+.paki-timeline__item--danger .paki-timeline__dot { background: var(--error-500); }
+.paki-timeline__item--info .paki-timeline__dot { background: var(--info-500); }
+.paki-timeline__content {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+strong {
+  font-size: 14px;
+}
+p {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+small {
+  color: var(--color-text-faint);
+  font-size: 12px;
+}
+.paki-timeline__empty {
+  color: var(--color-text-secondary);
+}
